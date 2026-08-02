@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeadBoost — реклама, которая приводит клиентов</title>
+  <meta name="description" content="Настройка таргетированной рекламы и создание сайтов для малого и среднего бизнеса. Первая реклама на первой неделе, понятные отчёты каждую неделю." />
+  <meta property="og:title" content="LeadBoost — реклама, которая приводит клиентов" />
+  <meta property="og:description" content="Таргет + сайты в одних руках. 3-4 проекта в месяц, лично." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+  <style>*{margin:0;padding:0}html,body{margin:0;background:#101014}</style>
+  <link rel="stylesheet" href="./dist/main.css" />
+</head>
+<body>
+  <div id="root"></div>
+<script>
+(function () {
+  var shown = false;
+  function showError(title, detail) {
+    if (shown) return; shown = true;
+    var d = document.createElement("div");
+    d.style.cssText = "position:fixed;inset:0;background:#101014;color:#EDEDEA;font-family:system-ui,sans-serif;padding:40px 24px;z-index:99999;overflow:auto";
+    d.innerHTML = "<div style='max-width:640px;margin:0 auto'>"
+      + "<div style='font-size:13px;letter-spacing:.1em;color:#ECEA0D;margin-bottom:14px'>LEADBOOST · ДИАГНОСТИКА</div>"
+      + "<h1 style='font-size:22px;margin:0 0 12px'>" + title + "</h1>"
+      + "<pre style='white-space:pre-wrap;background:#17171C;border:1px solid #26262E;border-radius:10px;padding:14px;font-size:12.5px;color:#C9C9CE'>" + detail + "</pre>"
+      + "<p style='font-size:14px;color:#9C9CA6;margin-top:16px'>Скопируйте текст выше и отправьте разработчику — по нему сразу видна причина.</p>"
+      + "</div>";
+    document.body.appendChild(d);
+  }
+  window.addEventListener("error", function (e) {
+    /* Ошибка загрузки ресурса (файл не найден) не даёт e.message —
+       определяем её отдельно по e.target, чтобы назвать точный файл.
+       Внешние ресурсы (шрифты с Google Fonts) — не критичны, их не
+       путаем с отсутствующими файлами проекта. */
+    if (e.target && e.target !== window && (e.target.src || e.target.href)) {
+      var url = e.target.src || e.target.href;
+      var isExternal = /^https?:\/\//.test(url) && url.indexOf(location.origin) !== 0;
+      if (isExternal) {
+        console.warn("Внешний ресурс не загрузился (не критично):", url);
+        return; // сайт продолжает работать, просто без веб-шрифта
+      }
+      showError(
+        "Файл не найден: " + (e.target.tagName || "ресурс"),
+        "Не удалось загрузить:\n" + url + "\n\n"
+        + "Похоже, вы открыли устаревшую или неполную копию проекта —\n"
+        + "в папке рядом с index.html нет файла dist/main.js или dist/main.css.\n\n"
+        + "Решение:\n"
+        + "1) Скачайте АКТУАЛЬНЫЙ архив заново и распакуйте в чистую папку\n"
+        + "2) Убедитесь, что сервер (npx serve / http.server) запущен\n"
+        + "   именно из папки, где лежит этот index.html — не из родительской"
+      );
+      return;
+    }
+    var msg = (e.message || "неизвестная ошибка") + (e.filename ? "\n" + e.filename + ":" + e.lineno : "");
+    showError("Ошибка в коде", msg);
+  }, true);
+  window.addEventListener("unhandledrejection", function (e) {
+    showError("Необработанная ошибка", String(e.reason && e.reason.message || e.reason));
+  });
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      var root = document.getElementById("root");
+      if (root && root.children.length === 0) {
+        var isFile = location.protocol === "file:";
+        showError(
+          "Сайт не отрисовался (пустой root)",
+          isFile
+            ? "Страница открыта как файл (file://).\nБраузер блокирует загрузку скрипта из папки dist при открытии файла напрямую.\n\nРешение — запустите локальный сервер из папки проекта:\n  npx serve .\nи откройте адрес, который он покажет."
+            : "Скрипт main.js не выполнился, но файл загрузился.\nОткройте F12 → Console — там будет точная причина."
+        );
+      }
+    }, 2500);
+  });
+})();
+</script>
+  <script src="./dist/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "leadboost",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild src/main.jsx --bundle --minify --sourcemap --loader:.png=dataurl --loader:.woff2=file --loader:.woff=file --outdir=dist --entry-names=main --jsx=automatic --define:process.env.NODE_ENV='\"production\"'",
+    "dev": "esbuild src/main.jsx --bundle --loader:.png=dataurl --loader:.woff2=file --loader:.woff=file --outdir=dist --entry-names=main --jsx=automatic --define:process.env.NODE_ENV='\"development\"' --watch --servedir=."
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0"
+  }
+}
