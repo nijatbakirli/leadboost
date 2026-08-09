@@ -4,12 +4,12 @@
    ============================================================ */
 
 /* --- Приём заявок в Telegram ---
-   1. Напишите @BotFather → /newbot → получите токен
-   2. Напишите своему боту любое сообщение
-   3. Откройте https://api.telegram.org/bot<ТОКЕН>/getUpdates
-      и найдите "chat":{"id": ЧИСЛО}                            */
-export const TELEGRAM_BOT_TOKEN = "ВАШ_ТОКЕН_БОТА";
-export const TELEGRAM_CHAT_ID = "ВАШ_CHAT_ID";
+   Токен и chat_id больше НЕ хранятся здесь (и вообще нигде в клиентском
+   коде) — их видел бы любой посетитель сайта через devtools. Форма
+   отправляется на серверную функцию /api/telegram (см. api/telegram.js),
+   а сами значения задаются как переменные окружения TELEGRAM_BOT_TOKEN
+   и TELEGRAM_CHAT_ID в настройках проекта на Vercel (Settings → Environment
+   Variables) — см. README.md, раздел «Публикация».                     */
 
 /* Запасная почта для кнопки «написать напрямую» при сбое отправки */
 export const NOTIFY_EMAIL = "you@example.com";

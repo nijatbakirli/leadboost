@@ -9,8 +9,7 @@ import { Reveal, useTween } from "./hooks.jsx";
 import { IconCaseStudies, IconSuccess, IconSupport, IconConsultant } from "./icons.jsx";
 import { ScrambleText, WordReveal, CountMetric, Mark, TargetGame } from "./widgets.jsx";
 import {
-  TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, NOTIFY_EMAIL,
-  SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS,
+  NOTIFY_EMAIL, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS,
 } from "./config.js";
 import {
   NICHE_DATA, NICHES, SERVICES, PRINCIPLES, FIT_YES, FIT_NO,
@@ -61,16 +60,13 @@ export default function App() {
     e.preventDefault();
     setSendError(false);
     const nicheLabel = NICHE_DATA[form.niche]?.label || form.niche || "не указана";
-    const text = `🎯 Новая заявка с сайта LeadBoost\n\nИмя: ${form.name}\nКонтакт: ${form.contact}\nУслуга: ${form.service || "не указана"}\nНиша: ${nicheLabel}\nБюджет: ${form.budget || "не указан"}`;
-    const configured = TELEGRAM_BOT_TOKEN !== "ВАШ_ТОКЕН_БОТА" && TELEGRAM_CHAT_ID !== "ВАШ_CHAT_ID";
-    if (!configured) { setSendError(true); return; }
     setSending(true);
     try {
-      const res = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      const res = await fetch("/api/telegram", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text }),
+        body: JSON.stringify({ name: form.name, contact: form.contact, service: form.service, niche: nicheLabel, budget: form.budget }),
       });
-      if (!res.ok) throw new Error("tg error");
+      if (!res.ok) throw new Error("send error");
       if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
       setSent(true);
     } catch { setSendError(true); } finally { setSending(false); }
