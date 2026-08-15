@@ -119,12 +119,17 @@ export default function App() {
             </div>
             <Reveal delay={140}>
               <div className="hero-visual">
-                <div className="hero-card" {...tiltHandlers}>
-                  <div className="shine" aria-hidden="true" />
-                  <div className="hero-card-inner">
-                    <span className="case-tag">КЕЙС / 07</span>
-                    <h4>Реклама с характером.</h4>
+                <div className="laptop-mock">
+                  <div className="laptop-mock-screen">
+                    <div className="hero-card" {...tiltHandlers}>
+                      <div className="shine" aria-hidden="true" />
+                      <div className="hero-card-inner">
+                        <span className="case-tag">КЕЙС / 07</span>
+                        <h4>Реклама с характером.</h4>
+                      </div>
+                    </div>
                   </div>
+                  <div className="laptop-mock-base" aria-hidden="true"><i /></div>
                 </div>
                 <div className="hero-chip chip-a"><CountMetric value="240+" inline /><span>кампаний запущено</span></div>
                 <div className="hero-chip chip-b"><CountMetric value="310%+" inline /><span>средний ROAS клиентов</span></div>
@@ -153,6 +158,7 @@ export default function App() {
                     {item.img ? <img src={item.img} alt="" /> : <item.icon />}
                   </span>
                   {item.label}
+                  <span className="mq-dot" aria-hidden="true">•</span>
                 </span>
               ))}
             </span>
@@ -177,10 +183,10 @@ export default function App() {
             <h2 className="h-big">Услуги</h2>
             <p>Сфокусированная работа: от вопроса «откуда брать клиентов» — до работающей системы.</p>
           </div>
-          <div>
+          <div className="super-card">
             {SERVICES.map((s, i) => (
               <React.Fragment key={s.title}>
-                <div className={`svc-row ${openSvc === i ? "open" : ""}`} onClick={() => setOpenSvc(openSvc === i ? -1 : i)}
+                <div className={`svc-row pill-row ${openSvc === i ? "open" : ""}`} onClick={() => setOpenSvc(openSvc === i ? -1 : i)}
                      role="button" tabIndex={0} aria-expanded={openSvc === i}
                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenSvc(openSvc === i ? -1 : i); } }}>
                   <span className="svc-ic"><s.icon /></span>
@@ -286,7 +292,7 @@ export default function App() {
         <div className="wrap">
           <div className="sec-num"><span className="circle">05</span> ЧЕСТНЫЙ ОТСЕВ</div>
           <div className="svc-head">
-            <h2 className="h-big">Кому подходит</h2>
+            <h2 className="h-big">Кому <Mark>подходит</Mark></h2>
             <p>Беру 3-4 проекта в месяц — поэтому честно фильтрую на входе.</p>
           </div>
           <div className="fit-grid">
@@ -311,7 +317,7 @@ export default function App() {
         <div className="wrap">
           <div className="sec-num"><span className="circle">06</span> ТАРИФЫ</div>
           <div className="svc-head">
-            <h2 className="h-big">Три варианта</h2>
+            <h2 className="h-big">Три <Mark>варианта</Mark></h2>
             <p>Одна сумма в месяц. Без скрытых процентов и доплат.</p>
           </div>
           <div className="price-grid">
@@ -416,13 +422,15 @@ export default function App() {
       <section className="section" id="faq" style={{ paddingTop: 0 }}>
         <div className="wrap" style={{ maxWidth: 820 }}>
           <div className="sec-num"><span className="circle">09</span> ВОПРОСЫ</div>
-          <h2 className="h-big" style={{ marginBottom: 46 }}>Отвечаю просто</h2>
-          {FAQS.map((f, i) => (
-            <div key={f.q} className={`faq-item ${openFaq === i ? "open" : ""}`}>
-              <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{f.q} <span className="faq-plus">+</span></button>
-              <div className="faq-a"><div className="faq-a-inner">{f.a}</div></div>
-            </div>
-          ))}
+          <h2 className="h-big" style={{ marginBottom: 46 }}>Отвечаю <Mark>просто</Mark></h2>
+          <div className="super-card">
+            {FAQS.map((f, i) => (
+              <div key={f.q} className={`faq-item pill-row ${openFaq === i ? "open" : ""}`}>
+                <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{f.q} <span className="faq-plus">+</span></button>
+                <div className="faq-a"><div className="faq-a-inner">{f.a}</div></div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
