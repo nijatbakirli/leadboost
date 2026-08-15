@@ -1,7 +1,8 @@
 /* ============================================================
    ГЛАВНЫЙ КОМПОНЕНТ
    Только композиция и разметка. Настройки — в config.js,
-   контент — в data.jsx, логика — в interactions.jsx.
+   контент — в data.jsx, тексты интерфейса — в i18n.jsx,
+   логика — в interactions.jsx.
    ============================================================ */
 import React, { useState } from "react";
 import LOGO_SRC from "./logo.png";
@@ -9,12 +10,10 @@ import { Reveal, useTween } from "./hooks.jsx";
 import { IconCaseStudies, IconSuccess, IconSupport, IconConsultant } from "./icons.jsx";
 import { ScrambleText, WordReveal, CountMetric, Mark, TargetGame } from "./widgets.jsx";
 import {
-  NOTIFY_EMAIL, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS,
+  NOTIFY_EMAIL, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, GAME,
 } from "./config.js";
-import {
-  NICHE_DATA, NICHES, SERVICES, PRINCIPLES, FIT_YES, FIT_NO,
-  PLANS, WORK_CASES, METRIC_NOTES, FAQS, KPI_PHRASES, MARQUEE_ITEMS,
-} from "./data.jsx";
+import { CONTENT } from "./data.jsx";
+import { UI, LANGS, useLang } from "./i18n.jsx";
 import {
   useScrollProgress, usePreloader, useClockStatus, useTicker,
   useSpotlight, useHeroParallax, useVelocityMarquee, useCoverflow,
@@ -22,6 +21,12 @@ import {
 } from "./interactions.jsx";
 
 export default function App() {
+  /* --- Язык --- */
+  const { lang, setLang } = useLang();
+  const D = CONTENT[lang];
+  const t = UI[lang];
+  const RU = CONTENT.ru; /* заявка в Telegram/почту всегда на русском — её читает владелец, не посетитель */
+
   /* --- UI-состояния --- */
   const [openFaq, setOpenFaq] = useState(0);
   const [openSvc, setOpenSvc] = useState(0);
@@ -30,7 +35,7 @@ export default function App() {
   const loaded = usePreloader();
   const { progress, ctaVisible } = useScrollProgress();
   const { online, timeStr } = useClockStatus(WORK_HOURS);
-  const kpiIndex = useTicker(KPI_PHRASES.length);
+  const kpiIndex = useTicker(D.KPI_PHRASES.length);
   const rootRef = useSpotlight();
   const { heroRef, onMove: onHeroMove, onLeave: onHeroLeave } = useHeroParallax();
   const marqueeRef = useVelocityMarquee();
@@ -39,12 +44,12 @@ export default function App() {
 
   /* --- Приветствие по времени суток --- */
   const hour = new Date().getHours();
-  const greeting = hour >= 5 && hour < 12 ? "Доброе утро—" : hour < 18 ? "Добрый день—" : "Добрый вечер—";
+  const greeting = hour >= 5 && hour < 12 ? t.hero.greetingMorning : hour < 18 ? t.hero.greetingDay : t.hero.greetingEvening;
 
   /* --- ROI-калькулятор --- */
   const [roiBudget, setRoiBudget] = useState(1000);
   const [roiNiche, setRoiNiche] = useState("ecommerce");
-  const nicheInfo = NICHE_DATA[roiNiche];
+  const nicheInfo = D.NICHE_DATA[roiNiche];
   const estLeads = Math.max(1, Math.round(roiBudget / nicheInfo.cpl));
   const animatedCpl = useTween(nicheInfo.cpl, 500, 1);
   const animatedLeads = useTween(estLeads, 500, 0);
@@ -59,7 +64,7 @@ export default function App() {
   const onFormSubmit = async (e) => {
     e.preventDefault();
     setSendError(false);
-    const nicheLabel = NICHE_DATA[form.niche]?.label || form.niche || "не указана";
+    const nicheLabel = RU.NICHE_DATA[form.niche]?.label || form.niche || "не указана";
     setSending(true);
     try {
       const res = await fetch("/api/telegram", {
@@ -71,7 +76,7 @@ export default function App() {
       setSent(true);
     } catch { setSendError(true); } finally { setSending(false); }
   };
-  const mailtoHref = `mailto:${NOTIFY_EMAIL}?subject=${encodeURIComponent("Заявка с сайта LeadBoost")}&body=${encodeURIComponent(`Имя: ${form.name}\nКонтакт: ${form.contact}\nУслуга: ${form.service}\nНиша: ${NICHE_DATA[form.niche]?.label || ""}\nБюджет: ${form.budget}`)}`;
+  const mailtoHref = `mailto:${NOTIFY_EMAIL}?subject=${encodeURIComponent("Заявка с сайта LeadBoost")}&body=${encodeURIComponent(`Имя: ${form.name}\nКонтакт: ${form.contact}\nУслуга: ${form.service}\nНиша: ${RU.NICHE_DATA[form.niche]?.label || ""}\nБюджет: ${form.budget}`)}`;
 
   return (
     <div className="cl-root" ref={rootRef}>
@@ -87,12 +92,17 @@ export default function App() {
           <img src={LOGO_SRC} alt="LeadBoost" />
         </a>
         <ul>
-          <li><a href="#studio" onClick={scrollToId("studio")}>Студия</a></li>
-          <li><a href="#services" onClick={scrollToId("services")}>Услуги</a></li>
-          <li><a href="#work" onClick={scrollToId("work")}>Работы</a></li>
-          <li><a href="#pricing" onClick={scrollToId("pricing")} className="nav-hide-sm">Тарифы</a></li>
-          <li><a href="#contact" onClick={scrollToId("contact")}>Контакт</a></li>
+          <li><a href="#studio" onClick={scrollToId("studio")}>{t.nav.studio}</a></li>
+          <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
+          <li><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
+          <li><a href="#pricing" onClick={scrollToId("pricing")} className="nav-hide-sm">{t.nav.pricing}</a></li>
+          <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
         </ul>
+        <div className="lang-switch">
+          {LANGS.map((l) => (
+            <button key={l.code} className={`lang-pill ${lang === l.code ? "active" : ""}`} onClick={() => setLang(l.code)}>{l.label}</button>
+          ))}
+        </div>
         <div className="nav-progress"><i style={{ width: `${progress}%` }} /></div>
       </nav>
 
@@ -100,21 +110,20 @@ export default function App() {
       <section className="hero" id="studio" ref={heroRef} onMouseMove={onHeroMove} onMouseLeave={onHeroLeave}>
         <div className="hero-halo" aria-hidden="true" />
         <div className="wrap">
-          <div className="sec-num"><span className="circle">01</span> СТУДИЯ</div>
+          <div className="sec-num"><span className="circle">01</span> {t.hero.secLabel}</div>
           <div className="hero-grid">
             <div className="hero-left">
-              <div className="hero-overline">Независимая студия рекламы</div>
+              <div className="hero-overline">{t.hero.overline}</div>
               <h1 className="h-huge">
                 <ScrambleText text={greeting} />
-                <span className="stroke">это LeadBoost</span>
+                <span className="stroke">{t.hero.brand}</span>
               </h1>
               <p className="hero-lead">
-                Настраиваю трафик, который <Mark>приводит клиентов</Mark>, и делаю сайты,
-                которые его выдерживают. Реклама, сайт и аналитика — в одних руках с первого дня.
+                {t.hero.leadPre}<Mark>{t.hero.leadMark}</Mark>{t.hero.leadPost}
               </p>
               <div className="hero-actions">
-                <a href="#contact" onClick={scrollToId("contact")} className="hero-btn">Обсудить проект →</a>
-                <a href="#work" className="hero-link" onClick={scrollToId("work")}>Смотреть работы <span className="arr">↘</span></a>
+                <a href="#contact" onClick={scrollToId("contact")} className="hero-btn">{t.hero.ctaPrimary}</a>
+                <a href="#work" className="hero-link" onClick={scrollToId("work")}>{t.hero.ctaSecondary} <span className="arr">↘</span></a>
               </div>
             </div>
             <Reveal delay={140}>
@@ -122,22 +131,20 @@ export default function App() {
                 <div className="hero-card" {...tiltHandlers}>
                   <div className="shine" aria-hidden="true" />
                   <div className="hero-card-inner">
-                    <span className="case-tag">КЕЙС / 07</span>
-                    <h4>Реклама с характером.</h4>
+                    <span className="case-tag">{t.hero.caseTag}</span>
+                    <h4>{t.hero.caseTitle}</h4>
                   </div>
                 </div>
-                <div className="hero-chip chip-a"><CountMetric value="240+" inline /><span>кампаний запущено</span></div>
-                <div className="hero-chip chip-b"><CountMetric value="310%+" inline /><span>средний ROAS клиентов</span></div>
+                <div className="hero-chip chip-a"><CountMetric value="240+" inline /><span>{t.hero.chipA}</span></div>
+                <div className="hero-chip chip-b"><CountMetric value="310%+" inline /><span>{t.hero.chipB}</span></div>
               </div>
             </Reveal>
           </div>
 
           {/* статусная линия хиро */}
           <div className="hero-bottom">
-            <div className="hero-fact">✓ Один специалист, без передачи по цепочке</div>
-            <div className="hero-fact">✓ Первая реклама — уже на первой неделе</div>
-            <div className="hero-fact">✓ Понятный отчёт вместо красивых слов</div>
-            <div className="hero-fact ticker"><span className="hero-kpi-ticker"><span className="kpi-face" key={kpiIndex}>{KPI_PHRASES[kpiIndex]}</span></span></div>
+            {t.hero.facts.map((f, i) => <div className="hero-fact" key={i}>{f}</div>)}
+            <div className="hero-fact ticker"><span className="hero-kpi-ticker"><span className="kpi-face" key={kpiIndex}>{D.KPI_PHRASES[kpiIndex]}</span></span></div>
           </div>
         </div>
       </section>
@@ -147,7 +154,7 @@ export default function App() {
         <div className="marquee-track" ref={marqueeRef}>
           {[0, 1].map((k) => (
             <span key={k} className="marquee-run">
-              {MARQUEE_ITEMS.map((item) => (
+              {D.MARQUEE_ITEMS.map((item) => (
                 <span className="mq-item" key={item.label}>
                   <span className="mq-ic">
                     {item.img ? <img src={item.img} alt="" /> : <item.icon />}
@@ -164,7 +171,7 @@ export default function App() {
       <section className="statement">
         <div className="wrap">
           <Reveal>
-            <h2 className="h-big"><WordReveal text="Хорошая реклама делает больше, чем приводит клики. Она приводит людей," /> <Mark>готовых купить.</Mark></h2>
+            <h2 className="h-big"><WordReveal text={t.statement.pre} /> <Mark>{t.statement.mark}</Mark></h2>
           </Reveal>
         </div>
       </section>
@@ -172,13 +179,13 @@ export default function App() {
       {/* 02 — УСЛУГИ */}
       <section className="section" id="services" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">02</span> ЧТО ДЕЛАЮ</div>
+          <div className="sec-num"><span className="circle">02</span> {t.services.secLabel}</div>
           <div className="svc-head">
-            <h2 className="h-big">Услуги</h2>
-            <p>Сфокусированная работа: от вопроса «откуда брать клиентов» — до работающей системы.</p>
+            <h2 className="h-big">{t.services.heading}</h2>
+            <p>{t.services.sub}</p>
           </div>
           <div>
-            {SERVICES.map((s, i) => (
+            {D.SERVICES.map((s, i) => (
               <React.Fragment key={s.title}>
                 <div className={`svc-row ${openSvc === i ? "open" : ""}`} onClick={() => setOpenSvc(openSvc === i ? -1 : i)}
                      role="button" tabIndex={0} aria-expanded={openSvc === i}
@@ -202,9 +209,9 @@ export default function App() {
           </div>
           {/* ниши */}
           <div style={{ marginTop: 70 }}>
-            <div className="f-label" style={{ color: "var(--ink-soft)" }}>/ С КЕМ РАБОТАЮ</div>
+            <div className="f-label" style={{ color: "var(--ink-soft)" }}>{t.services.nichesLabel}</div>
             <div className="niche-grid">
-              {NICHES.map((n) => (
+              {D.NICHES.map((n) => (
                 <div className="niche-pill" key={n.label}>
                   <span className="ic"><n.icon /></span>
                   <span>{n.label}</span>
@@ -218,23 +225,23 @@ export default function App() {
       {/* 03 — РАБОТЫ (горизонтальная лента со скролл-снапом) */}
       <section id="work" style={{ padding: "60px 0 40px" }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">03</span> ИЗБРАННЫЕ РАБОТЫ</div>
+          <div className="sec-num"><span className="circle">03</span> {t.work.secLabel}</div>
           <div className="svc-head" style={{ marginBottom: 40 }}>
-            <h2 className="h-big"><span className="h-ic"><IconCaseStudies /></span>Работы</h2>
+            <h2 className="h-big"><span className="h-ic"><IconCaseStudies /></span>{t.work.heading}</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-end" }}>
-              <p style={{ textAlign: "right" }}>Кампании с реальными цифрами. Сайты — новое направление, первые проекты уже в работе.</p>
+              <p style={{ textAlign: "right" }}>{t.work.sub}</p>
               <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                <span className="work-hint">Листайте →</span>
+                <span className="work-hint">{t.work.hint}</span>
                 <div className="work-nav">
-                  <button onClick={() => scrollWork(-1)} aria-label="Назад">←</button>
-                  <button onClick={() => scrollWork(1)} aria-label="Вперёд">→</button>
+                  <button onClick={() => scrollWork(-1)} aria-label={t.work.back}>←</button>
+                  <button onClick={() => scrollWork(1)} aria-label={t.work.next}>→</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div className="work-scroller" ref={workRef}>
-          {WORK_CASES.map((w) => (
+          {D.WORK_CASES.map((w) => (
             <a key={w.tag} href="#contact" className="work-slide" onClick={scrollToId("contact")}>
               <span className="brandtag">LEADBOOST</span>
               <div className="bg" style={{ background: w.bg }} />
@@ -252,9 +259,9 @@ export default function App() {
       {/* 04 — ПРИНЦИПЫ / ГАРАНТИИ (тёмная секция) */}
       <section className="section dark">
         <div className="wrap">
-          <div className="sec-num"><span className="circle">04</span> ПРИНЦИПЫ РАБОТЫ</div>
+          <div className="sec-num"><span className="circle">04</span> {t.principles.secLabel}</div>
           <div className="dark-cards">
-            {PRINCIPLES.map((p, i) => (
+            {D.PRINCIPLES.map((p, i) => (
               <Reveal key={p.n} delay={i * 80}>
                 <div className="p-flip">
                   <div className="p-card">
@@ -265,7 +272,7 @@ export default function App() {
                       <p>{p.front}</p>
                     </div>
                     <div className="p-face back">
-                      <span className="n">{p.n} / НА ПРАКТИКЕ</span>
+                      <span className="n">{p.n}{t.principles.practiceSuffix}</span>
                       <p>{p.back}</p>
                     </div>
                   </div>
@@ -275,7 +282,7 @@ export default function App() {
           </div>
           <Reveal delay={200}>
             <div className="not-promise">
-              <b>Чего не обещаю:</b> точного числа продаж (это зависит и от того, как вы отвечаете клиентам) · клиентов «уже завтра» · результата без бюджета на саму рекламу · работы с продуктом, который ещё никто не покупал.
+              <b>{t.principles.notPromiseLabel}</b> {t.principles.notPromiseText}
             </div>
           </Reveal>
         </div>
@@ -284,22 +291,22 @@ export default function App() {
       {/* КОМУ ПОДХОДИТ */}
       <section className="section">
         <div className="wrap">
-          <div className="sec-num"><span className="circle">05</span> ЧЕСТНЫЙ ОТСЕВ</div>
+          <div className="sec-num"><span className="circle">05</span> {t.fit.secLabel}</div>
           <div className="svc-head">
-            <h2 className="h-big">Кому подходит</h2>
-            <p>Беру 3-4 проекта в месяц — поэтому честно фильтрую на входе.</p>
+            <h2 className="h-big">{t.fit.heading}</h2>
+            <p>{t.fit.sub}</p>
           </div>
           <div className="fit-grid">
             <Reveal>
               <div className="fit-card">
-                <h4><span className="fit-mark y">✓</span> Подходит, если</h4>
-                {FIT_YES.map((t) => <div className="fit-row" key={t}><span className="fit-mark y">✓</span>{t}</div>)}
+                <h4><span className="fit-mark y">✓</span> {t.fit.yes}</h4>
+                {D.FIT_YES.map((txt) => <div className="fit-row" key={txt}><span className="fit-mark y">✓</span>{txt}</div>)}
               </div>
             </Reveal>
             <Reveal delay={90}>
               <div className="fit-card">
-                <h4><span className="fit-mark n">✕</span> Пока рано, если</h4>
-                {FIT_NO.map((t) => <div className="fit-row" key={t}><span className="fit-mark n">✕</span>{t}</div>)}
+                <h4><span className="fit-mark n">✕</span> {t.fit.no}</h4>
+                {D.FIT_NO.map((txt) => <div className="fit-row" key={txt}><span className="fit-mark n">✕</span>{txt}</div>)}
               </div>
             </Reveal>
           </div>
@@ -309,16 +316,16 @@ export default function App() {
       {/* 06 — ТАРИФЫ */}
       <section className="section" id="pricing" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">06</span> ТАРИФЫ</div>
+          <div className="sec-num"><span className="circle">06</span> {t.pricing.secLabel}</div>
           <div className="svc-head">
-            <h2 className="h-big">Три варианта</h2>
-            <p>Одна сумма в месяц. Без скрытых процентов и доплат.</p>
+            <h2 className="h-big">{t.pricing.heading}</h2>
+            <p>{t.pricing.sub}</p>
           </div>
           <div className="price-grid">
-            {PLANS.map((plan, i) => (
+            {D.PLANS.map((plan, i) => (
               <Reveal key={plan.name} delay={i * 90}>
                 <div className={`price-card ${plan.popular ? "pop" : ""}`}>
-                  {plan.popular && <span className="price-tag">выбор большинства</span>}
+                  {plan.popular && <span className="price-tag">{t.pricing.popularBadge}</span>}
                   <div className="price-name">{plan.name}</div>
                   <div className="price-value">{plan.price}</div>
                   <div className="price-sub">{plan.sub}</div>
@@ -333,7 +340,7 @@ export default function App() {
                       ? { textAlign: "center", background: "var(--accent)", color: "var(--accent-ink)" }
                       : { textAlign: "center", background: "transparent", color: "var(--ink)", border: "1px solid var(--border-light)" }}
                   >
-                    Выбрать
+                    {t.pricing.select}
                   </a>
                 </div>
               </Reveal>
@@ -342,10 +349,10 @@ export default function App() {
           <Reveal delay={220}>
             <div className="web-note">
               <div>
-                <strong>Сайт — отдельно от тарифов на рекламу</strong>
-                <span>От простого лендинга до интернет-магазина. Цена и сроки — после короткого созвона.</span>
+                <strong>{t.pricing.webNoteTitle}</strong>
+                <span>{t.pricing.webNoteText}</span>
               </div>
-              <a href="#contact" onClick={scrollToId("contact")} className="f-pill" style={{ background: "var(--accent)", color: "var(--accent-ink)" }}>Обсудить сайт</a>
+              <a href="#contact" onClick={scrollToId("contact")} className="f-pill" style={{ background: "var(--accent)", color: "var(--accent-ink)" }}>{t.pricing.webNoteBtn}</a>
             </div>
           </Reveal>
         </div>
@@ -354,31 +361,31 @@ export default function App() {
       {/* 07 — КАЛЬКУЛЯТОР */}
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">07</span> КАЛЬКУЛЯТОР</div>
+          <div className="sec-num"><span className="circle">07</span> {t.calculator.secLabel}</div>
           <div className="svc-head">
-            <h2 className="h-big">Посчитайте сами</h2>
-            <p>Сколько клиентов примерно принесёт ваш рекламный бюджет.</p>
+            <h2 className="h-big">{t.calculator.heading}</h2>
+            <p>{t.calculator.sub}</p>
           </div>
           <Reveal>
             <div className="roi-box">
               <div className="roi-inputs">
                 <div className="roi-field">
-                  <label>Ниша</label>
+                  <label>{t.calculator.nicheLabel}</label>
                   <select className="roi-select" value={roiNiche} onChange={(e) => setRoiNiche(e.target.value)}>
-                    {Object.entries(NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
+                    {Object.entries(D.NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
                   </select>
                 </div>
                 <div className="roi-field">
-                  <label>Бюджет на рекламу в месяц ($)</label>
+                  <label>{t.calculator.budgetLabel}</label>
                   <input className="roi-input" type="number" step="100" value={roiBudget} onChange={(e) => setRoiBudget(Math.max(0, Number(e.target.value)))} />
                 </div>
                 <input className="roi-range" type="range" min="300" max="6000" step="100" value={roiBudget} onChange={(e) => setRoiBudget(Number(e.target.value))} />
               </div>
               <div className="roi-results">
-                <div className="roi-out"><span className="k">Сколько будет стоить один человек, который напишет</span><span className="v">~${animatedCpl}</span></div>
-                <div className="roi-out"><span className="k">Сколько таких людей будет в месяц</span><span className="v">~{animatedLeads}</span></div>
-                <div className="roi-out"><span className="k">На сколько окупится реклама</span><span className="v">{nicheInfo.roas}</span></div>
-                <p className="roi-note">Примерный расчёт по средним цифрам ниши. Точные значения зависят от цены товара и сезона — скажу на созвоне.</p>
+                <div className="roi-out"><span className="k">{t.calculator.out1}</span><span className="v">~${animatedCpl}</span></div>
+                <div className="roi-out"><span className="k">{t.calculator.out2}</span><span className="v">~{animatedLeads}</span></div>
+                <div className="roi-out"><span className="k">{t.calculator.out3}</span><span className="v">{nicheInfo.roas}</span></div>
+                <p className="roi-note">{t.calculator.note}</p>
               </div>
             </div>
           </Reveal>
@@ -388,13 +395,13 @@ export default function App() {
       {/* 08 — ЗАМЕТКИ / КЕЙСЫ-МЕТРИКИ (тёмные градиентные карточки) */}
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">08</span> ЦИФРЫ</div>
+          <div className="sec-num"><span className="circle">08</span> {t.notes.secLabel}</div>
           <div className="notes-head">
-            <h2 className="h-big">Не обещания.</h2>
-            <p>Наблюдения из реальных кампаний — то, что видно в отчётах, а не в презентациях.</p>
+            <h2 className="h-big">{t.notes.heading}</h2>
+            <p>{t.notes.sub}</p>
           </div>
           <div className="notes-grid">
-            {METRIC_NOTES.map((c, i) => (
+            {D.METRIC_NOTES.map((c, i) => (
               <Reveal key={c.tag} delay={i * 90}>
                 <div className="note-card">
                   <div className="note-glow" style={{ background: c.glow }} />
@@ -415,9 +422,9 @@ export default function App() {
       {/* FAQ */}
       <section className="section" id="faq" style={{ paddingTop: 0 }}>
         <div className="wrap" style={{ maxWidth: 820 }}>
-          <div className="sec-num"><span className="circle">09</span> ВОПРОСЫ</div>
-          <h2 className="h-big" style={{ marginBottom: 46 }}>Отвечаю просто</h2>
-          {FAQS.map((f, i) => (
+          <div className="sec-num"><span className="circle">09</span> {t.faq.secLabel}</div>
+          <h2 className="h-big" style={{ marginBottom: 46 }}>{t.faq.heading}</h2>
+          {D.FAQS.map((f, i) => (
             <div key={f.q} className={`faq-item ${openFaq === i ? "open" : ""}`}>
               <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{f.q} <span className="faq-plus">+</span></button>
               <div className="faq-a"><div className="faq-a-inner">{f.a}</div></div>
@@ -427,27 +434,23 @@ export default function App() {
       </section>
 
       {/* МИНИ-ИГРА */}
-      <TargetGame />
+      <TargetGame strings={t.game} promoWord={GAME.promoWord} need={GAME.hitsToWin} />
 
       {/* 10 — КОНТАКТ */}
       <section className="section" id="contact" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">10</span> КОНТАКТ</div>
+          <div className="sec-num"><span className="circle">10</span> {t.contact.secLabel}</div>
           <Reveal>
-            <h2 className="h-big"><WordReveal text="Принесите задачу, которую не решить шаблоном." /></h2>
+            <h2 className="h-big"><WordReveal text={t.contact.heading} /></h2>
           </Reveal>
           <div className="contact-grid">
             <div className="contact-left">
               <Reveal delay={100}>
                 <span className="contact-consultant"><IconConsultant /></span>
-                <p>
-                  Расскажите, что меняется, что буксует и что должна дать следующая версия вашей рекламы или сайта.
-                  Отвечу с конкретикой — а не продающей рассылкой.
-                </p>
+                <p>{t.contact.intro}</p>
                 <div className="contact-note">
                   <span className="contact-ic"><IconSupport /></span>
-                  Отвечаю в течение дня. Сейчас свободно {SPOTS_LEFT} из 3 мест на месяц —
-                  если не успели, честно скажу, когда освобожусь.
+                  {t.contact.note(SPOTS_LEFT, SPOTS_TOTAL)}
                   <span className="spots" style={{ display: "flex", marginTop: 12 }}>
                     <span className="spots-bar">{[0,1,2].map((i) => <i key={i} className={i < SPOTS_LEFT ? "free" : ""} />)}</span>
                   </span>
@@ -460,45 +463,45 @@ export default function App() {
                   <form onSubmit={onFormSubmit}>
                     <div className="form-row">
                       <div className="f-field">
-                        <label>Имя</label>
-                        <input name="name" placeholder="Как вас зовут" required value={form.name} onChange={onFormChange} />
+                        <label>{t.contact.form.nameLabel}</label>
+                        <input name="name" placeholder={t.contact.form.namePh} required value={form.name} onChange={onFormChange} />
                       </div>
                       <div className="f-field">
-                        <label>Телефон или Telegram</label>
-                        <input name="contact" placeholder="+7… или @username" required value={form.contact} onChange={onFormChange} />
+                        <label>{t.contact.form.contactLabel}</label>
+                        <input name="contact" placeholder={t.contact.form.contactPh} required value={form.contact} onChange={onFormChange} />
                       </div>
                     </div>
                     <div className="form-row">
                       <div className="f-field">
-                        <label>Что интересует</label>
+                        <label>{t.contact.form.serviceLabel}</label>
                         <select name="service" required value={form.service} onChange={onFormChange}>
-                          <option value="" disabled>Выберите</option>
-                          <option value="Реклама">Реклама</option>
-                          <option value="Сайт">Сайт</option>
-                          <option value="Реклама и сайт">И реклама, и сайт</option>
+                          <option value="" disabled>{t.contact.form.serviceChoose}</option>
+                          <option value="Реклама">{t.contact.form.serviceAds}</option>
+                          <option value="Сайт">{t.contact.form.serviceSite}</option>
+                          <option value="Реклама и сайт">{t.contact.form.serviceBoth}</option>
                         </select>
                       </div>
                       <div className="f-field">
-                        <label>Чем занимаетесь</label>
+                        <label>{t.contact.form.nicheLabel}</label>
                         <select name="niche" required value={form.niche} onChange={onFormChange}>
-                          <option value="" disabled>Выберите нишу</option>
-                          {Object.entries(NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
+                          <option value="" disabled>{t.contact.form.nicheChoose}</option>
+                          {Object.entries(D.NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
                         </select>
                       </div>
                     </div>
                     <div className="f-field">
-                      <label>Бюджет на рекламу в месяц (если применимо)</label>
-                      <input name="budget" placeholder="Например: $1 000" value={form.budget} onChange={onFormChange} />
+                      <label>{t.contact.form.budgetLabel}</label>
+                      <input name="budget" placeholder={t.contact.form.budgetPh} value={form.budget} onChange={onFormChange} />
                     </div>
-                    <span className="magnetic" style={{ display: "block" }} {...magnetHandlers}><button type="submit" className="form-submit" disabled={sending}>{sending ? "Отправляю…" : "Отправить заявку"}</button></span>
+                    <span className="magnetic" style={{ display: "block" }} {...magnetHandlers}><button type="submit" className="form-submit" disabled={sending}>{sending ? t.contact.form.sending : t.contact.form.submit}</button></span>
                     {sendError && (
                       <div className="form-err">
-                        Не получилось отправить автоматически. Напишите напрямую: <a href={mailtoHref}>на почту</a>.
+                        {t.contact.form.errorText} <a href={mailtoHref}>{t.contact.form.errorLink}</a>.
                       </div>
                     )}
                   </form>
                 ) : (
-                  <div className="form-ok">✓ Заявка принята — свяжусь с вами в течение дня.</div>
+                  <div className="form-ok">{t.contact.form.ok}</div>
                 )}
               </div>
             </Reveal>
@@ -509,30 +512,30 @@ export default function App() {
       {/* FOOTER */}
       <footer className="footer" onMouseMove={onFooterMove} onMouseLeave={onFooterLeave}>
         <div className="wrap footer-top">
-          <h3 className="h-mid">Ясность,<br />которая продаёт.</h3>
+          <h3 className="h-mid">{t.footer.tagline}<br />{t.footer.tagline2}</h3>
           <div>
-            <div className="f-label">/ БЫСТРЫЕ ССЫЛКИ</div>
+            <div className="f-label">{t.footer.quickLinks}</div>
             <div className="f-pills">
-              <a href="#studio" className="f-pill" onClick={scrollToId("studio")}>Студия</a>
-              <a href="#services" className="f-pill" onClick={scrollToId("services")}>Услуги</a>
-              <a href="#work" className="f-pill" onClick={scrollToId("work")}>Работы</a>
-              <a href="#contact" className="f-pill" onClick={scrollToId("contact")}>Контакт</a>
+              <a href="#studio" className="f-pill" onClick={scrollToId("studio")}>{t.nav.studio}</a>
+              <a href="#services" className="f-pill" onClick={scrollToId("services")}>{t.nav.services}</a>
+              <a href="#work" className="f-pill" onClick={scrollToId("work")}>{t.nav.work}</a>
+              <a href="#contact" className="f-pill" onClick={scrollToId("contact")}>{t.nav.contact}</a>
             </div>
           </div>
           <div>
-            <div className="f-label">/ СТАТУС</div>
+            <div className="f-label">{t.footer.status}</div>
             <div className="f-time">
               <span className={`st ${online ? "on" : "off"}`} />
-              {timeStr} · {online ? "на связи" : "отвечу утром"}
+              {timeStr} · {online ? t.footer.online : t.footer.offline}
             </div>
           </div>
         </div>
         <div className="footer-wordmark" ref={wordmarkRef}>LEADBOOST</div>
         <div className="footer-base">
           <div className="wrap" style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, width: "100%" }}>
-            <span>© 2026 LeadBoost</span>
-            <span>Реклама · Сайты · Аналитика</span>
-            <a href="#" onClick={scrollToTop}>Наверх →</a>
+            <span>{t.footer.copyright}</span>
+            <span>{t.footer.services}</span>
+            <a href="#" onClick={scrollToTop}>{t.footer.toTop}</a>
           </div>
         </div>
       </footer>
@@ -541,9 +544,9 @@ export default function App() {
       <div className={`m-cta ${ctaVisible ? "show" : ""}`}>
         <span className="spots">
           <span className="spots-bar">{[0,1,2].map((i) => <i key={i} className={i < SPOTS_LEFT ? "free" : ""} />)}</span>
-          {SPOTS_LEFT} из 3 свободно
+          {t.mcta.spots(SPOTS_LEFT, SPOTS_TOTAL)}
         </span>
-        <a href="#contact" onClick={scrollToId("contact")}>Заявка →</a>
+        <a href="#contact" onClick={scrollToId("contact")}>{t.mcta.cta}</a>
       </div>
     </div>
   );

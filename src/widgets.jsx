@@ -71,13 +71,14 @@ function Mark({ children }) {
   return <span ref={ref} className={`marklight ${show ? "show" : ""}`}>{children}</span>;
 }
 
-/* мини-игра: попади в цель 5 раз — получи бонус (тематика таргетинга) */
-function TargetGame() {
+/* мини-игра: попади в цель 5 раз — получи бонус (тематика таргетинга).
+   strings — тексты интерфейса на текущем языке (см. src/i18n.jsx),
+   promoWord — кодовое слово из config.js (одно на все языки). */
+function TargetGame({ strings, promoWord, need = 5 }) {
   const [playing, setPlaying] = useState(false);
   const [hits, setHits] = useState(0);
   const [pos, setPos] = useState({ x: 45, y: 40 });
   const [won, setWon] = useState(false);
-  const need = 5;
 
   const moveTarget = () => {
     setPos({ x: 8 + Math.random() * 80, y: 12 + Math.random() * 68 });
@@ -94,20 +95,20 @@ function TargetGame() {
   return (
     <div className="game-strip">
       <div className="wrap">
-        <h3 className="h-mid">Проверьте мою меткость на себе</h3>
-        <p>Я попадаю в целевую аудиторию. А вы — попадёте в цель {need} раз?</p>
+        <h3 className="h-mid">{strings.title}</h3>
+        <p>{strings.subtitle(need)}</p>
         {!playing ? (
-          <button className="game-btn" onClick={start}>Играть · 20 секунд</button>
+          <button className="game-btn" onClick={start}>{strings.playBtn}</button>
         ) : (
           <div className="game-area">
-            <div className="game-hud">Попаданий: <b>{hits}</b> / {need}</div>
+            <div className="game-hud">{strings.hudLabel} <b>{hits}</b> / {need}</div>
             {!won ? (
               <div
                 className="game-target"
                 style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
                 onClick={onHit}
                 role="button"
-                aria-label="Цель"
+                aria-label={strings.targetAria}
               >
                 <svg viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.4" />
@@ -117,10 +118,10 @@ function TargetGame() {
               </div>
             ) : (
               <div className="game-win">
-                <h4>В яблочко! 🎯</h4>
-                <p style={{ margin: 0 }}>Меткость — общая черта. Назовите кодовое слово при заявке:</p>
-                <span className="code">МЕТКИЙ</span>
-                <p style={{ margin: 0, fontSize: 12 }}>— и получите бесплатный мини-аудит текущей рекламы.</p>
+                <h4>{strings.winTitle}</h4>
+                <p style={{ margin: 0 }}>{strings.winLine1}</p>
+                <span className="code">{promoWord}</span>
+                <p style={{ margin: 0, fontSize: 12 }}>{strings.winLine2}</p>
               </div>
             )}
           </div>

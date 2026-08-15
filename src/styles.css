@@ -87,10 +87,16 @@
     .nav-pill a { color: #B9B9C0; text-decoration: none; font-size: 13.5px; font-weight: 600; transition: color .2s; }
     .nav-pill a:hover { color: #fff; }
     @media (max-width: 760px) {
-      .nav-pill { gap: 14px; padding: 8px 16px 8px 10px; }
-      .nav-pill ul { gap: 12px; }
-      .nav-pill a { font-size: 12px; }
+      .nav-pill { gap: 10px; padding: 8px 12px 8px 10px; }
+      .nav-pill ul { gap: 10px; }
+      .nav-pill a { font-size: 11.5px; }
       .nav-hide-sm { display: none !important; }
+    }
+    @media (max-width: 480px) {
+      .nav-pill { gap: 7px; padding: 7px 9px 7px 8px; }
+      .nav-pill ul { gap: 7px; }
+      .nav-pill a { font-size: 10.5px; }
+      .nav-logo img { height: 18px; }
     }
 
     /* ---------- HERO (01 STUDIO) — премиальная версия ---------- */
@@ -667,3 +673,15 @@
     }
 
     #studio, #services, #work, #pricing, #faq, #contact, #fit { scroll-margin-top: 100px; }
+
+    /* ---------- переключатель языка в навбаре ---------- */
+    .lang-switch { display: flex; align-items: center; gap: 2px; background: var(--bg-soft); border-radius: 100px; padding: 3px; }
+    .lang-pill {
+      border: none; background: transparent; color: var(--ink-soft); cursor: pointer;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: .04em;
+      padding: 6px 11px; border-radius: 100px; transition: background .2s, color .2s;
+    }
+    .lang-pill:hover { color: var(--ink); }
+    .lang-pill.active { background: var(--accent); color: var(--accent-ink); }
+    @media (max-width: 760px) { .lang-switch { padding: 2px; } .lang-pill { padding: 5px 7px; font-size: 10px; } }
+    @media (max-width: 480px) { .lang-switch { gap: 0; padding: 2px; } .lang-pill { padding: 4px 5px; font-size: 9px; } }
