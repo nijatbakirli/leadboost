@@ -24,7 +24,6 @@ import {
 export default function App() {
   /* --- UI-состояния --- */
   const [openFaq, setOpenFaq] = useState(0);
-  const [openSvc, setOpenSvc] = useState(0);
 
   /* --- Интерактив (вся логика в interactions.jsx) --- */
   const loaded = usePreloader();
@@ -96,41 +95,43 @@ export default function App() {
         <div className="nav-progress"><i style={{ width: `${progress}%` }} /></div>
       </nav>
 
-      {/* 01 — СТУДИЯ (хиро, премиальная версия) */}
-      <section className="hero" id="studio" ref={heroRef} onMouseMove={onHeroMove} onMouseLeave={onHeroLeave}>
+      {/* 01 — СТУДИЯ (хиро, центрированная композиция в духе dockspace/wallspace) */}
+      <section className="hero hero-centered" id="studio" ref={heroRef} onMouseMove={onHeroMove} onMouseLeave={onHeroLeave}>
         <div className="hero-halo" aria-hidden="true" />
         <div className="wrap">
-          <div className="sec-num"><span className="circle">01</span> СТУДИЯ</div>
-          <div className="hero-grid">
-            <div className="hero-left">
-              <div className="hero-overline">Независимая студия рекламы</div>
-              <h1 className="h-huge">
-                <ScrambleText text={greeting} />
-                <span className="stroke">это LeadBoost</span>
-              </h1>
-              <p className="hero-lead">
-                Настраиваю трафик, который <Mark>приводит клиентов</Mark>, и делаю сайты,
-                которые его выдерживают. Реклама, сайт и аналитика — в одних руках с первого дня.
-              </p>
-              <div className="hero-actions">
-                <a href="#contact" onClick={scrollToId("contact")} className="hero-btn">Обсудить проект →</a>
-                <a href="#work" className="hero-link" onClick={scrollToId("work")}>Смотреть работы <span className="arr">↘</span></a>
-              </div>
+          <div className="sec-num center"><span className="circle">01</span> СТУДИЯ</div>
+          <div className="hero-center-copy">
+            <div className="hero-overline center">Независимая студия рекламы</div>
+            <h1 className="h-huge">
+              <ScrambleText text={greeting} />
+              <span className="stroke">это LeadBoost</span>
+            </h1>
+            <p className="hero-lead center">
+              Настраиваю трафик, который <Mark>приводит клиентов</Mark>, и делаю сайты,
+              которые его выдерживают. Реклама, сайт и аналитика — в одних руках с первого дня.
+            </p>
+            <div className="hero-actions center">
+              <a href="#contact" onClick={scrollToId("contact")} className="hero-btn">Обсудить проект →</a>
+              <a href="#work" className="hero-link" onClick={scrollToId("work")}>Смотреть работы <span className="arr">↘</span></a>
             </div>
-            <Reveal delay={140}>
-              <div className="hero-visual">
-                <div className="hero-card" {...tiltHandlers}>
+          </div>
+
+          <Reveal delay={140}>
+            <div className="hero-visual hero-visual-center">
+              <div className="device-frame" {...tiltHandlers}>
+                <div className="device-bar"><i /><i /><i /><span className="device-url">leadboost.agency</span></div>
+                <div className="hero-card">
                   <div className="shine" aria-hidden="true" />
                   <div className="hero-card-inner">
                     <span className="case-tag">КЕЙС / 07</span>
                     <h4>Реклама с характером.</h4>
                   </div>
                 </div>
-                <div className="hero-chip chip-a"><CountMetric value="240+" inline /><span>кампаний запущено</span></div>
-                <div className="hero-chip chip-b"><CountMetric value="310%+" inline /><span>средний ROAS клиентов</span></div>
               </div>
-            </Reveal>
-          </div>
+              <div className="hero-chip chip-a"><CountMetric value="240+" inline /><span>кампаний запущено</span></div>
+              <div className="hero-chip chip-b"><CountMetric value="310%+" inline /><span>средний ROAS клиентов</span></div>
+            </div>
+          </Reveal>
 
           {/* статусная линия хиро */}
           <div className="hero-bottom">
@@ -163,41 +164,37 @@ export default function App() {
       {/* СТЕЙТМЕНТ */}
       <section className="statement">
         <div className="wrap">
+          <div className="eyebrow">ФИЛОСОФИЯ</div>
           <Reveal>
             <h2 className="h-big"><WordReveal text="Хорошая реклама делает больше, чем приводит клики. Она приводит людей," /> <Mark>готовых купить.</Mark></h2>
           </Reveal>
         </div>
       </section>
 
-      {/* 02 — УСЛУГИ */}
+      {/* 02 — УСЛУГИ (статичная feature-сетка, в духе wallspace "Everything you need") */}
       <section className="section" id="services" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">02</span> ЧТО ДЕЛАЮ</div>
-          <div className="svc-head">
-            <h2 className="h-big">Услуги</h2>
+          <div className="sec-num center"><span className="circle">02</span> ЧТО ДЕЛАЮ</div>
+          <div className="eyebrow">ВОЗМОЖНОСТИ</div>
+          <div className="svc-head center">
+            <h2 className="h-big">Всё, что нужно. <span className="accent-word">Ничего лишнего.</span></h2>
             <p>Сфокусированная работа: от вопроса «откуда брать клиентов» — до работающей системы.</p>
           </div>
-          <div>
+          <div className="feature-grid">
             {SERVICES.map((s, i) => (
-              <React.Fragment key={s.title}>
-                <div className={`svc-row ${openSvc === i ? "open" : ""}`} onClick={() => setOpenSvc(openSvc === i ? -1 : i)}
-                     role="button" tabIndex={0} aria-expanded={openSvc === i}
-                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenSvc(openSvc === i ? -1 : i); } }}>
+              <Reveal key={s.title} delay={i * 70}>
+                <div className="feature-card">
                   <span className="svc-ic"><s.icon /></span>
-                  <span className="num">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="title">
+                  <div className="feature-card-head">
                     <h3>{s.title}</h3>
                     {s.badge && <span className={`svc-badge ${s.badgeCls}`}>{s.badge}</span>}
-                  </span>
-                  <span className="meta">{s.meta}</span>
-                  <span className="chev">›</span>
-                </div>
-                <div className={`svc-detail ${openSvc === i ? "open" : ""}`}>
-                  <div className="svc-detail-inner">
+                  </div>
+                  <p className="feature-meta">{s.meta}</p>
+                  <div className="feature-chips">
                     {s.chips.map((c) => <span className="svc-chip" key={c}>{c}</span>)}
                   </div>
                 </div>
-              </React.Fragment>
+              </Reveal>
             ))}
           </div>
           {/* ниши */}
@@ -215,59 +212,57 @@ export default function App() {
         </div>
       </section>
 
-      {/* 03 — РАБОТЫ (горизонтальная лента со скролл-снапом) */}
+      {/* 03 — РАБОТЫ (горизонтальная лента, карточки в виде браузер-мокапа) */}
       <section id="work" style={{ padding: "60px 0 40px" }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">03</span> ИЗБРАННЫЕ РАБОТЫ</div>
-          <div className="svc-head" style={{ marginBottom: 40 }}>
+          <div className="sec-num center"><span className="circle">03</span> ИЗБРАННЫЕ РАБОТЫ</div>
+          <div className="eyebrow">ДЕМО</div>
+          <div className="svc-head center" style={{ marginBottom: 40 }}>
             <h2 className="h-big"><span className="h-ic"><IconCaseStudies /></span>Работы</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-end" }}>
-              <p style={{ textAlign: "right" }}>Кампании с реальными цифрами. Сайты — новое направление, первые проекты уже в работе.</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                <span className="work-hint">Листайте →</span>
-                <div className="work-nav">
-                  <button onClick={() => scrollWork(-1)} aria-label="Назад">←</button>
-                  <button onClick={() => scrollWork(1)} aria-label="Вперёд">→</button>
-                </div>
+            <p>Кампании с реальными цифрами. Сайты — новое направление, первые проекты уже в работе.</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, justifyContent: "center", marginTop: 18 }}>
+              <span className="work-hint">Листайте →</span>
+              <div className="work-nav">
+                <button onClick={() => scrollWork(-1)} aria-label="Назад">←</button>
+                <button onClick={() => scrollWork(1)} aria-label="Вперёд">→</button>
               </div>
             </div>
           </div>
         </div>
         <div className="work-scroller" ref={workRef}>
           {WORK_CASES.map((w) => (
-            <a key={w.tag} href="#contact" className="work-slide" onClick={scrollToId("contact")}>
-              <span className="brandtag">LEADBOOST</span>
-              <div className="bg" style={{ background: w.bg }} />
-              <div className="shade" />
-              <div className="inner">
-                <span className="case-tag">{w.tag}</span>
-                <h3>{w.title}</h3>
-                <div className="sub">{w.name} · {w.cat}</div>
+            <a key={w.tag} href="#contact" className="work-slide device-frame" onClick={scrollToId("contact")}>
+              <div className="device-bar"><i /><i /><i /><span className="device-url">leadboost.agency/cases</span></div>
+              <div className="work-slide-body">
+                <div className="bg" style={{ background: w.bg }} />
+                <div className="shade" />
+                <div className="inner">
+                  <span className="case-tag">{w.tag}</span>
+                  <h3>{w.title}</h3>
+                  <div className="sub">{w.name} · {w.cat}</div>
+                </div>
               </div>
             </a>
           ))}
         </div>
       </section>
 
-      {/* 04 — ПРИНЦИПЫ / ГАРАНТИИ (тёмная секция) */}
+      {/* 04 — ПРИНЦИПЫ / ГАРАНТИИ (тёмная секция, статичные feature-карточки) */}
       <section className="section dark">
         <div className="wrap">
-          <div className="sec-num"><span className="circle">04</span> ПРИНЦИПЫ РАБОТЫ</div>
+          <div className="sec-num center"><span className="circle">04</span> ПРИНЦИПЫ РАБОТЫ</div>
+          <div className="eyebrow">КАК РАБОТАЮ</div>
           <div className="dark-cards">
             {PRINCIPLES.map((p, i) => (
               <Reveal key={p.n} delay={i * 80}>
-                <div className="p-flip">
-                  <div className="p-card">
-                    <div className="p-face">
-                      <span className="p-ic"><p.icon /></span>
-                      <span className="n">{p.n}</span>
-                      <h4>{p.title}</h4>
-                      <p>{p.front}</p>
-                    </div>
-                    <div className="p-face back">
-                      <span className="n">{p.n} / НА ПРАКТИКЕ</span>
-                      <p>{p.back}</p>
-                    </div>
+                <div className="feature-card static-principle">
+                  <span className="p-ic"><p.icon /></span>
+                  <span className="n">{p.n}</span>
+                  <h4>{p.title}</h4>
+                  <p>{p.front}</p>
+                  <div className="principle-practice">
+                    <span className="principle-practice-label">На практике</span>
+                    <p>{p.back}</p>
                   </div>
                 </div>
               </Reveal>
@@ -284,8 +279,9 @@ export default function App() {
       {/* КОМУ ПОДХОДИТ */}
       <section className="section">
         <div className="wrap">
-          <div className="sec-num"><span className="circle">05</span> ЧЕСТНЫЙ ОТСЕВ</div>
-          <div className="svc-head">
+          <div className="sec-num center"><span className="circle">05</span> ЧЕСТНЫЙ ОТСЕВ</div>
+          <div className="eyebrow">КОМУ ПОДХОДИТ</div>
+          <div className="svc-head center">
             <h2 className="h-big">Кому подходит</h2>
             <p>Беру 3-4 проекта в месяц — поэтому честно фильтрую на входе.</p>
           </div>
@@ -309,8 +305,9 @@ export default function App() {
       {/* 06 — ТАРИФЫ */}
       <section className="section" id="pricing" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">06</span> ТАРИФЫ</div>
-          <div className="svc-head">
+          <div className="sec-num center"><span className="circle">06</span> ТАРИФЫ</div>
+          <div className="eyebrow">ТАРИФЫ</div>
+          <div className="svc-head center">
             <h2 className="h-big">Три варианта</h2>
             <p>Одна сумма в месяц. Без скрытых процентов и доплат.</p>
           </div>
@@ -354,8 +351,9 @@ export default function App() {
       {/* 07 — КАЛЬКУЛЯТОР */}
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">07</span> КАЛЬКУЛЯТОР</div>
-          <div className="svc-head">
+          <div className="sec-num center"><span className="circle">07</span> КАЛЬКУЛЯТОР</div>
+          <div className="eyebrow">РАСЧЁТ</div>
+          <div className="svc-head center">
             <h2 className="h-big">Посчитайте сами</h2>
             <p>Сколько клиентов примерно принесёт ваш рекламный бюджет.</p>
           </div>
@@ -385,15 +383,16 @@ export default function App() {
         </div>
       </section>
 
-      {/* 08 — ЗАМЕТКИ / КЕЙСЫ-МЕТРИКИ (тёмные градиентные карточки) */}
+      {/* 08 — ЗАМЕТКИ / КЕЙСЫ-МЕТРИКИ (bento-сетка) */}
       <section className="section" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">08</span> ЦИФРЫ</div>
-          <div className="notes-head">
+          <div className="sec-num center"><span className="circle">08</span> ЦИФРЫ</div>
+          <div className="eyebrow">АНАЛИТИКА</div>
+          <div className="notes-head center">
             <h2 className="h-big">Не обещания.</h2>
             <p>Наблюдения из реальных кампаний — то, что видно в отчётах, а не в презентациях.</p>
           </div>
-          <div className="notes-grid">
+          <div className="notes-grid bento">
             {METRIC_NOTES.map((c, i) => (
               <Reveal key={c.tag} delay={i * 90}>
                 <div className="note-card">
@@ -412,11 +411,46 @@ export default function App() {
         </div>
       </section>
 
+      {/* ОТЗЫВЫ — новая секция в духе "What people are saying" */}
+      <section className="section testimonials" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <div className="sec-num center"><span className="circle">08.1</span> ОТЗЫВЫ</div>
+          <div className="eyebrow">НАМ ДОВЕРЯЮТ</div>
+          <div className="notes-head center">
+            <h2 className="h-big">Что говорят клиенты</h2>
+            <p>Прямая речь из переписки после кампаний — без купюр и без актёров.</p>
+          </div>
+          <div className="laptop-frame">
+            <div className="laptop-screen">
+              <div className="device-bar"><i /><i /><i /><span className="device-url">leadboost.agency/отзывы</span></div>
+              <div className="testimonial-row">
+                {METRIC_NOTES.map((c, i) => (
+                  <Reveal key={c.tag} delay={i * 80}>
+                    <div className="testimonial-card">
+                      <p className="testimonial-quote">{c.p}</p>
+                      <div className="testimonial-attr">
+                        <span className="testimonial-avatar"><IconSuccess /></span>
+                        <div>
+                          <div className="testimonial-name">{c.h}</div>
+                          <div className="testimonial-role">{c.tag}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+            <div className="laptop-base" aria-hidden="true" />
+          </div>
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="section" id="faq" style={{ paddingTop: 0 }}>
         <div className="wrap" style={{ maxWidth: 820 }}>
-          <div className="sec-num"><span className="circle">09</span> ВОПРОСЫ</div>
-          <h2 className="h-big" style={{ marginBottom: 46 }}>Отвечаю просто</h2>
+          <div className="sec-num center"><span className="circle">09</span> ВОПРОСЫ</div>
+          <div className="eyebrow">FAQ</div>
+          <h2 className="h-big center" style={{ marginBottom: 46 }}>Отвечаю просто</h2>
           {FAQS.map((f, i) => (
             <div key={f.q} className={`faq-item ${openFaq === i ? "open" : ""}`}>
               <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{f.q} <span className="faq-plus">+</span></button>
@@ -432,9 +466,10 @@ export default function App() {
       {/* 10 — КОНТАКТ */}
       <section className="section" id="contact" style={{ paddingTop: 40 }}>
         <div className="wrap">
-          <div className="sec-num"><span className="circle">10</span> КОНТАКТ</div>
+          <div className="sec-num center"><span className="circle">10</span> КОНТАКТ</div>
+          <div className="eyebrow">СВЯЗАТЬСЯ</div>
           <Reveal>
-            <h2 className="h-big"><WordReveal text="Принесите задачу, которую не решить шаблоном." /></h2>
+            <h2 className="h-big center"><WordReveal text="Принесите задачу, которую не решить шаблоном." /></h2>
           </Reveal>
           <div className="contact-grid">
             <div className="contact-left">
