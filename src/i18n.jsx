@@ -60,6 +60,7 @@ export const UI = {
     notes: { secLabel: "ЦИФРЫ", heading: "Не обещания.", sub: "Наблюдения из реальных кампаний — то, что видно в отчётах, а не в презентациях." },
     faq: { secLabel: "ВОПРОСЫ", headingPre: "Отвечаю ", headingMark: "просто" },
     game: {
+      secLabel: "МИНИ-ИГРА",
       title: "Проверьте мою меткость на себе",
       subtitle: (need) => `Я попадаю в целевую аудиторию. А вы — попадёте в цель ${need} раз?`,
       playBtn: "Играть · 20 секунд", hudLabel: "Попаданий:", targetAria: "Цель",
@@ -114,6 +115,7 @@ export const UI = {
     notes: { secLabel: "ЦИФРЛАР", heading: "Уәделер емес.", sub: "Нақты науқандардан алынған бақылаулар — презентацияда емес, есепте көрінетіні." },
     faq: { secLabel: "СҰРАҚТАР", headingPre: "Қарапайым ", headingMark: "жауап беремін" },
     game: {
+      secLabel: "МИНИ-ОЙЫН",
       title: "Менің дәлдігімді өзіңізде тексеріңіз",
       subtitle: (need) => `Мен мақсатты аудиторияға дәл тиемін. Ал сіз — нысанаға ${need} рет тиесіз бе?`,
       playBtn: "Ойнау · 20 секунд", hudLabel: "Тигендер:", targetAria: "Нысана",
@@ -168,6 +170,7 @@ export const UI = {
     notes: { secLabel: "NUMBERS", heading: "Not promises.", sub: "Observations from real campaigns — what shows up in reports, not in pitch decks." },
     faq: { secLabel: "QUESTIONS", headingPre: "Straight ", headingMark: "answers" },
     game: {
+      secLabel: "MINI-GAME",
       title: "Test my aim yourself",
       subtitle: (need) => `I hit the target audience. Can you hit the target ${need} times?`,
       playBtn: "Play · 20 seconds", hudLabel: "Hits:", targetAria: "Target",

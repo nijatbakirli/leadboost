@@ -93,41 +93,44 @@ function TargetGame({ strings, promoWord, need = 5 }) {
   const start = () => { setPlaying(true); setHits(0); setWon(false); moveTarget(); };
 
   return (
-    <div className="game-strip">
+    <section className="section game-section" id="game">
       <div className="wrap">
-        <h3 className="h-mid">{strings.title}</h3>
-        <p>{strings.subtitle(need)}</p>
-        {!playing ? (
-          <button className="game-btn" onClick={start}>{strings.playBtn}</button>
-        ) : (
-          <div className="game-area">
-            <div className="game-hud">{strings.hudLabel} <b>{hits}</b> / {need}</div>
-            {!won ? (
-              <div
-                className="game-target"
-                style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-                onClick={onHit}
-                role="button"
-                aria-label={strings.targetAria}
-              >
-                <svg viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.4" />
-                  <circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeWidth="1.4" />
-                  <circle cx="12" cy="12" r="2" fill="currentColor" />
-                </svg>
-              </div>
-            ) : (
-              <div className="game-win">
-                <h4>{strings.winTitle}</h4>
-                <p style={{ margin: 0 }}>{strings.winLine1}</p>
-                <span className="code">{promoWord}</span>
-                <p style={{ margin: 0, fontSize: 12 }}>{strings.winLine2}</p>
-              </div>
-            )}
-          </div>
-        )}
+        <div className="sec-num center"><span className="circle">09.1</span> {strings.secLabel}</div>
+        <div className="game-card">
+          <h3 className="h-mid">{strings.title}</h3>
+          <p>{strings.subtitle(need)}</p>
+          {!playing ? (
+            <button className="game-btn" onClick={start}>{strings.playBtn}</button>
+          ) : (
+            <div className="game-area">
+              <div className="game-hud">{strings.hudLabel} <b>{hits}</b> / {need}</div>
+              {!won ? (
+                <div
+                  className="game-target"
+                  style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
+                  onClick={onHit}
+                  role="button"
+                  aria-label={strings.targetAria}
+                >
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.4" />
+                    <circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeWidth="1.4" />
+                    <circle cx="12" cy="12" r="2" fill="currentColor" />
+                  </svg>
+                </div>
+              ) : (
+                <div className="game-win">
+                  <h4>{strings.winTitle}</h4>
+                  <p style={{ margin: 0 }}>{strings.winLine1}</p>
+                  <span className="code">{promoWord}</span>
+                  <p style={{ margin: 0, fontSize: 12 }}>{strings.winLine2}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

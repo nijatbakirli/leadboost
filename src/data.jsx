@@ -65,16 +65,16 @@ const ru = {
     { n: "04", icon: IconTransparency, title: "Без договоров-ловушек.", front: "Можно уйти в любой момент. Остаюсь, потому что работает, а не потому что подписано.", back: "На практике: оплата помесячно. Не понравилось — не продлеваете, кабинет и все настройки остаются у вас." },
   ],
   FIT_YES: [
-    "у вас уже есть товар или услуга, и хотя бы пара человек её купили",
-    "готовы платить за саму рекламу отдельно — от $600/мес (это не мне, а Instagram/Google)",
-    "есть кто-то, кто будет отвечать людям, которые напишут",
-    "готовы подождать 3-4 недели на первые результаты",
+    "У вас уже есть товар или услуга, и хотя бы пара человек её купили",
+    "Готовы платить за саму рекламу отдельно — от $600/мес (это не мне, а Instagram/Google)",
+    "Есть кто-то, кто будет отвечать людям, которые напишут",
+    "Готовы подождать 3-4 недели на первые результаты",
   ],
   FIT_NO: [
-    "товара или услуги пока нет, или его ещё никто не покупал",
-    "нет денег на саму рекламу — только на мою работу",
-    "некому отвечать людям, которые напишут",
-    "нужны клиенты уже завтра, без времени на проверку",
+    "Товара или услуги пока нет, или его ещё никто не покупал",
+    "Нет денег на саму рекламу — только на мою работу",
+    "Некому отвечать людям, которые напишут",
+    "Нужны клиенты уже завтра, без времени на проверку",
   ],
   PLANS: [
     {
@@ -179,16 +179,16 @@ const kk = {
     { n: "04", icon: IconTransparency, title: "Тұзақ келісімшартсыз.", front: "Кез келген уақытта кетуге болады. Мен қаламын, өйткені бұл жұмыс істейді, қол қойылғаны үшін емес.", back: "Іс жүзінде: ай сайынғы төлем. Ұнамаса — жаңартпайсыз, кабинет пен барлық баптаулар өзіңізде қалады." },
   ],
   FIT_YES: [
-    "тауарыңыз немесе қызметіңіз бар, және оны кем дегенде бірнеше адам сатып алған",
-    "жарнаманың өзіне бөлек төлеуге дайынсыз — айына $600-ден (бұл маған емес, Instagram/Google-ге)",
-    "жазған адамдарға жауап беретін біреу бар",
-    "алғашқы нәтижелерді 3-4 апта күтуге дайынсыз",
+    "Тауарыңыз немесе қызметіңіз бар, және оны кем дегенде бірнеше адам сатып алған",
+    "Жарнаманың өзіне бөлек төлеуге дайынсыз — айына $600-ден (бұл маған емес, Instagram/Google-ге)",
+    "Жазған адамдарға жауап беретін біреу бар",
+    "Алғашқы нәтижелерді 3-4 апта күтуге дайынсыз",
   ],
   FIT_NO: [
-    "тауар немесе қызмет әлі жоқ, немесе оны әлі ешкім сатып алған жоқ",
-    "жарнаманың өзіне ақша жоқ — тек менің жұмысыма ғана",
-    "жазған адамдарға жауап беретін ешкім жоқ",
-    "клиенттер ертең-ақ керек, тексеруге уақыт жоқ",
+    "Тауар немесе қызмет әлі жоқ, немесе оны әлі ешкім сатып алған жоқ",
+    "Жарнаманың өзіне ақша жоқ — тек менің жұмысыма ғана",
+    "Жазған адамдарға жауап беретін ешкім жоқ",
+    "Клиенттер ертең-ақ керек, тексеруге уақыт жоқ",
   ],
   PLANS: [
     {
@@ -293,16 +293,16 @@ const en = {
     { n: "04", icon: IconTransparency, title: "No lock-in contracts.", front: "You can leave any time. I stay because it works, not because you signed something.", back: "In practice: month-to-month billing. Didn't like it — just don't renew; the ad account and every setting stay yours." },
   ],
   FIT_YES: [
-    "you already have a product or service, and at least a couple of people have bought it",
-    "you're ready to pay for the ads themselves separately — from $600/mo (that goes to Instagram/Google, not to me)",
-    "there's someone who will respond to people who message you",
-    "you're willing to wait 3-4 weeks for the first results",
+    "You already have a product or service, and at least a couple of people have bought it",
+    "You're ready to pay for the ads themselves separately — from $600/mo (that goes to Instagram/Google, not to me)",
+    "There's someone who will respond to people who message you",
+    "You're willing to wait 3-4 weeks for the first results",
   ],
   FIT_NO: [
-    "you don't have a product or service yet, or nobody has bought it yet",
-    "there's no budget for the ads themselves — only for my work",
-    "there's nobody to respond to people who message you",
-    "you need customers by tomorrow, with no time to test",
+    "You don't have a product or service yet, or nobody has bought it yet",
+    "There's no budget for the ads themselves — only for my work",
+    "There's nobody to respond to people who message you",
+    "You need customers by tomorrow, with no time to test",
   ],
   PLANS: [
     {
