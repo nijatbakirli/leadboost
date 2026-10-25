@@ -1,8 +1,8 @@
 /* ============================================================
    Серверная функция (Vercel): приём заявки → отправка в Telegram.
    Токен бота живёт только здесь, как переменная окружения на
-   Vercel (Settings → Environment Variables) — в клиентском коде
-   его больше нет.
+   Vercel (Settings → Environment Variables), в клиентском коде
+   его нет.
    ============================================================ */
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const { name, contact, service, niche, budget } = req.body || {};
+  const { name, contact, service, niche, budget, plan } = req.body || {};
   if (!name || !contact) {
     res.status(400).json({ error: "Заполните имя и контакт" });
     return;
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const text = `🎯 Новая заявка с сайта LeadBoost\n\nИмя: ${name}\nКонтакт: ${contact}\nУслуга: ${service || "не указана"}\nНиша: ${niche || "не указана"}\nБюджет: ${budget || "не указан"}`;
+  const text = `🎯 Новая заявка с сайта LeadBoost\n\nИмя: ${name}\nКонтакт: ${contact}\nУслуга: ${service || "не указана"}\nНиша: ${niche || "не указана"}\nБюджет: ${budget || "не указан"}\nТариф: ${plan || "не выбран"}`;
 
   try {
     const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

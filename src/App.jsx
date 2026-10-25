@@ -1,48 +1,77 @@
 /* ============================================================
    ГЛАВНЫЙ КОМПОНЕНТ
-   Только композиция и разметка. Настройки — в config.js,
-   контент — в data.jsx, тексты интерфейса — в i18n.jsx,
-   логика — в interactions.jsx.
+   Только композиция и разметка. Настройки в config.js,
+   контент в data.jsx, тексты интерфейса в i18n.jsx,
+   логика в interactions.jsx, мелкие компоненты в widgets.jsx.
+   Визуальный стиль как в каруселях LeadBoost (см. styles.css).
    ============================================================ */
 import React, { useState } from "react";
 import LOGO_SRC from "./logo.png";
-import { Reveal, useTween } from "./hooks.jsx";
-import { IconCaseStudies, IconSuccess, IconSupport, IconConsultant } from "./icons.jsx";
-import { ScrambleText, WordReveal, CountMetric, Mark, TargetGame } from "./widgets.jsx";
+import { useTween } from "./hooks.jsx";
 import {
-  NOTIFY_EMAIL, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, GAME,
-} from "./config.js";
+  IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
+  IconChevronDown, IconExpand, IconChat, IconCamera,
+} from "./icons.jsx";
+import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer } from "./widgets.jsx";
+import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
 import { CONTENT } from "./data.jsx";
 import { UI, LANGS, useLang } from "./i18n.jsx";
 import {
-  useScrollProgress, usePreloader, useClockStatus, useTicker,
-  useSpotlight, useHeroParallax, useVelocityMarquee, useCoverflow,
-  useKineticWordmark, tiltHandlers, magnetHandlers, scrollToId, scrollToTop,
+  useScrollProgress, useClockStatus, useSpotlight, useVelocityMarquee,
+  magnetHandlers, scrollToId, scrollToTop,
 } from "./interactions.jsx";
+
+const ext = { target: "_blank", rel: "noopener noreferrer" };
+
+function SpotsBar() {
+  return (
+    <span className="spots-bar" aria-hidden="true">
+      {Array.from({ length: SPOTS_TOTAL }, (_, i) => <i key={i} className={i < SPOTS_LEFT ? "free" : ""} />)}
+    </span>
+  );
+}
+
+/* одна лента: список слов, повторённый с крестиками-разделителями */
+function Tape({ items, trackRef, className }) {
+  const run = [...items, ...items, ...items];
+  return (
+    <div className={`tape ${className}`}>
+      <div className="tape-track" ref={trackRef}>
+        {[0, 1].map((k) => (
+          <span className="tape-run" key={k}>
+            {run.map((w, i) => (
+              <React.Fragment key={i}>
+                <span>{w}</span>
+                <IconCross className="tape-x" />
+              </React.Fragment>
+            ))}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function App() {
   /* --- Язык --- */
   const { lang, setLang } = useLang();
   const D = CONTENT[lang];
   const t = UI[lang];
-  const RU = CONTENT.ru; /* заявка в Telegram/почту всегда на русском — её читает владелец, не посетитель */
+  const RU = CONTENT.ru; /* заявка в Telegram всегда на русском: её читает владелец, не посетитель */
 
   /* --- UI-состояния --- */
   const [openFaq, setOpenFaq] = useState(0);
   const [openSvc, setOpenSvc] = useState(0);
+  const [zoom, setZoom] = useState(null); /* индекс скрина в D.RESULTS, открытого крупно */
 
   /* --- Интерактив (вся логика в interactions.jsx) --- */
-  const loaded = usePreloader();
   const { progress, ctaVisible } = useScrollProgress();
-  const { online, timeStr } = useClockStatus(WORK_HOURS);
-  const kpiIndex = useTicker(D.KPI_PHRASES.length);
+  const { online } = useClockStatus(WORK_HOURS, WORK_TZ);
   const rootRef = useSpotlight();
-  const { heroRef, onMove: onHeroMove, onLeave: onHeroLeave } = useHeroParallax();
-  const marqueeRef = useVelocityMarquee();
-  const { trackRef: workRef, scrollBy: scrollWork } = useCoverflow();
-  const { ref: wordmarkRef, onMove: onFooterMove, onLeave: onFooterLeave } = useKineticWordmark();
+  const tapeWhatRef = useVelocityMarquee(1);
+  const tapeWhereRef = useVelocityMarquee(-1, 0.45);
 
-  /* --- Приветствие по времени суток --- */
+  /* --- Приветствие по времени суток посетителя --- */
   const hour = new Date().getHours();
   const greeting = hour >= 5 && hour < 12 ? t.hero.greetingMorning : hour < 18 ? t.hero.greetingDay : t.hero.greetingEvening;
 
@@ -53,13 +82,17 @@ export default function App() {
   const estLeads = Math.max(1, Math.round(roiBudget / nicheInfo.cpl));
   const animatedCpl = useTween(nicheInfo.cpl, 500, 1);
   const animatedLeads = useTween(estLeads, 500, 0);
+  const dec = (n) => (lang === "en" ? String(n) : String(n).replace(".", ","));
 
-  /* --- Форма заявки → Telegram (fallback: mailto) --- */
+  /* --- Форма заявки → Telegram (если не ушло: WhatsApp) --- */
   const [form, setForm] = useState({ name: "", contact: "", service: "", niche: "", budget: "" });
+  const [plan, setPlan] = useState(null); /* индекс тарифа, выбранного кнопкой «Выбрать» */
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
   const onFormChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+
+  const choosePlan = (i) => (e) => { setPlan(i); scrollToId("contact")(e); };
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
@@ -69,492 +102,508 @@ export default function App() {
     try {
       const res = await fetch("/api/telegram", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: form.name, contact: form.contact, service: form.service, niche: nicheLabel, budget: form.budget }),
+        body: JSON.stringify({
+          name: form.name, contact: form.contact, service: form.service, niche: nicheLabel, budget: form.budget,
+          plan: plan !== null ? RU.PLANS[plan].name : "",
+        }),
       });
       if (!res.ok) throw new Error("send error");
       if (navigator.vibrate) navigator.vibrate([30, 40, 30]);
       setSent(true);
     } catch { setSendError(true); } finally { setSending(false); }
   };
-  const mailtoHref = `mailto:${NOTIFY_EMAIL}?subject=${encodeURIComponent("Заявка с сайта LeadBoost")}&body=${encodeURIComponent(`Имя: ${form.name}\nКонтакт: ${form.contact}\nУслуга: ${form.service}\nНиша: ${RU.NICHE_DATA[form.niche]?.label || ""}\nБюджет: ${form.budget}`)}`;
+
+  const featured = D.RESULTS[0];
 
   return (
     <div className="cl-root" ref={rootRef}>
-      <div className={`preloader ${loaded ? "done" : ""}`} aria-hidden="true">
-        <img src={LOGO_SRC} alt="" />
-        <div className="bar"><i /></div>
-      </div>
       <div className="spotlight" aria-hidden="true" />
 
-      {/* ПЛАВАЮЩИЙ НАВБАР-ПИЛЮЛЯ */}
-      <nav className="nav-pill">
-        <a href="#" className="nav-logo" onClick={scrollToTop}>
+      {/* НАВБАР-ПИЛЮЛЯ */}
+      <nav className="nav" aria-label="LeadBoost">
+        <a href="#top" className="nav-logo" onClick={scrollToTop}>
           <img src={LOGO_SRC} alt="LeadBoost" />
         </a>
-        <ul>
-          <li><a href="#studio" onClick={scrollToId("studio")}>{t.nav.studio}</a></li>
+        <ul className="nav-links">
           <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
-          <li><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
-          <li><a href="#pricing" onClick={scrollToId("pricing")} className="nav-hide-sm">{t.nav.pricing}</a></li>
+          <li className="nav-hide-xs"><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
+          <li className="nav-hide-sm"><a href="#results" onClick={scrollToId("results")}>{t.nav.results}</a></li>
+          <li className="nav-hide-sm"><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
           <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
         </ul>
-        <div className="lang-switch">
+        <div className="lang-switch" role="group" aria-label="Language">
           {LANGS.map((l) => (
-            <button key={l.code} className={`lang-pill ${lang === l.code ? "active" : ""}`} onClick={() => setLang(l.code)}>{l.label}</button>
+            <button key={l.code} type="button" className="lang-pill" aria-pressed={lang === l.code} onClick={() => setLang(l.code)}>{l.label}</button>
           ))}
         </div>
-        <div className="nav-progress"><i style={{ width: `${progress}%` }} /></div>
+        <div className="nav-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>
       </nav>
 
-      {/* 01 — СТУДИЯ (хиро, премиальная версия) */}
-      <section className="hero" id="studio" ref={heroRef} onMouseMove={onHeroMove} onMouseLeave={onHeroLeave}>
-        <div className="hero-halo" aria-hidden="true" />
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">01</span> {t.hero.secLabel}</div>
-          <div className="hero-grid">
-            <div className="hero-left">
-              <div className="hero-overline">{t.hero.overline}</div>
-              <h1 className="h-huge">
-                <ScrambleText text={greeting} />
-                <span className="stroke">{t.hero.brand}</span>
-              </h1>
-              <p className="hero-lead">
-                {t.hero.leadPre}<Mark>{t.hero.leadMark}</Mark>{t.hero.leadPost}
-              </p>
-              <div className="hero-actions">
-                <a href="#contact" onClick={scrollToId("contact")} className="hero-btn">{t.hero.ctaPrimary}</a>
-                <a href="#work" className="hero-link" onClick={scrollToId("work")}>{t.hero.ctaSecondary} <span className="arr">↘</span></a>
+      <main>
+        {/* ПЕРВЫЙ ЭКРАН: бенто как на обложках Reels */}
+        <section className="hero" id="top">
+          <div className="wrap">
+            <div className="hero-bar">
+              <span className="corner tl" aria-hidden="true" />
+              <span className="corner tr" aria-hidden="true" />
+              <SecLabel className="hero-greet"><ScrambleText text={greeting} /></SecLabel>
+              <span className={`status ${online ? "on" : "off"}`}><i aria-hidden="true" />{online ? t.hero.statusOnline : t.hero.statusOffline}</span>
+            </div>
+            <div className="hero-grid">
+              <div className="tile hero-main">
+                <Heading as="h1" pre={t.hero.h1} mark={t.hero.h1Mark} className="hd-hero" />
+                <div>
+                  <p className="hero-lead">{t.hero.lead}</p>
+                  <div className="hero-actions">
+                    <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />{t.hero.ctaPrimary}</a>
+                    <a className="btn btn-ghost" href="#contact" onClick={scrollToId("contact")}>{t.hero.ctaSecondary}<IconArrowRight className="btn-ic" /></a>
+                  </div>
+                </div>
+              </div>
+              <a className="tile hero-proof" href="#results" onClick={scrollToId("results")}>
+                <SecLabel className="lbl-sm">{t.hero.proofLabel}</SecLabel>
+                <div className="num-row">
+                  <span className="big-y">{featured.big}</span>
+                  <span className="num-unit">{featured.unit}</span>
+                </div>
+                <p className="num-sub">{featured.sub}</p>
+                <img className="proof-shot" src={featured.shots[0].src} width={featured.shots[0].w} height={featured.shots[0].h} alt="" />
+                <span className="more-link">{t.hero.proofLink}<IconArrowDown className="more-ic" /></span>
+              </a>
+              <div className="tile hero-stat stat-a">
+                <CountMetric value="240+" className="stat-num" />
+                <span className="stat-cap">{t.hero.statA}</span>
+              </div>
+              <div className="tile hero-stat stat-b">
+                <CountMetric value="310%" className="stat-num" />
+                <span className="stat-cap">{t.hero.statB}</span>
               </div>
             </div>
-            <Reveal delay={140}>
-              <div className="hero-visual">
-                <div className="laptop-mock">
-                  <div className="laptop-mock-screen">
-                    <div className="hero-card" {...tiltHandlers}>
-                      <div className="shine" aria-hidden="true" />
-                      <div className="hero-card-inner">
-                        <span className="case-tag">{t.hero.caseTag}</span>
-                        <h4>{t.hero.caseTitle}</h4>
+            <ul className="hero-facts">
+              {t.hero.facts.map((f) => <li key={f}><IconCheck className="fact-ic" />{f}</li>)}
+            </ul>
+          </div>
+        </section>
+
+        {/* ЛЕНТЫ: что делаю × где */}
+        <div className="tapes" aria-hidden="true">
+          <Tape items={D.TAPE_WHERE} trackRef={tapeWhereRef} className="tape-w" />
+          <Tape items={D.TAPE_WHAT} trackRef={tapeWhatRef} className="tape-y" />
+        </div>
+
+        {/* СТЕЙТМЕНТ */}
+        <section className="statement">
+          <div className="wrap">
+            <Heading pre={t.statement.pre} mark={t.statement.mark} className="hd-statement" />
+            <p className="statement-sub">{t.statement.sub}</p>
+          </div>
+        </section>
+
+        {/* УСЛУГИ */}
+        <section className="section" id="services">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <SecLabel>{t.services.label}</SecLabel>
+                <Heading pre={t.services.pre} mark={t.services.mark} />
+              </div>
+              <p className="sec-sub">{t.services.sub}</p>
+            </div>
+            <div className="svc-list">
+              {D.SERVICES.map((s, i) => {
+                const open = openSvc === i;
+                return (
+                  <div className={`tile svc ${open ? "open" : ""}`} key={s.title}>
+                    <button type="button" className="svc-row" onClick={() => setOpenSvc(open ? -1 : i)} aria-expanded={open} aria-controls={`svc-${i}`}>
+                      <span className="svc-ic" aria-hidden="true"><s.icon /></span>
+                      <span className="svc-title">
+                        <span className="svc-name">{s.title}</span>
+                        {s.badge && <span className={`badge ${s.badgeCls}`}>{s.badge}</span>}
+                      </span>
+                      <span className="svc-meta">{s.meta}</span>
+                      <IconChevronDown className="svc-chev" />
+                    </button>
+                    <div className="svc-detail" id={`svc-${i}`} aria-hidden={!open}>
+                      <div>
+                        <ul className="svc-chips">
+                          {s.chips.map((c) => <li className="chip" key={c}>{c}</li>)}
+                        </ul>
                       </div>
                     </div>
                   </div>
-                  <div className="laptop-mock-base" aria-hidden="true"><i /></div>
-                </div>
-                <div className="hero-chip chip-a"><CountMetric value="240+" inline /><span>{t.hero.chipA}</span></div>
-                <div className="hero-chip chip-b"><CountMetric value="310%+" inline /><span>{t.hero.chipB}</span></div>
+                );
+              })}
+            </div>
+            <div className="niches">
+              <SecLabel className="lbl-sm">{t.services.nichesLabel}</SecLabel>
+              <ul className="niche-list">
+                {D.NICHES.map((n) => (
+                  <li className="niche" key={n.label}><n.icon className="niche-ic" aria-hidden="true" />{n.label}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* КЕЙСЫ */}
+        <section className="section" id="work">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <SecLabel>{t.work.label}</SecLabel>
+                <Heading pre={t.work.pre} mark={t.work.mark} />
               </div>
-            </Reveal>
-          </div>
-
-          {/* статусная линия хиро */}
-          <div className="hero-bottom">
-            {t.hero.facts.map((f, i) => <div className="hero-fact" key={i}>{f}</div>)}
-            <div className="hero-fact ticker"><span className="hero-kpi-ticker"><span className="kpi-face" key={kpiIndex}>{D.KPI_PHRASES[kpiIndex]}</span></span></div>
-          </div>
-        </div>
-      </section>
-
-      {/* БЕГУЩАЯ СТРОКА */}
-      <div className="marquee">
-        <div className="marquee-track" ref={marqueeRef}>
-          {[0, 1].map((k) => (
-            <span key={k} className="marquee-run">
-              {D.MARQUEE_ITEMS.map((item) => (
-                <span className="mq-item" key={item.label}>
-                  <span className="mq-ic">
-                    {item.img ? <img src={item.img} alt="" /> : <item.icon />}
-                  </span>
-                  {item.label}
-                  <span className="mq-dot" aria-hidden="true">•</span>
-                </span>
-              ))}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* СТЕЙТМЕНТ */}
-      <section className="statement">
-        <div className="wrap">
-          <Reveal>
-            <h2 className="h-big"><WordReveal text={t.statement.pre} /> <Mark>{t.statement.mark}</Mark></h2>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 02 — УСЛУГИ */}
-      <section className="section" id="services" style={{ paddingTop: 40 }}>
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">02</span> {t.services.secLabel}</div>
-          <div className="svc-head">
-            <h2 className="h-big">{t.services.heading}</h2>
-            <p>{t.services.sub}</p>
-          </div>
-          <div className="super-card">
-            {D.SERVICES.map((s, i) => (
-              <React.Fragment key={s.title}>
-                <div className={`svc-row pill-row ${openSvc === i ? "open" : ""}`} onClick={() => setOpenSvc(openSvc === i ? -1 : i)}
-                     role="button" tabIndex={0} aria-expanded={openSvc === i}
-                     onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpenSvc(openSvc === i ? -1 : i); } }}>
-                  <span className="svc-ic"><s.icon /></span>
-                  <span className="num">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="title">
-                    <h3>{s.title}</h3>
-                    {s.badge && <span className={`svc-badge ${s.badgeCls}`}>{s.badge}</span>}
-                  </span>
-                  <span className="meta">{s.meta}</span>
-                  <span className="chev">›</span>
-                </div>
-                <div className={`svc-detail ${openSvc === i ? "open" : ""}`}>
-                  <div className="svc-detail-inner">
-                    {s.chips.map((c) => <span className="svc-chip" key={c}>{c}</span>)}
+              <p className="sec-sub">{t.work.sub}</p>
+            </div>
+            <div className="case-grid">
+              {D.WORK_CASES.map((c) => (
+                <article className={`tile case ${c.soon ? "case-soon" : ""}`} key={c.name}>
+                  <div className="case-top">
+                    <SecLabel className="lbl-sm">{c.name}</SecLabel>
+                    <span className="case-cat">{c.cat}</span>
                   </div>
-                </div>
-              </React.Fragment>
-            ))}
-          </div>
-          {/* ниши */}
-          <div style={{ marginTop: 70 }}>
-            <div className="f-label" style={{ color: "var(--ink-soft)" }}>{t.services.nichesLabel}</div>
-            <div className="niche-grid">
-              {D.NICHES.map((n) => (
-                <div className="niche-pill" key={n.label}>
-                  <span className="ic"><n.icon /></span>
-                  <span>{n.label}</span>
-                </div>
+                  {c.big ? (
+                    <>
+                      <div className="case-big">{c.big}</div>
+                      <h3 className="case-h">{c.h}</h3>
+                      <p className="case-desc">{c.desc}</p>
+                    </>
+                  ) : (
+                    <>
+                      <h3 className="case-h case-h-soon">{c.h}</h3>
+                      <p className="case-desc">{c.desc}</p>
+                      <a className="btn btn-ghost btn-sm case-btn" href={CONTACTS.whatsapp} {...ext}>{t.work.soonCta}<IconArrowRight className="btn-ic" /></a>
+                    </>
+                  )}
+                </article>
               ))}
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 03 — РАБОТЫ (горизонтальная лента со скролл-снапом) */}
-      <section id="work" style={{ padding: "60px 0 40px" }}>
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">03</span> {t.work.secLabel}</div>
-          <div className="svc-head" style={{ marginBottom: 40 }}>
-            <h2 className="h-big"><span className="h-ic"><IconCaseStudies /></span>{t.work.heading}</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-end" }}>
-              <p style={{ textAlign: "right" }}>{t.work.sub}</p>
-              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                <span className="work-hint">{t.work.hint}</span>
-                <div className="work-nav">
-                  <button onClick={() => scrollWork(-1)} aria-label={t.work.back}>←</button>
-                  <button onClick={() => scrollWork(1)} aria-label={t.work.next}>→</button>
-                </div>
+        {/* ЦИФРЫ ИЗ КАБИНЕТА: настоящие скрины Meta Ads Manager */}
+        <section className="section" id="results">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <SecLabel>{t.results.label}</SecLabel>
+                <Heading pre={t.results.pre} mark={t.results.mark} />
               </div>
+              <p className="sec-sub">{t.results.sub}</p>
             </div>
-          </div>
-        </div>
-        <div className="work-scroller" ref={workRef}>
-          {D.WORK_CASES.map((w) => (
-            <a key={w.tag} href="#contact" className="work-slide" onClick={scrollToId("contact")}>
-              <span className="brandtag">LEADBOOST</span>
-              <div className="bg" style={{ background: w.bg }} />
-              <div className="shade" />
-              <div className="inner">
-                <span className="case-tag">{w.tag}</span>
-                <h3>{w.title}</h3>
-                <div className="sub">{w.name} · {w.cat}</div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      {/* 04 — ПРИНЦИПЫ / ГАРАНТИИ (тёмная секция) */}
-      <section className="section dark">
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">04</span> {t.principles.secLabel}</div>
-          <div className="dark-cards">
-            {D.PRINCIPLES.map((p, i) => (
-              <Reveal key={p.n} delay={i * 80}>
-                <div className="p-flip">
-                  <div className="p-card">
-                    <div className="p-face">
-                      <span className="p-ic"><p.icon /></span>
-                      <span className="n">{p.n}</span>
-                      <h4>{p.title}</h4>
-                      <p>{p.front}</p>
+            <div className="res-grid">
+              {D.RESULTS.map((r, i) => (
+                <article className={`tile res ${i === 0 ? "res-feature" : ""}`} key={i}>
+                  <div className="res-info">
+                    <SecLabel className="lbl-sm">{r.label}</SecLabel>
+                    <div className="num-row">
+                      <span className="big-y">{r.big}</span>
+                      <span className="num-unit">{r.unit}</span>
                     </div>
-                    <div className="p-face back">
-                      <span className="n">{p.n}{t.principles.practiceSuffix}</span>
-                      <p>{p.back}</p>
-                    </div>
+                    <p className="num-sub">{r.sub}</p>
                   </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal delay={200}>
-            <div className="not-promise">
-              <b>{t.principles.notPromiseLabel}</b> {t.principles.notPromiseText}
+                  <button type="button" className="res-shot" onClick={() => setZoom(i)}>
+                    {r.shots.map((s) => (
+                      <img key={s.src} src={s.src} width={s.w} height={s.h} alt={s.alt} loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+                    ))}
+                    <span className="sr-only">{t.results.zoom}</span>
+                    <span className="res-zoom" aria-hidden="true"><IconExpand /></span>
+                  </button>
+                </article>
+              ))}
             </div>
-          </Reveal>
-        </div>
-      </section>
+            <p className="res-note">{t.results.note}</p>
+          </div>
+          <ShotViewer
+            item={zoom === null ? null : D.RESULTS[zoom]}
+            onClose={() => setZoom(null)}
+            closeLabel={t.results.close}
+            sourceLabel={t.results.source}
+          />
+        </section>
 
-      {/* КОМУ ПОДХОДИТ */}
-      <section className="section">
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">05</span> {t.fit.secLabel}</div>
-          <div className="svc-head">
-            <h2 className="h-big">{t.fit.headingPre}<Mark>{t.fit.headingMark}</Mark></h2>
-            <p>{t.fit.sub}</p>
-          </div>
-          <div className="fit-grid">
-            <Reveal>
-              <div className="fit-card">
-                <h4><span className="fit-mark y">✓</span> {t.fit.yes}</h4>
-                {D.FIT_YES.map((txt) => <div className="fit-row" key={txt}><span className="fit-mark y">✓</span>{txt}</div>)}
+        {/* ПРИНЦИПЫ */}
+        <section className="section" id="how">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <SecLabel>{t.principles.label}</SecLabel>
+                <Heading pre={t.principles.pre} mark={t.principles.mark} />
               </div>
-            </Reveal>
-            <Reveal delay={90}>
-              <div className="fit-card">
-                <h4><span className="fit-mark n">✕</span> {t.fit.no}</h4>
-                {D.FIT_NO.map((txt) => <div className="fit-row" key={txt}><span className="fit-mark n">✕</span>{txt}</div>)}
-              </div>
-            </Reveal>
+            </div>
+            <div className="pr-grid">
+              {D.PRINCIPLES.map((p) => (
+                <article className="tile pr" key={p.title}>
+                  <span className="pr-ic" aria-hidden="true"><p.icon /></span>
+                  <h3 className="pr-title">{p.title}</h3>
+                  <p className="pr-front">{p.front}</p>
+                  <div className="pr-back">
+                    <SecLabel className="lbl-sm">{t.principles.practice}</SecLabel>
+                    <p>{p.back}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <p className="tile tile-dashed not-promise"><b>{t.principles.notPromiseLabel}:</b> {t.principles.notPromiseText}</p>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 06 — ТАРИФЫ */}
-      <section className="section" id="pricing" style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">06</span> {t.pricing.secLabel}</div>
-          <div className="svc-head">
-            <h2 className="h-big">{t.pricing.headingPre}<Mark>{t.pricing.headingMark}</Mark></h2>
-            <p>{t.pricing.sub}</p>
+        {/* КОМУ ПОДХОДИТ */}
+        <section className="section" id="fit">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <SecLabel>{t.fit.label}</SecLabel>
+                <Heading pre={t.fit.pre} mark={t.fit.mark} />
+              </div>
+              <p className="sec-sub">{t.fit.sub}</p>
+            </div>
+            <div className="fit-grid">
+              <div className="tile fit fit-yes">
+                <h3 className="fit-title"><span className="fit-badge" aria-hidden="true"><IconCheck /></span>{t.fit.yes}</h3>
+                <ul>{D.FIT_YES.map((txt) => <li key={txt}><IconCheck className="fit-ic" />{txt}</li>)}</ul>
+              </div>
+              <div className="tile fit fit-no">
+                <h3 className="fit-title"><span className="fit-badge" aria-hidden="true"><IconCross /></span>{t.fit.no}</h3>
+                <ul>{D.FIT_NO.map((txt) => <li key={txt}><IconCross className="fit-ic" />{txt}</li>)}</ul>
+              </div>
+            </div>
           </div>
-          <div className="price-grid">
-            {D.PLANS.map((plan, i) => (
-              <Reveal key={plan.name} delay={i * 90}>
-                <div className={`price-card ${plan.popular ? "pop" : ""}`}>
-                  {plan.popular && <span className="price-tag">{t.pricing.popularBadge}</span>}
-                  <div className="price-name">{plan.name}</div>
-                  <div className="price-value">{plan.price}</div>
-                  <div className="price-sub">{plan.sub}</div>
+        </section>
+
+        {/* ТАРИФЫ */}
+        <section className="section" id="pricing">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <SecLabel>{t.pricing.label}</SecLabel>
+                <Heading pre={t.pricing.pre} mark={t.pricing.mark} />
+              </div>
+              <p className="sec-sub">{t.pricing.sub}</p>
+            </div>
+            <div className="price-grid">
+              {D.PLANS.map((p, i) => (
+                <article className={`tile price ${p.popular ? "pop" : ""}`} key={p.name}>
+                  <div className="price-top">
+                    <SecLabel className="lbl-sm">{p.name}</SecLabel>
+                    {p.popular && <span className="badge main">{t.pricing.popularBadge}</span>}
+                  </div>
+                  <div className="price-val">
+                    <span className="price-num">{p.price}</span>
+                    <span className="price-per">{t.pricing.perMonth}</span>
+                  </div>
+                  <p className="price-sub">{p.sub}</p>
                   <ul className="price-list">
-                    {plan.features.map((f) => <li key={f}>✓ {f}</li>)}
+                    {p.features.map((f) => <li key={f}><IconCheck className="li-ic" />{f}</li>)}
                   </ul>
-                  <a
-                    href="#contact"
-                    onClick={scrollToId("contact")}
-                    className="f-pill"
-                    style={plan.popular
-                      ? { textAlign: "center", background: "var(--accent)", color: "var(--accent-ink)" }
-                      : { textAlign: "center", background: "transparent", color: "var(--ink)", border: "1px solid var(--border-light)" }}
-                  >
-                    {t.pricing.select}
-                  </a>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal delay={220}>
-            <div className="web-note">
+                  <a href="#contact" onClick={choosePlan(i)} className={`btn btn-block ${p.popular ? "btn-y" : "btn-ghost"}`}>{t.pricing.select}</a>
+                </article>
+              ))}
+            </div>
+            <div className="tile web-note">
               <div>
                 <strong>{t.pricing.webNoteTitle}</strong>
                 <span>{t.pricing.webNoteText}</span>
               </div>
-              <a href="#contact" onClick={scrollToId("contact")} className="f-pill" style={{ background: "var(--accent)", color: "var(--accent-ink)" }}>{t.pricing.webNoteBtn}</a>
+              <a href={CONTACTS.whatsapp} {...ext} className="btn btn-y">{t.pricing.webNoteBtn}<IconArrowRight className="btn-ic" /></a>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 07 — КАЛЬКУЛЯТОР */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">07</span> {t.calculator.secLabel}</div>
-          <div className="svc-head">
-            <h2 className="h-big">{t.calculator.heading}</h2>
-            <p>{t.calculator.sub}</p>
           </div>
-          <Reveal>
-            <div className="roi-box">
+        </section>
+
+        {/* КАЛЬКУЛЯТОР */}
+        <section className="section" id="calculator">
+          <div className="wrap">
+            <div className="sec-head">
+              <div>
+                <SecLabel>{t.calculator.label}</SecLabel>
+                <Heading pre={t.calculator.pre} mark={t.calculator.mark} />
+              </div>
+              <p className="sec-sub">{t.calculator.sub}</p>
+            </div>
+            <div className="tile roi">
               <div className="roi-inputs">
-                <div className="roi-field">
-                  <label>{t.calculator.nicheLabel}</label>
-                  <select className="roi-select" value={roiNiche} onChange={(e) => setRoiNiche(e.target.value)}>
+                <label className="field">
+                  <span className="field-lbl">{t.calculator.nicheLabel}</span>
+                  <select className="input" value={roiNiche} onChange={(e) => setRoiNiche(e.target.value)}>
                     {Object.entries(D.NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
                   </select>
-                </div>
-                <div className="roi-field">
-                  <label>{t.calculator.budgetLabel}</label>
-                  <input className="roi-input" type="number" step="100" value={roiBudget} onChange={(e) => setRoiBudget(Math.max(0, Number(e.target.value)))} />
-                </div>
-                <input className="roi-range" type="range" min="300" max="6000" step="100" value={roiBudget} onChange={(e) => setRoiBudget(Number(e.target.value))} />
+                </label>
+                <label className="field">
+                  <span className="field-lbl">{t.calculator.budgetLabel}</span>
+                  <input className="input" type="number" inputMode="numeric" min="0" step="100" value={roiBudget} onChange={(e) => setRoiBudget(Math.max(0, Number(e.target.value)))} />
+                </label>
+                <input className="roi-range" type="range" min="300" max="6000" step="100" value={roiBudget} aria-label={t.calculator.budgetLabel} onChange={(e) => setRoiBudget(Number(e.target.value))} />
               </div>
-              <div className="roi-results">
-                <div className="roi-out"><span className="k">{t.calculator.out1}</span><span className="v">~${animatedCpl}</span></div>
+              <div className="roi-results" aria-live="polite">
+                <div className="roi-out"><span className="k">{t.calculator.out1}</span><span className="v">~${dec(animatedCpl)}</span></div>
                 <div className="roi-out"><span className="k">{t.calculator.out2}</span><span className="v">~{animatedLeads}</span></div>
                 <div className="roi-out"><span className="k">{t.calculator.out3}</span><span className="v">{nicheInfo.roas}</span></div>
                 <p className="roi-note">{t.calculator.note}</p>
               </div>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 08 — ЗАМЕТКИ / КЕЙСЫ-МЕТРИКИ (тёмные градиентные карточки) */}
-      <section className="section" style={{ paddingTop: 0 }}>
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">08</span> {t.notes.secLabel}</div>
-          <div className="notes-head">
-            <h2 className="h-big">{t.notes.heading}</h2>
-            <p>{t.notes.sub}</p>
           </div>
-          <div className="notes-grid">
-            {D.METRIC_NOTES.map((c, i) => (
-              <Reveal key={c.tag} delay={i * 90}>
-                <div className="note-card">
-                  <div className="note-glow" style={{ background: c.glow }} />
-                  <span className="note-ic"><IconSuccess /></span>
-                  <span className="tag">{c.tag}</span>
-                  <div className="metric">
-                    <CountMetric value={c.big} />
-                    <h4>{c.h}</h4>
-                    <p>{c.p}</p>
+        </section>
+
+        {/* FAQ */}
+        <section className="section" id="faq">
+          <div className="wrap">
+            <SecLabel>{t.faq.label}</SecLabel>
+            <Heading pre={t.faq.pre} mark={t.faq.mark} className="hd-faq" />
+            <div className="faq-list">
+              {D.FAQS.map((f, i) => {
+                const open = openFaq === i;
+                return (
+                  <div className={`tile faq ${open ? "open" : ""}`} key={f.q}>
+                    <button type="button" className="faq-q" onClick={() => setOpenFaq(open ? -1 : i)} aria-expanded={open} aria-controls={`faq-${i}`}>
+                      <span>{f.q}</span>
+                      <IconPlus className="faq-ic" />
+                    </button>
+                    <div className="faq-a" id={`faq-${i}`} aria-hidden={!open}>
+                      <div><p>{f.a}</p></div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* МИНИ-ИГРА */}
+        <TargetGame strings={t.game} promoWord={GAME.promoWord} need={GAME.hitsToWin} />
+
+        {/* КОНТАКТ */}
+        <section className="section" id="contact">
+          <div className="wrap">
+            <SecLabel>{t.contact.label}</SecLabel>
+            <Heading pre={t.contact.pre} mark={t.contact.mark} className="hd-contact" />
+            <div className="contact-grid">
+              <div className="contact-left">
+                <p className="contact-intro">{t.contact.intro}</p>
+                <div className="tile contact-fast">
+                  <SecLabel className="lbl-sm">{t.contact.fastLabel}</SecLabel>
+                  <p>{t.contact.fastText}</p>
+                  <div className="contact-btns">
+                    <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />WhatsApp</a>
+                    <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />{CONTACTS.instagramHandle}</a>
                   </div>
                 </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ */}
-      <section className="section" id="faq" style={{ paddingTop: 0 }}>
-        <div className="wrap" style={{ maxWidth: 820 }}>
-          <div className="sec-num"><span className="circle">09</span> {t.faq.secLabel}</div>
-          <h2 className="h-big" style={{ marginBottom: 46 }}>{t.faq.headingPre}<Mark>{t.faq.headingMark}</Mark></h2>
-          <div className="super-card">
-            {D.FAQS.map((f, i) => (
-              <div key={f.q} className={`faq-item pill-row ${openFaq === i ? "open" : ""}`}>
-                <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? -1 : i)}>{f.q} <span className="faq-plus">+</span></button>
-                <div className="faq-a"><div className="faq-a-inner">{f.a}</div></div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* МИНИ-ИГРА */}
-      <TargetGame strings={t.game} promoWord={GAME.promoWord} need={GAME.hitsToWin} />
-
-      {/* 10 — КОНТАКТ */}
-      <section className="section" id="contact" style={{ paddingTop: 40 }}>
-        <div className="wrap">
-          <div className="sec-num"><span className="circle">10</span> {t.contact.secLabel}</div>
-          <Reveal>
-            <h2 className="h-big"><WordReveal text={t.contact.heading} /></h2>
-          </Reveal>
-          <div className="contact-grid">
-            <div className="contact-left">
-              <Reveal delay={100}>
-                <span className="contact-consultant"><IconConsultant /></span>
-                <p>{t.contact.intro}</p>
                 <div className="contact-note">
-                  <span className="contact-ic"><IconSupport /></span>
-                  {t.contact.note(SPOTS_LEFT, SPOTS_TOTAL)}
-                  <span className="spots" style={{ display: "flex", marginTop: 12 }}>
-                    <span className="spots-bar">{[0,1,2].map((i) => <i key={i} className={i < SPOTS_LEFT ? "free" : ""} />)}</span>
-                  </span>
+                  <p>{t.contact.note(SPOTS_LEFT, SPOTS_TOTAL)}</p>
+                  <SpotsBar />
                 </div>
-              </Reveal>
-            </div>
-            <Reveal delay={160}>
-              <div className="form-card">
+              </div>
+              <div className="tile form-card">
+                <h3 className="form-title">{t.contact.formTitle}</h3>
                 {!sent ? (
                   <form onSubmit={onFormSubmit}>
+                    {plan !== null && (
+                      <div className="form-plan">
+                        <span>{t.contact.form.planLabel}: <b>{D.PLANS[plan].name} · {D.PLANS[plan].price}</b></span>
+                        <button type="button" className="icon-btn icon-btn-sm" onClick={() => setPlan(null)} aria-label={t.contact.form.planRemove}><IconCross /></button>
+                      </div>
+                    )}
                     <div className="form-row">
-                      <div className="f-field">
-                        <label>{t.contact.form.nameLabel}</label>
-                        <input name="name" placeholder={t.contact.form.namePh} required value={form.name} onChange={onFormChange} />
-                      </div>
-                      <div className="f-field">
-                        <label>{t.contact.form.contactLabel}</label>
-                        <input name="contact" placeholder={t.contact.form.contactPh} required value={form.contact} onChange={onFormChange} />
-                      </div>
+                      <label className="field">
+                        <span className="field-lbl">{t.contact.form.nameLabel}</span>
+                        <input className="input" name="name" autoComplete="name" placeholder={t.contact.form.namePh} required value={form.name} onChange={onFormChange} />
+                      </label>
+                      <label className="field">
+                        <span className="field-lbl">{t.contact.form.contactLabel}</span>
+                        <input className="input" name="contact" autoComplete="tel" placeholder={t.contact.form.contactPh} required value={form.contact} onChange={onFormChange} />
+                      </label>
                     </div>
                     <div className="form-row">
-                      <div className="f-field">
-                        <label>{t.contact.form.serviceLabel}</label>
-                        <select name="service" required value={form.service} onChange={onFormChange}>
+                      <label className="field">
+                        <span className="field-lbl">{t.contact.form.serviceLabel}</span>
+                        <select className="input" name="service" required value={form.service} onChange={onFormChange}>
                           <option value="" disabled>{t.contact.form.serviceChoose}</option>
                           <option value="Реклама">{t.contact.form.serviceAds}</option>
                           <option value="Сайт">{t.contact.form.serviceSite}</option>
                           <option value="Реклама и сайт">{t.contact.form.serviceBoth}</option>
                         </select>
-                      </div>
-                      <div className="f-field">
-                        <label>{t.contact.form.nicheLabel}</label>
-                        <select name="niche" required value={form.niche} onChange={onFormChange}>
+                      </label>
+                      <label className="field">
+                        <span className="field-lbl">{t.contact.form.nicheLabel}</span>
+                        <select className="input" name="niche" required value={form.niche} onChange={onFormChange}>
                           <option value="" disabled>{t.contact.form.nicheChoose}</option>
                           {Object.entries(D.NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
                         </select>
-                      </div>
+                      </label>
                     </div>
-                    <div className="f-field">
-                      <label>{t.contact.form.budgetLabel}</label>
-                      <input name="budget" placeholder={t.contact.form.budgetPh} value={form.budget} onChange={onFormChange} />
-                    </div>
-                    <span className="magnetic" style={{ display: "block" }} {...magnetHandlers}><button type="submit" className="form-submit" disabled={sending}>{sending ? t.contact.form.sending : t.contact.form.submit}</button></span>
+                    <label className="field">
+                      <span className="field-lbl">{t.contact.form.budgetLabel}</span>
+                      <input className="input" name="budget" placeholder={t.contact.form.budgetPh} value={form.budget} onChange={onFormChange} />
+                    </label>
+                    <span className="magnetic" {...magnetHandlers}>
+                      <button type="submit" className="btn btn-y btn-block btn-lg" disabled={sending}>
+                        {sending ? t.contact.form.sending : t.contact.form.submit}
+                        {!sending && <IconArrowRight className="btn-ic" />}
+                      </button>
+                    </span>
                     {sendError && (
-                      <div className="form-err">
-                        {t.contact.form.errorText} <a href={mailtoHref}>{t.contact.form.errorLink}</a>.
+                      <div className="form-err" role="alert">
+                        {t.contact.form.errorText} <a href={CONTACTS.whatsapp} {...ext}>{t.contact.form.errorLink}</a>.
                       </div>
                     )}
                   </form>
                 ) : (
-                  <div className="form-ok">{t.contact.form.ok}</div>
+                  <div className="form-ok" role="status"><IconCheck />{t.contact.form.ok}</div>
                 )}
               </div>
-            </Reveal>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* FOOTER */}
-      <footer className="footer" onMouseMove={onFooterMove} onMouseLeave={onFooterLeave}>
-        <div className="wrap footer-top">
-          <h3 className="h-mid">{t.footer.tagline}<br />{t.footer.tagline2}</h3>
-          <div>
-            <div className="f-label">{t.footer.quickLinks}</div>
-            <div className="f-pills">
-              <a href="#studio" className="f-pill" onClick={scrollToId("studio")}>{t.nav.studio}</a>
-              <a href="#services" className="f-pill" onClick={scrollToId("services")}>{t.nav.services}</a>
-              <a href="#work" className="f-pill" onClick={scrollToId("work")}>{t.nav.work}</a>
-              <a href="#contact" className="f-pill" onClick={scrollToId("contact")}>{t.nav.contact}</a>
+      {/* ФУТЕР */}
+      <footer className="footer">
+        <div className="wrap">
+          <div className="footer-top">
+            <Heading as="p" pre={t.footer.pre} mark={t.footer.mark} className="hd-footer" />
+            <nav className="f-col" aria-label={t.footer.linksLabel}>
+              <SecLabel className="lbl-sm">{t.footer.linksLabel}</SecLabel>
+              <ul>
+                <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
+                <li><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
+                <li><a href="#results" onClick={scrollToId("results")}>{t.nav.results}</a></li>
+                <li><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
+                <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
+              </ul>
+            </nav>
+            <div className="f-col">
+              <SecLabel className="lbl-sm">{t.footer.contactsLabel}</SecLabel>
+              <ul>
+                <li><a href={CONTACTS.whatsapp} {...ext}>WhatsApp</a></li>
+                <li><a href={CONTACTS.instagram} {...ext}>Instagram {CONTACTS.instagramHandle}</a></li>
+              </ul>
+            </div>
+            <div className="f-col">
+              <SecLabel className="lbl-sm">{t.footer.statusLabel}</SecLabel>
+              <p className={`status ${online ? "on" : "off"}`}><i aria-hidden="true" />{online ? t.footer.online : t.footer.offline}</p>
             </div>
           </div>
-          <div>
-            <div className="f-label">{t.footer.status}</div>
-            <div className="f-time">
-              <span className={`st ${online ? "on" : "off"}`} />
-              {timeStr} · {online ? t.footer.online : t.footer.offline}
-            </div>
-          </div>
-        </div>
-        <div className="footer-wordmark" ref={wordmarkRef}>LEADBOOST</div>
-        <div className="footer-base">
-          <div className="wrap" style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, width: "100%" }}>
+          <a className="brand-line" href={CONTACTS.whatsapp} {...ext}>
+            <span className="bl-name">LEADBOOST</span>
+            <span className="bl-rule" aria-hidden="true" />
+            <span className="bl-cta">{t.footer.brandCta}<IconArrowRight className="bl-ic" /></span>
+          </a>
+          <div className="footer-base">
             <span>{t.footer.copyright}</span>
             <span>{t.footer.services}</span>
-            <a href="#" onClick={scrollToTop}>{t.footer.toTop}</a>
+            <a href="#top" onClick={scrollToTop}>{t.common.toTop}<IconArrowUp className="btn-ic" /></a>
           </div>
         </div>
       </footer>
 
-      {/* STICKY MOBILE CTA */}
-      <div className={`m-cta ${ctaVisible ? "show" : ""}`}>
-        <span className="spots">
-          <span className="spots-bar">{[0,1,2].map((i) => <i key={i} className={i < SPOTS_LEFT ? "free" : ""} />)}</span>
-          {t.mcta.spots(SPOTS_LEFT, SPOTS_TOTAL)}
-        </span>
-        <a href="#contact" onClick={scrollToId("contact")}>{t.mcta.cta}</a>
+      {/* ПЛАВАЮЩИЙ WHATSAPP (десктоп) */}
+      <a className={`wa-float ${ctaVisible ? "show" : ""}`} href={CONTACTS.whatsapp} {...ext} aria-label={t.common.whatsapp} tabIndex={ctaVisible ? 0 : -1}>
+        <IconChat />
+      </a>
+
+      {/* НИЖНЯЯ ПАНЕЛЬ НА ТЕЛЕФОНЕ */}
+      <div className={`m-cta ${ctaVisible ? "show" : ""}`} aria-hidden={!ctaVisible}>
+        <span className="spots"><SpotsBar />{t.mcta.spots(SPOTS_LEFT, SPOTS_TOTAL)}</span>
+        <a className="btn btn-y btn-sm" href={CONTACTS.whatsapp} {...ext} tabIndex={ctaVisible ? 0 : -1}><IconChat className="btn-ic" />{t.mcta.cta}</a>
       </div>
     </div>
   );

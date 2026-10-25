@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeadBoost — реклама, которая приводит клиентов</title>
+  <title>LeadBoost: реклама, которая приводит клиентов</title>
   <meta name="description" content="Настройка таргетированной рекламы и создание сайтов для малого и среднего бизнеса. Первая реклама на первой неделе, понятные отчёты каждую неделю." />
-  <meta property="og:title" content="LeadBoost — реклама, которая приводит клиентов" />
+  <meta property="og:title" content="LeadBoost: реклама, которая приводит клиентов" />
   <meta property="og:description" content="Таргет + сайты в одних руках. 3-4 проекта в месяц, лично." />
   <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0F1216" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
-  <style>*{margin:0;padding:0}html,body{margin:0;background:#101014}</style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@500;700&family=Oswald:wght@700&display=swap" rel="stylesheet" />
+  <style>*{margin:0;padding:0}html,body{margin:0;background:#0F1216}</style>
   <link rel="stylesheet" href="./dist/main.css" />
 </head>
 <body>
@@ -22,22 +23,29 @@
   function showError(title, detail) {
     if (shown) return; shown = true;
     var d = document.createElement("div");
-    d.style.cssText = "position:fixed;inset:0;background:#101014;color:#EDEDEA;font-family:system-ui,sans-serif;padding:40px 24px;z-index:99999;overflow:auto";
+    d.style.cssText = "position:fixed;inset:0;background:#0F1216;color:#E9EDF2;font-family:system-ui,sans-serif;padding:40px 24px;z-index:99999;overflow:auto";
     d.innerHTML = "<div style='max-width:640px;margin:0 auto'>"
-      + "<div style='font-size:13px;letter-spacing:.1em;color:#ECEA0D;margin-bottom:14px'>LEADBOOST · ДИАГНОСТИКА</div>"
+      + "<div style='font-size:13px;letter-spacing:.1em;color:#F0E60D;margin-bottom:14px'>LEADBOOST · ДИАГНОСТИКА</div>"
       + "<h1 style='font-size:22px;margin:0 0 12px'>" + title + "</h1>"
-      + "<pre style='white-space:pre-wrap;background:#17171C;border:1px solid #26262E;border-radius:10px;padding:14px;font-size:12.5px;color:#C9C9CE'>" + detail + "</pre>"
-      + "<p style='font-size:14px;color:#9C9CA6;margin-top:16px'>Скопируйте текст выше и отправьте разработчику — по нему сразу видна причина.</p>"
+      + "<pre style='white-space:pre-wrap;background:#151A21;border:1px solid #232A33;border-radius:10px;padding:14px;font-size:12.5px;color:#D3D9E2'>" + detail + "</pre>"
+      + "<p style='font-size:14px;color:#AEB7C3;margin-top:16px'>Скопируйте текст выше и отправьте разработчику: по нему сразу видна причина.</p>"
       + "</div>";
     document.body.appendChild(d);
   }
   window.addEventListener("error", function (e) {
-    /* Ошибка загрузки ресурса (файл не найден) не даёт e.message —
+    /* Ошибка загрузки ресурса (файл не найден) не даёт e.message,
        определяем её отдельно по e.target, чтобы назвать точный файл.
-       Внешние ресурсы (шрифты с Google Fonts) — не критичны, их не
+       Внешние ресурсы (шрифты с Google Fonts) не критичны, их не
        путаем с отсутствующими файлами проекта. */
     if (e.target && e.target !== window && (e.target.src || e.target.href)) {
       var url = e.target.src || e.target.href;
+      /* картинка (например, скрин из кабинета) не грузится: сайт работает
+         дальше, просто пишем в консоль. Критичны только скрипт и стили. */
+      var tag = (e.target.tagName || "").toUpperCase();
+      if (tag !== "SCRIPT" && tag !== "LINK") {
+        console.warn("Не загрузился файл (не критично):", url);
+        return;
+      }
       var isExternal = /^https?:\/\//.test(url) && url.indexOf(location.origin) !== 0;
       if (isExternal) {
         console.warn("Внешний ресурс не загрузился (не критично):", url);
@@ -46,12 +54,12 @@
       showError(
         "Файл не найден: " + (e.target.tagName || "ресурс"),
         "Не удалось загрузить:\n" + url + "\n\n"
-        + "Похоже, вы открыли устаревшую или неполную копию проекта —\n"
+        + "Похоже, вы открыли устаревшую или неполную копию проекта:\n"
         + "в папке рядом с index.html нет файла dist/main.js или dist/main.css.\n\n"
         + "Решение:\n"
         + "1) Скачайте АКТУАЛЬНЫЙ архив заново и распакуйте в чистую папку\n"
         + "2) Убедитесь, что сервер (npx serve / http.server) запущен\n"
-        + "   именно из папки, где лежит этот index.html — не из родительской"
+        + "   именно из папки, где лежит этот index.html, а не из родительской"
       );
       return;
     }
@@ -69,8 +77,8 @@
         showError(
           "Сайт не отрисовался (пустой root)",
           isFile
-            ? "Страница открыта как файл (file://).\nБраузер блокирует загрузку скрипта из папки dist при открытии файла напрямую.\n\nРешение — запустите локальный сервер из папки проекта:\n  npx serve .\nи откройте адрес, который он покажет."
-            : "Скрипт main.js не выполнился, но файл загрузился.\nОткройте F12 → Console — там будет точная причина."
+            ? "Страница открыта как файл (file://).\nБраузер блокирует загрузку скрипта из папки dist при открытии файла напрямую.\n\nРешение: запустите локальный сервер из папки проекта:\n  npx serve .\nи откройте адрес, который он покажет."
+            : "Скрипт main.js не выполнился, но файл загрузился.\nОткройте F12 → Console, там будет точная причина."
         );
       }
     }, 2500);
