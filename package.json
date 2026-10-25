@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "esbuild src/main.jsx --bundle --minify --sourcemap --loader:.png=dataurl --loader:.woff2=file --loader:.woff=file --outdir=dist --entry-names=main --jsx=automatic --define:process.env.NODE_ENV='\"production\"'",
+    "build:site": "npm run build && node scripts/export-static.mjs",
     "dev": "esbuild src/main.jsx --bundle --loader:.png=dataurl --loader:.woff2=file --loader:.woff=file --outdir=dist --entry-names=main --jsx=automatic --define:process.env.NODE_ENV='\"development\"' --watch --servedir=."
   },
   "dependencies": {

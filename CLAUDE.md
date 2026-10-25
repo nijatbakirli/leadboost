@@ -140,7 +140,14 @@ npm run dev      # разработка, автопересборка, http://lo
 npm run build    # прод-сборка в dist/ (минификация + sourcemaps)
 ```
 
-Деплой: `index.html` + папка `dist/` (без `.map`-файлов).
+Деплой (Vercel): настройки в `vercel.json`. Vercel запускает
+`npm run build:site`: это обычная сборка + `scripts/export-static.mjs`,
+который кладёт готовый сайт в `public/` (index.html, dist/main.js,
+dist/main.css, img/; без `.map`). Без этого каждый деплой падал с
+`No Output Directory named "public"` (так было со всеми коммитами с августа
+2026). Функция `api/telegram.js` подхватывается из корня автоматически.
+`public/` в .gitignore, не коммитить. Проверить сборку как на Vercel
+локально: `npx vercel build` (нужен `.vercel/project.json`).
 
 ## Что ещё не сделано / известные TODO
 
@@ -150,8 +157,9 @@ npm run build    # прод-сборка в dist/ (минификация + sour
       на Vercel при первом деплое (без этого `api/telegram.js` вернёт 500)
 - [x] `NOTIFY_EMAIL` убран: запасной канал теперь WhatsApp (`CONTACTS` в config.js)
 - [ ] `SPOTS_LEFT` в config.js — обновлять вручную по факту занятости
-- [ ] Репозиторий не подключён к Vercel — нужно импортировать проект и
-      задать переменные окружения (см. пункт выше) при первом деплое
+- [x] Репозиторий подключён к Vercel (проект leadboost); деплои падали из-за
+      отсутствия папки public/, исправлено через vercel.json + build:site.
+      Важно: слияние в `main` = публикация сайта в продакшн на Vercel
 - [ ] Портфолио: реальных кейсов сайтов пока нет, слот "СКОРО" в работах —
       честная заглушка до первого проекта
 - [ ] Полная история решений и починенных багов — см. `docs/CODE_REVIEW.md`
