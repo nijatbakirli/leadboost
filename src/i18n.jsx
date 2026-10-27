@@ -1,15 +1,19 @@
 /* ============================================================
    МНОГОЯЗЫЧНОСТЬ
    UI: весь текст интерфейса (не контент, тот в data.jsx),
-   сгруппирован по секциям сайта. useLang: состояние текущего
-   языка, у нового посетителя всегда 'ru', дальше запоминается
-   в localStorage.
+   сгруппирован по секциям сайта.
+
+   Язык определяется адресом страницы: / русский, /kk/ казахский,
+   /en/ английский (см. src/seo.js). У каждой версии свой готовый
+   HTML, поэтому поисковики индексируют все три. Переключатель
+   меняет язык без перезагрузки и адрес в строке браузера.
 
    Заголовки секций устроены как в каруселях LeadBoost: строка(и)
    `pre` обычным белым, последняя строка `mark` на жёлтой плашке.
    Русский: обращение на «ты», без длинных тире (—).
    ============================================================ */
 import { useState, useEffect } from "react";
+import { LANG_PATHS, SEO, langFromPath } from "./seo.js";
 
 export const LANGS = [
   { code: "ru", label: "RU" },
@@ -17,25 +21,29 @@ export const LANGS = [
   { code: "en", label: "EN" },
 ];
 
-const LANG_KEY = "lb_lang";
-
-export function useLang() {
-  const [lang, setLangState] = useState("ru");
-
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(LANG_KEY);
-      if (saved && LANGS.some((l) => l.code === saved)) setLangState(saved);
-    } catch { /* приватный режим: просто остаёмся на русском */ }
-  }, []);
+export function useLang(initialLang = "ru") {
+  const [lang, setLangState] = useState(initialLang);
 
   useEffect(() => {
     document.documentElement.lang = lang;
+    document.title = SEO[lang].title;
   }, [lang]);
+
+  /* кнопка «назад» в браузере возвращает и язык */
+  useEffect(() => {
+    const onPop = () => setLangState(langFromPath(window.location.pathname));
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
   const setLang = (code) => {
     setLangState(code);
-    try { localStorage.setItem(LANG_KEY, code); } catch { /* не критично */ }
+    try {
+      const path = LANG_PATHS[code];
+      if (/^https?:$/.test(window.location.protocol) && window.location.pathname !== path) {
+        window.history.pushState({}, "", path + window.location.hash);
+      }
+    } catch { /* превью без нормального адреса: язык всё равно сменится */ }
   };
 
   return { lang, setLang };
@@ -51,7 +59,7 @@ export const UI = {
       greetingEvening: "Добрый вечер, это LeadBoost",
       statusOnline: "На связи", statusOffline: "Отвечу утром",
       h1: ["Реклама,", "которая приводит"], h1Mark: "клиентов",
-      lead: "Настраиваю таргет и делаю сайты, которые выдерживают этот трафик. Реклама, сайт и аналитика в одних руках с первого дня.",
+      lead: "Настраиваю таргетированную рекламу в Instagram и Facebook и делаю сайты, которые выдерживают этот трафик. Реклама, сайт и аналитика в одних руках с первого дня.",
       ctaPrimary: "Написать в WhatsApp", ctaSecondary: "Оставить заявку",
       proofLabel: "Из моего кабинета Meta", proofLink: "Смотреть скрины",
       statA: "кампаний запущено", statB: "средний ROAS клиентов",
@@ -60,7 +68,7 @@ export const UI = {
     statement: { pre: "Лайки не платят", mark: "по счетам", sub: "Хорошая реклама приводит не клики, а людей, готовых купить." },
     services: {
       label: "Услуги", pre: "От «где клиенты?»", mark: "до системы",
-      sub: "Основное: таргетированная реклама. Дополнительно: сайты под рекламу, креативы и понятные отчёты.",
+      sub: "Основное: таргетированная реклама в Instagram и Facebook. Дополнительно: сайты под рекламу, креативы и понятные отчёты.",
       nichesLabel: "С кем работаю",
     },
     work: {
@@ -146,7 +154,7 @@ export const UI = {
       greetingEvening: "Қайырлы кеш, бұл LeadBoost",
       statusOnline: "Байланыстамын", statusOffline: "Таңертең жауап беремін",
       h1: ["Клиент", "әкелетін"], h1Mark: "жарнама",
-      lead: "Таргетті баптаймын және осы трафикті көтере алатын сайттар жасаймын. Жарнама, сайт және аналитика бірінші күннен бір қолда.",
+      lead: "Instagram мен Facebook-та таргеттелген жарнаманы баптаймын және осы трафикті көтере алатын сайттар жасаймын. Жарнама, сайт және аналитика бірінші күннен бір қолда.",
       ctaPrimary: "WhatsApp-қа жазу", ctaSecondary: "Өтінім қалдыру",
       proofLabel: "Meta кабинетімнен", proofLink: "Скриндерді көру",
       statA: "іске қосылған науқан", statB: "клиенттердің орташа ROAS",
@@ -155,7 +163,7 @@ export const UI = {
     statement: { pre: "Лайктар", mark: "шот төлемейді", sub: "Жақсы жарнама клик емес, сатып алуға дайын адамдарды әкеледі." },
     services: {
       label: "Қызметтер", pre: "«Клиент қайда?» сұрағынан", mark: "жүйеге дейін",
-      sub: "Негізгісі: таргеттелген жарнама. Қосымша: жарнамаға арналған сайттар, креативтер және түсінікті есептер.",
+      sub: "Негізгісі: Instagram мен Facebook-тағы таргеттелген жарнама. Қосымша: жарнамаға арналған сайттар, креативтер және түсінікті есептер.",
       nichesLabel: "Кіммен жұмыс істеймін",
     },
     work: {
@@ -241,7 +249,7 @@ export const UI = {
       greetingEvening: "Good evening, this is LeadBoost",
       statusOnline: "Online", statusOffline: "Will reply in the morning",
       h1: ["Advertising", "that brings in"], h1Mark: "customers",
-      lead: "I run targeted ads and build websites that can handle that traffic. Ads, website and analytics in one pair of hands from day one.",
+      lead: "I set up targeted Instagram and Facebook ads and build websites that can handle that traffic. Ads, website and analytics in one pair of hands from day one.",
       ctaPrimary: "Message on WhatsApp", ctaSecondary: "Send a request",
       proofLabel: "From my Meta ad account", proofLink: "See the screenshots",
       statA: "campaigns launched", statB: "avg. client ROAS",
@@ -250,7 +258,7 @@ export const UI = {
     statement: { pre: "Likes don't", mark: "pay the bills", sub: "Good advertising brings people who are ready to buy, not just clicks." },
     services: {
       label: "Services", pre: "From “where are the customers?”", mark: "to a system",
-      sub: "Core: targeted advertising. Add-ons: websites built for ads, creatives and clear reporting.",
+      sub: "Core: targeted advertising on Instagram and Facebook. Add-ons: websites built for ads, creatives and clear reporting.",
       nichesLabel: "Who I work with",
     },
     work: {

@@ -5,8 +5,8 @@
    логика в interactions.jsx, мелкие компоненты в widgets.jsx.
    Визуальный стиль как в каруселях LeadBoost (см. styles.css).
    ============================================================ */
-import React, { useState } from "react";
-import LOGO_SRC from "./logo.png";
+import React, { useState, Suspense } from "react";
+import { asset } from "./assets.js";
 import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
@@ -16,12 +16,19 @@ import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer } 
 import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
 import { CONTENT } from "./data.jsx";
 import { UI, LANGS, useLang } from "./i18n.jsx";
+import { LANG_PATHS } from "./seo.js";
 import {
-  useScrollProgress, useClockStatus, useSpotlight, useVelocityMarquee,
+  useScrollProgress, useClockStatus, useMounted, useSpotlight, useVelocityMarquee,
   magnetHandlers, scrollToId, scrollToTop,
 } from "./interactions.jsx";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" };
+/* Часть страницы, которая "оживает" (hydrate) отдельной небольшой задачей:
+   браузер не зависает на одном долгом куске JavaScript после загрузки,
+   а то, по чему человек кликнул, React оживляет в первую очередь. */
+const Part = ({ children }) => <Suspense fallback={null}>{children}</Suspense>;
+/* логотип отдельным файлом (раньше был base64 внутри JS и утяжелял страницу) */
+const LOGO_SRC = asset("img/logo.webp");
 
 function SpotsBar() {
   return (
@@ -31,20 +38,17 @@ function SpotsBar() {
   );
 }
 
-/* одна лента: список слов, повторённый с крестиками-разделителями */
-function Tape({ items, trackRef, className }) {
+/* одна лента: список слов, повторённый три раза; крестики-разделители рисует CSS */
+/* хук бегущей ленты живёт внутри самой ленты: она оживает отдельно (см. Part) */
+function Tape({ items, className, dir = 1, speed = 0.6 }) {
+  const trackRef = useVelocityMarquee(dir, speed);
   const run = [...items, ...items, ...items];
   return (
     <div className={`tape ${className}`}>
       <div className="tape-track" ref={trackRef}>
         {[0, 1].map((k) => (
           <span className="tape-run" key={k}>
-            {run.map((w, i) => (
-              <React.Fragment key={i}>
-                <span>{w}</span>
-                <IconCross className="tape-x" />
-              </React.Fragment>
-            ))}
+            {run.map((w, i) => <span className="tape-word" key={i}>{w}</span>)}
           </span>
         ))}
       </div>
@@ -52,9 +56,9 @@ function Tape({ items, trackRef, className }) {
   );
 }
 
-export default function App() {
+export default function App({ initialLang = "ru" }) {
   /* --- Язык --- */
-  const { lang, setLang } = useLang();
+  const { lang, setLang } = useLang(initialLang);
   const D = CONTENT[lang];
   const t = UI[lang];
   const RU = CONTENT.ru; /* заявка в Telegram всегда на русском: её читает владелец, не посетитель */
@@ -68,12 +72,15 @@ export default function App() {
   const { progress, ctaVisible } = useScrollProgress();
   const { online } = useClockStatus(WORK_HOURS, WORK_TZ);
   const rootRef = useSpotlight();
-  const tapeWhatRef = useVelocityMarquee(1);
-  const tapeWhereRef = useVelocityMarquee(-1, 0.45);
 
-  /* --- Приветствие по времени суток посетителя --- */
-  const hour = new Date().getHours();
+  /* --- Приветствие по времени суток посетителя ---
+     В готовом HTML (собран заранее) всегда «Добрый день», в браузере
+     после загрузки подставляется приветствие по времени посетителя. */
+  const mounted = useMounted();
+  const hour = mounted ? new Date().getHours() : 12;
   const greeting = hour >= 5 && hour < 12 ? t.hero.greetingMorning : hour < 18 ? t.hero.greetingDay : t.hero.greetingEvening;
+  /* статус «на связи»: пока страница не запустилась, место держим, но не показываем */
+  const statusCls = online === null ? "pending" : online ? "on" : "off";
 
   /* --- ROI-калькулятор --- */
   const [roiBudget, setRoiBudget] = useState(1000);
@@ -122,7 +129,7 @@ export default function App() {
       {/* НАВБАР-ПИЛЮЛЯ */}
       <nav className="nav" aria-label="LeadBoost">
         <a href="#top" className="nav-logo" onClick={scrollToTop}>
-          <img src={LOGO_SRC} alt="LeadBoost" />
+          <img src={LOGO_SRC} alt="LeadBoost" width="114" height="20" />
         </a>
         <ul className="nav-links">
           <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
@@ -133,7 +140,15 @@ export default function App() {
         </ul>
         <div className="lang-switch" role="group" aria-label="Language">
           {LANGS.map((l) => (
-            <button key={l.code} type="button" className="lang-pill" aria-pressed={lang === l.code} onClick={() => setLang(l.code)}>{l.label}</button>
+            <a
+              key={l.code}
+              href={LANG_PATHS[l.code]}
+              hrefLang={l.code}
+              lang={l.code}
+              className="lang-pill"
+              aria-current={lang === l.code ? "true" : undefined}
+              onClick={(e) => { e.preventDefault(); setLang(l.code); }}
+            >{l.label}</a>
           ))}
         </div>
         <div className="nav-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>
@@ -147,11 +162,11 @@ export default function App() {
               <span className="corner tl" aria-hidden="true" />
               <span className="corner tr" aria-hidden="true" />
               <SecLabel className="hero-greet"><ScrambleText text={greeting} /></SecLabel>
-              <span className={`status ${online ? "on" : "off"}`}><i aria-hidden="true" />{online ? t.hero.statusOnline : t.hero.statusOffline}</span>
+              <span className={`status ${statusCls}`}><i aria-hidden="true" />{online === false ? t.hero.statusOffline : t.hero.statusOnline}</span>
             </div>
             <div className="hero-grid">
               <div className="tile hero-main">
-                <Heading as="h1" pre={t.hero.h1} mark={t.hero.h1Mark} className="hd-hero" />
+                <Heading as="h1" pre={t.hero.h1} mark={t.hero.h1Mark} className="hd-hero" instant />
                 <div>
                   <p className="hero-lead">{t.hero.lead}</p>
                   <div className="hero-actions">
@@ -185,12 +200,15 @@ export default function App() {
           </div>
         </section>
 
+        <Part>
         {/* ЛЕНТЫ: что делаю × где */}
         <div className="tapes" aria-hidden="true">
-          <Tape items={D.TAPE_WHERE} trackRef={tapeWhereRef} className="tape-w" />
-          <Tape items={D.TAPE_WHAT} trackRef={tapeWhatRef} className="tape-y" />
+          <Tape items={D.TAPE_WHERE} className="tape-w" dir={-1} speed={0.45} />
+          <Tape items={D.TAPE_WHAT} className="tape-y" />
         </div>
 
+        </Part>
+        <Part>
         {/* СТЕЙТМЕНТ */}
         <section className="statement">
           <div className="wrap">
@@ -199,6 +217,8 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* УСЛУГИ */}
         <section className="section" id="services">
           <div className="wrap">
@@ -215,7 +235,7 @@ export default function App() {
                 return (
                   <div className={`tile svc ${open ? "open" : ""}`} key={s.title}>
                     <button type="button" className="svc-row" onClick={() => setOpenSvc(open ? -1 : i)} aria-expanded={open} aria-controls={`svc-${i}`}>
-                      <span className="svc-ic" aria-hidden="true"><s.icon /></span>
+                      <span className="svc-ic" aria-hidden="true"><img src={asset(`img/icons/premium/${s.icon}.svg`)} alt="" width="46" height="46" decoding="async" /></span>
                       <span className="svc-title">
                         <span className="svc-name">{s.title}</span>
                         {s.badge && <span className={`badge ${s.badgeCls}`}>{s.badge}</span>}
@@ -245,6 +265,8 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* КЕЙСЫ */}
         <section className="section" id="work">
           <div className="wrap">
@@ -281,6 +303,8 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* ЦИФРЫ ИЗ КАБИНЕТА: настоящие скрины Meta Ads Manager */}
         <section className="section" id="results">
           <div className="wrap">
@@ -322,6 +346,8 @@ export default function App() {
           />
         </section>
 
+        </Part>
+        <Part>
         {/* ПРИНЦИПЫ */}
         <section className="section" id="how">
           <div className="wrap">
@@ -334,7 +360,7 @@ export default function App() {
             <div className="pr-grid">
               {D.PRINCIPLES.map((p) => (
                 <article className="tile pr" key={p.title}>
-                  <span className="pr-ic" aria-hidden="true"><p.icon /></span>
+                  <span className="pr-ic" aria-hidden="true"><img src={asset(`img/icons/premium/${p.icon}.svg`)} alt="" width="42" height="42" loading="lazy" decoding="async" /></span>
                   <h3 className="pr-title">{p.title}</h3>
                   <p className="pr-front">{p.front}</p>
                   <div className="pr-back">
@@ -348,6 +374,8 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* КОМУ ПОДХОДИТ */}
         <section className="section" id="fit">
           <div className="wrap">
@@ -371,6 +399,8 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* ТАРИФЫ */}
         <section className="section" id="pricing">
           <div className="wrap">
@@ -410,6 +440,8 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* КАЛЬКУЛЯТОР */}
         <section className="section" id="calculator">
           <div className="wrap">
@@ -444,6 +476,8 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* FAQ */}
         <section className="section" id="faq">
           <div className="wrap">
@@ -468,9 +502,13 @@ export default function App() {
           </div>
         </section>
 
+        </Part>
+        <Part>
         {/* МИНИ-ИГРА */}
         <TargetGame strings={t.game} promoWord={GAME.promoWord} need={GAME.hitsToWin} />
 
+        </Part>
+        <Part>
         {/* КОНТАКТ */}
         <section className="section" id="contact">
           <div className="wrap">
@@ -553,9 +591,11 @@ export default function App() {
             </div>
           </div>
         </section>
+        </Part>
       </main>
 
       {/* ФУТЕР */}
+      <Part>
       <footer className="footer">
         <div className="wrap">
           <div className="footer-top">
@@ -579,7 +619,7 @@ export default function App() {
             </div>
             <div className="f-col">
               <SecLabel className="lbl-sm">{t.footer.statusLabel}</SecLabel>
-              <p className={`status ${online ? "on" : "off"}`}><i aria-hidden="true" />{online ? t.footer.online : t.footer.offline}</p>
+              <p className={`status ${statusCls}`}><i aria-hidden="true" />{online === false ? t.footer.offline : t.footer.online}</p>
             </div>
           </div>
           <a className="brand-line" href={CONTACTS.whatsapp} {...ext}>
@@ -594,6 +634,7 @@ export default function App() {
           </div>
         </div>
       </footer>
+      </Part>
 
       {/* ПЛАВАЮЩИЙ WHATSAPP (десктоп) */}
       <a className={`wa-float ${ctaVisible ? "show" : ""}`} href={CONTACTS.whatsapp} {...ext} aria-label={t.common.whatsapp} tabIndex={ctaVisible ? 0 : -1}>

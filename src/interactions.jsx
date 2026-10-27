@@ -26,19 +26,29 @@ export function useScrollProgress(ctaThreshold = 650) {
   return { progress, ctaVisible };
 }
 
-/** Статус «на связи» по рабочим часам владельца (в его часовом поясе). */
+/** Статус «на связи» по рабочим часам владельца (в его часовом поясе).
+ *  До запуска в браузере возвращает online: null: готовый HTML собирается
+ *  заранее, и время сборки не должно попасть на страницу. */
 export function useClockStatus(workHours, timeZone) {
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState(null);
   useEffect(() => {
+    setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 60000);
     return () => clearInterval(id);
   }, []);
+  if (!now) return { online: null };
   let hour = now.getHours();
   try {
     hour = Number(new Intl.DateTimeFormat("en-GB", { hour: "2-digit", hourCycle: "h23", timeZone }).format(now));
   } catch { /* старый браузер без часовых поясов: берём местное время */ }
-  const online = hour >= workHours.from && hour < workHours.to;
-  return { online };
+  return { online: hour >= workHours.from && hour < workHours.to };
+}
+
+/** true после первого рендера в браузере (для всего, что зависит от времени). */
+export function useMounted() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted;
 }
 
 /** Спотлайт: CSS-переменные --mx/--my следуют за курсором. */

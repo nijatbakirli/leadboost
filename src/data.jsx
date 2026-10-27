@@ -12,19 +12,20 @@
 import {
   IconBag, IconCrossMed, IconBook, IconBuilding,
   IconBriefcase, IconSpa, IconFlower, IconCoffee,
-  IconAds, IconWebDev, IconDesign, IconAnalyticsP,
-  IconConsultation, IconStrategy, IconKPI, IconTransparency,
 } from "./icons.jsx";
+/* крупные иконки услуг и принципов лежат файлами в img/icons/premium/*.svg
+   (раньше были SVG внутри JS и утяжеляли и скрипт, и HTML) */
+import { asset } from "./assets.js";
 
 /* Скрины из кабинета (общие для всех языков: сами картинки на русском).
-   Файлы лежат в img/results/ рядом с index.html, путь относительный. */
+   Файлы лежат в img/results/, путь через asset() (см. src/assets.js). */
 const SHOTS = {
-  s4617: { src: "./img/results/meta-4617-conversations.webp", w: 764, h: 431 },
-  s165: { src: "./img/results/meta-165-conversations.webp", w: 764, h: 431 },
-  s52: { src: "./img/results/meta-52-conversations.webp", w: 764, h: 431 },
-  s75: { src: "./img/results/meta-75-conversations.webp", w: 764, h: 459 },
-  engagement: { src: "./img/results/meta-campaign-engagement.webp", w: 764, h: 235 },
-  traffic: { src: "./img/results/meta-campaign-traffic.webp", w: 764, h: 214 },
+  s4617: { src: asset("img/results/meta-4617-conversations.webp"), w: 764, h: 431 },
+  s165: { src: asset("img/results/meta-165-conversations.webp"), w: 764, h: 431 },
+  s52: { src: asset("img/results/meta-52-conversations.webp"), w: 764, h: 431 },
+  s75: { src: asset("img/results/meta-75-conversations.webp"), w: 764, h: 459 },
+  engagement: { src: asset("img/results/meta-campaign-engagement.webp"), w: 764, h: 235 },
+  traffic: { src: asset("img/results/meta-campaign-traffic.webp"), w: 764, h: 214 },
 };
 
 /* ============================== RU ============================== */
@@ -51,31 +52,31 @@ const ru = {
   ],
   SERVICES: [
     {
-      title: "Таргетированная реклама", badge: "основное", badgeCls: "main", icon: IconAds,
+      title: "Таргетированная реклама", badge: "основное", badgeCls: "main", icon: "ads",
       meta: "Instagram · Google · отчёт каждую неделю",
       chips: ["Настройка на нужную аудиторию", "Путь клиента до покупки", "Понятные еженедельные отчёты", "Слежу и улучшаю постоянно", "Показ тем, кто уже тебя видел"],
     },
     {
-      title: "Создание сайтов", badge: "дополнительно", badgeCls: "side", icon: IconWebDev,
+      title: "Создание сайтов", badge: "дополнительно", badgeCls: "side", icon: "webdev",
       meta: "Лендинг · Визитка · Интернет-магазин",
       chips: ["Лендинг под рекламную кампанию", "Сайт-визитка", "Интернет-магазин с оплатой", "Сайт сразу проектируется под рекламу", "Вместе с рекламой дешевле"],
     },
     {
-      title: "Креативы", badge: null, badgeCls: "", icon: IconDesign,
+      title: "Креативы", badge: null, badgeCls: "", icon: "design",
       meta: "Картинки · Видео · Тексты объявлений",
       chips: ["Рекламные картинки", "Короткие видео", "Тексты, которые останавливают скролл"],
     },
     {
-      title: "Аналитика и отчёты", badge: null, badgeCls: "", icon: IconAnalyticsP,
+      title: "Аналитика и отчёты", badge: null, badgeCls: "", icon: "analytics",
       meta: "Простые цифры без сложных слов",
       chips: ["Сколько людей написали", "Во сколько обошёлся каждый", "План, что делать дальше"],
     },
   ],
   PRINCIPLES: [
-    { icon: IconStrategy, title: "Запуск на первой неделе", front: "Первые объявления выходят в течение 7 дней после старта, без долгих согласований.", back: "Созвон в понедельник, к пятнице первые объявления уже крутятся. Никаких «ждём согласования креативов третью неделю»." },
-    { icon: IconKPI, title: "Цифры вместо слов", front: "Каждую неделю понятный отчёт: сколько людей написали и во сколько это обошлось.", back: "Каждую пятницу 5 строк в мессенджер. Например: заявок 34, цена $3,8, тестируем новое видео. Всё." },
-    { icon: IconConsultation, title: "Честно, даже если невыгодно", front: "Скажу прямо, если твоему бизнесу реклама сейчас не поможет.", back: "Если вижу, что реклама сейчас не окупится, говорю это на первом созвоне и объясняю, что поправить сначала." },
-    { icon: IconTransparency, title: "Без договоров-ловушек", front: "Можно уйти в любой момент. Остаюсь, потому что работает, а не потому что подписано.", back: "Оплата помесячно. Не понравилось, просто не продлеваешь. Кабинет и все настройки остаются у тебя." },
+    { icon: "strategy", title: "Запуск на первой неделе", front: "Первые объявления выходят в течение 7 дней после старта, без долгих согласований.", back: "Созвон в понедельник, к пятнице первые объявления уже крутятся. Никаких «ждём согласования креативов третью неделю»." },
+    { icon: "kpi", title: "Цифры вместо слов", front: "Каждую неделю понятный отчёт: сколько людей написали и во сколько это обошлось.", back: "Каждую пятницу 5 строк в мессенджер. Например: заявок 34, цена $3,8, тестируем новое видео. Всё." },
+    { icon: "consultation", title: "Честно, даже если невыгодно", front: "Скажу прямо, если твоему бизнесу реклама сейчас не поможет.", back: "Если вижу, что реклама сейчас не окупится, говорю это на первом созвоне и объясняю, что поправить сначала." },
+    { icon: "transparency", title: "Без договоров-ловушек", front: "Можно уйти в любой момент. Остаюсь, потому что работает, а не потому что подписано.", back: "Оплата помесячно. Не понравилось, просто не продлеваешь. Кабинет и все настройки остаются у тебя." },
   ],
   FIT_YES: [
     "Есть товар или услуга, и хотя бы пара человек их уже купили",
@@ -140,6 +141,7 @@ const ru = {
     { q: "Сколько стоит сайт?", a: "Зависит от сложности: от простого лендинга до интернет-магазина с оплатой. Цену и сроки скажу после короткого созвона." },
     { q: "Что если заявки есть, а продаж нет?", a: "Посмотрим вместе, что происходит после того, как человек написал. Иногда дело не в рекламе, и если так, скажу честно." },
     { q: "А если через неделю не понравится?", a: "Просто разойдёмся, без штрафов и лишних вопросов." },
+    { q: "Работаешь только с Казахстаном?", a: "Нет. Работаю удалённо с бизнесом из Казахстана (Алматы, Астана и другие города), Азербайджана и других стран СНГ. Всё общение в мессенджере и на созвонах." },
   ],
   /* ленты под первым экраном: что делаю × где */
   TAPE_WHAT: ["Таргет", "Сайты", "Креативы", "Аналитика"],
@@ -170,31 +172,31 @@ const kk = {
   ],
   SERVICES: [
     {
-      title: "Таргеттелген жарнама", badge: "негізгі", badgeCls: "main", icon: IconAds,
+      title: "Таргеттелген жарнама", badge: "негізгі", badgeCls: "main", icon: "ads",
       meta: "Instagram · Google · апта сайын есеп",
       chips: ["Керек аудиторияға баптау", "Клиенттің сатып алуға дейінгі жолы", "Түсінікті апта сайынғы есептер", "Үнемі қадағалап, жақсартамын", "Сізді бұрын көргендерге көрсету"],
     },
     {
-      title: "Сайт жасау", badge: "қосымша", badgeCls: "side", icon: IconWebDev,
+      title: "Сайт жасау", badge: "қосымша", badgeCls: "side", icon: "webdev",
       meta: "Лендинг · Визитка · Интернет-дүкен",
       chips: ["Жарнама науқанына арналған лендинг", "Визитка-сайт", "Төлемі бар интернет-дүкен", "Сайт бірден жарнамаға лайықталып жобаланады", "Жарнамамен бірге арзанырақ"],
     },
     {
-      title: "Креативтер", badge: null, badgeCls: "", icon: IconDesign,
+      title: "Креативтер", badge: null, badgeCls: "", icon: "design",
       meta: "Суреттер · Видео · Жарнама мәтіндері",
       chips: ["Жарнамалық суреттер", "Қысқа видеолар", "Скроллды тоқтататын мәтіндер"],
     },
     {
-      title: "Аналитика және есептер", badge: null, badgeCls: "", icon: IconAnalyticsP,
+      title: "Аналитика және есептер", badge: null, badgeCls: "", icon: "analytics",
       meta: "Күрделі сөздерсіз қарапайым цифрлар",
       chips: ["Қанша адам жазды", "Әрқайсысы қанша тұрды", "Әрі қарай не істеу керегі туралы жоспар"],
     },
   ],
   PRINCIPLES: [
-    { icon: IconStrategy, title: "Бірінші аптада іске қосу", front: "Алғашқы хабарландырулар бастаудан кейін 7 күн ішінде шығады, ұзақ келісусіз.", back: "Дүйсенбіде қоңырау, жұмаға қарай алғашқы хабарландырулар қосылады. «Креативтерді үшінші апта келісіп жатырмыз» деген жоқ." },
-    { icon: IconKPI, title: "Сөздің орнына цифрлар", front: "Апта сайын түсінікті есеп: қанша адам жазды және бұл қанша тұрды.", back: "Әр жұма сайын мессенджерге 5 жол. Мысалы: өтінімдер 34, баға $3,8, жаңа видеоны сынаймыз. Бәрі осы." },
-    { icon: IconConsultation, title: "Тиімсіз болса да адал", front: "Егер қазір жарнама бизнесіңізге көмектеспейтін болса, тікелей айтамын.", back: "Жарнама қазір өзін ақтамайтынын көрсем, мұны бірінші қоңырауда айтамын және алдымен нені түзету керектігін түсіндіремін." },
-    { icon: IconTransparency, title: "Тұзақ келісімшартсыз", front: "Кез келген уақытта кетуге болады. Мен қаламын, өйткені бұл жұмыс істейді, қол қойылғаны үшін емес.", back: "Ай сайынғы төлем. Ұнамаса, жай ғана жаңартпайсыз. Кабинет пен барлық баптаулар өзіңізде қалады." },
+    { icon: "strategy", title: "Бірінші аптада іске қосу", front: "Алғашқы хабарландырулар бастаудан кейін 7 күн ішінде шығады, ұзақ келісусіз.", back: "Дүйсенбіде қоңырау, жұмаға қарай алғашқы хабарландырулар қосылады. «Креативтерді үшінші апта келісіп жатырмыз» деген жоқ." },
+    { icon: "kpi", title: "Сөздің орнына цифрлар", front: "Апта сайын түсінікті есеп: қанша адам жазды және бұл қанша тұрды.", back: "Әр жұма сайын мессенджерге 5 жол. Мысалы: өтінімдер 34, баға $3,8, жаңа видеоны сынаймыз. Бәрі осы." },
+    { icon: "consultation", title: "Тиімсіз болса да адал", front: "Егер қазір жарнама бизнесіңізге көмектеспейтін болса, тікелей айтамын.", back: "Жарнама қазір өзін ақтамайтынын көрсем, мұны бірінші қоңырауда айтамын және алдымен нені түзету керектігін түсіндіремін." },
+    { icon: "transparency", title: "Тұзақ келісімшартсыз", front: "Кез келген уақытта кетуге болады. Мен қаламын, өйткені бұл жұмыс істейді, қол қойылғаны үшін емес.", back: "Ай сайынғы төлем. Ұнамаса, жай ғана жаңартпайсыз. Кабинет пен барлық баптаулар өзіңізде қалады." },
   ],
   FIT_YES: [
     "Тауарыңыз немесе қызметіңіз бар, және оны кем дегенде бірнеше адам сатып алған",
@@ -259,6 +261,7 @@ const kk = {
     { q: "Сайт қанша тұрады?", a: "Күрделілігіне байланысты: қарапайым лендингтен төлемі бар интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын." },
     { q: "Өтінімдер бар, ал сатылым жоқ болса ше?", a: "Адам жазғаннан кейін не болатынын бірге қараймыз. Кейде мәселе жарнамада емес, солай болса, адал айтамын." },
     { q: "Ал бір аптадан кейін ұнамаса ше?", a: "Жай ғана тоқтатамыз, айыппұлсыз және артық сұрақсыз." },
+    { q: "Тек Қазақстанмен жұмыс істейсіз бе?", a: "Жоқ. Қазақстан (Алматы, Астана және басқа қалалар), Әзербайжан және ТМД-ның басқа елдеріндегі бизнеспен қашықтан жұмыс істеймін. Барлық байланыс мессенджерде және қоңырауларда." },
   ],
   TAPE_WHAT: ["Таргет", "Сайттар", "Креативтер", "Аналитика"],
   TAPE_WHERE: ["Instagram", "Facebook", "TikTok", "Threads", "Google"],
@@ -288,31 +291,31 @@ const en = {
   ],
   SERVICES: [
     {
-      title: "Targeted advertising", badge: "core", badgeCls: "main", icon: IconAds,
+      title: "Targeted advertising", badge: "core", badgeCls: "main", icon: "ads",
       meta: "Instagram · Google · weekly report",
       chips: ["Targeting the right audience", "Customer journey to purchase", "Clear weekly reports", "Ongoing monitoring and optimization", "Retargeting people who already saw you"],
     },
     {
-      title: "Website development", badge: "add-on", badgeCls: "side", icon: IconWebDev,
+      title: "Website development", badge: "add-on", badgeCls: "side", icon: "webdev",
       meta: "Landing page · Business site · Online store",
       chips: ["A landing page built for an ad campaign", "A simple business site", "An online store with payments", "Sites are designed for advertising from day one", "Cheaper when bundled with advertising"],
     },
     {
-      title: "Creatives", badge: null, badgeCls: "", icon: IconDesign,
+      title: "Creatives", badge: null, badgeCls: "", icon: "design",
       meta: "Images · Video · Ad copy",
       chips: ["Ad images", "Short-form video", "Copy that stops the scroll"],
     },
     {
-      title: "Analytics and reporting", badge: null, badgeCls: "", icon: IconAnalyticsP,
+      title: "Analytics and reporting", badge: null, badgeCls: "", icon: "analytics",
       meta: "Simple numbers, no jargon",
       chips: ["How many people messaged", "Cost per lead", "A plan for what to do next"],
     },
   ],
   PRINCIPLES: [
-    { icon: IconStrategy, title: "Live in the first week", front: "The first ads go live within 7 days of kickoff, no lengthy approvals.", back: "A call on Monday, first ads running by Friday. No “we're still approving creatives in week three.”" },
-    { icon: IconKPI, title: "Numbers, not words", front: "A clear report every week: how many people messaged and what it cost.", back: "Every Friday, 5 lines in a chat. For example: leads 34, cost $3.8, testing a new video. That's it." },
-    { icon: IconConsultation, title: "Honest, even when it costs me", front: "I'll tell you straight if advertising won't help your business right now.", back: "If I see that ads won't pay off right now, I say so on the first call and explain what to fix first." },
-    { icon: IconTransparency, title: "No lock-in contracts", front: "You can leave any time. I stay because it works, not because you signed something.", back: "Month-to-month billing. Didn't like it, just don't renew. The ad account and every setting stay yours." },
+    { icon: "strategy", title: "Live in the first week", front: "The first ads go live within 7 days of kickoff, no lengthy approvals.", back: "A call on Monday, first ads running by Friday. No “we're still approving creatives in week three.”" },
+    { icon: "kpi", title: "Numbers, not words", front: "A clear report every week: how many people messaged and what it cost.", back: "Every Friday, 5 lines in a chat. For example: leads 34, cost $3.8, testing a new video. That's it." },
+    { icon: "consultation", title: "Honest, even when it costs me", front: "I'll tell you straight if advertising won't help your business right now.", back: "If I see that ads won't pay off right now, I say so on the first call and explain what to fix first." },
+    { icon: "transparency", title: "No lock-in contracts", front: "You can leave any time. I stay because it works, not because you signed something.", back: "Month-to-month billing. Didn't like it, just don't renew. The ad account and every setting stay yours." },
   ],
   FIT_YES: [
     "You already have a product or service, and at least a couple of people have bought it",
@@ -377,6 +380,7 @@ const en = {
     { q: "How much does a website cost?", a: "Depends on complexity: from a simple landing page to an online store with payments. I'll give you a price and timeline after a short call." },
     { q: "What if I get leads but no sales?", a: "We'll look together at what happens after someone messages you. Sometimes the issue isn't the ads, and if so, I'll tell you honestly." },
     { q: "What if I don't like it after a week?", a: "We simply part ways, no penalties and no awkward questions." },
+    { q: "Do you only work with Kazakhstan?", a: "No. I work remotely with businesses in Kazakhstan (Almaty, Astana and other cities), Azerbaijan and other CIS countries. All communication happens in messengers and on calls." },
   ],
   TAPE_WHAT: ["Targeting", "Websites", "Creatives", "Analytics"],
   TAPE_WHERE: ["Instagram", "Facebook", "TikTok", "Threads", "Google"],

@@ -59,10 +59,12 @@ function CountMetric({ value, className = "" }) {
 }
 
 /* жёлтая плашка-выделение, как последняя строка заголовка в каруселях:
-   при появлении на экране плашка "наезжает" слева направо */
-function Mark({ children }) {
+   при появлении на экране плашка "наезжает" слева направо.
+   instant: плашка видна сразу, без анимации (первый экран: он должен
+   выглядеть готовым ещё до загрузки JavaScript) */
+function Mark({ children, instant = false }) {
   const [ref, show] = useReveal();
-  return <span ref={ref} className={`hl ${show ? "show" : ""}`}>{children}</span>;
+  return <span ref={ref} className={`hl ${instant || show ? "show" : ""}`}>{children}</span>;
 }
 
 /* моно-лейбл секции: "// УСЛУГИ" */
@@ -75,12 +77,12 @@ function SecLabel({ children, className = "" }) {
 }
 
 /* заголовок в стиле каруселей: строки pre белым + строка mark на жёлтой плашке */
-function Heading({ as: Tag = "h2", pre, mark, className = "" }) {
+function Heading({ as: Tag = "h2", pre, mark, className = "", instant = false }) {
   const lines = Array.isArray(pre) ? pre : [pre];
   return (
     <Tag className={`hd ${className}`}>
       {lines.filter(Boolean).map((l, i) => <span className="hd-line" key={i}>{l}</span>)}
-      {mark && <span className="hd-line"><Mark>{mark}</Mark></span>}
+      {mark && <span className="hd-line"><Mark instant={instant}>{mark}</Mark></span>}
     </Tag>
   );
 }

@@ -4,3 +4,5 @@ dist/*.map
 *.log
 public/
 .vercel/
+.build/
+dist/

@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LeadBoost: реклама, которая приводит клиентов</title>
-  <meta name="description" content="Настройка таргетированной рекламы и создание сайтов для малого и среднего бизнеса. Первая реклама на первой неделе, понятные отчёты каждую неделю." />
-  <meta property="og:title" content="LeadBoost: реклама, которая приводит клиентов" />
-  <meta property="og:description" content="Таргет + сайты в одних руках. 3-4 проекта в месяц, лично." />
-  <meta property="og:type" content="website" />
+  <!-- seo:start: при сборке (scripts/build-site.mjs) этот блок заменяется на
+       title, description, canonical, hreflang, Open Graph и JSON-LD для каждого языка -->
+  <title>Таргетированная реклама в Казахстане и СНГ | LeadBoost</title>
+  <meta name="description" content="Таргетированная реклама в Instagram и Facebook для бизнеса в Казахстане и СНГ: заявки в WhatsApp, отчёт каждую неделю, запуск за 7 дней. От $170 в месяц." />
+  <!-- seo:end -->
   <meta name="theme-color" content="#0F1216" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@500;700&family=Oswald:wght@700&display=swap" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
   <style>*{margin:0;padding:0}html,body{margin:0;background:#0F1216}</style>
-  <link rel="stylesheet" href="./dist/main.css" />
+  <link rel="stylesheet" href="/dist/main.css" />
 </head>
 <body>
   <div id="root"></div>
@@ -54,12 +55,11 @@
       showError(
         "Файл не найден: " + (e.target.tagName || "ресурс"),
         "Не удалось загрузить:\n" + url + "\n\n"
-        + "Похоже, вы открыли устаревшую или неполную копию проекта:\n"
-        + "в папке рядом с index.html нет файла dist/main.js или dist/main.css.\n\n"
+        + "Похоже, проект ещё не собран: папка dist/ не хранится в репозитории.\n\n"
         + "Решение:\n"
-        + "1) Скачайте АКТУАЛЬНЫЙ архив заново и распакуйте в чистую папку\n"
-        + "2) Убедитесь, что сервер (npx serve / http.server) запущен\n"
-        + "   именно из папки, где лежит этот index.html, а не из родительской"
+        + "1) В папке проекта выполните: npm install, затем npm run build\n"
+        + "2) Запустите сервер (npx serve .) именно из папки, где лежит\n"
+        + "   этот index.html, а не из родительской"
       );
       return;
     }
@@ -85,6 +85,6 @@
   });
 })();
 </script>
-  <script src="./dist/main.js"></script>
+  <script src="/dist/main.js"></script>
 </body>
 </html>
