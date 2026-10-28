@@ -10,8 +10,8 @@
    из Meta Ads Manager: цифры не правились, креативы клиентов размыты.
    ============================================================ */
 import {
-  IconBag, IconCrossMed, IconBook, IconBuilding,
-  IconBriefcase, IconSpa, IconFlower, IconCoffee,
+  IconNicheShop, IconNicheClinic, IconNicheEducation, IconNicheRealty,
+  IconNicheB2B, IconNicheMassage, IconNicheFlowers, IconNicheCoffee,
 } from "./icons.jsx";
 /* крупные иконки услуг и принципов лежат файлами в img/icons/premium/*.svg
    (раньше были SVG внутри JS и утяжеляли и скрипт, и HTML) */
@@ -42,14 +42,14 @@ const ru = {
   },
   /* блок «С кем работаю»: ниша и что реклама в ней приводит */
   NICHES: [
-    { icon: IconBag, label: "Интернет-магазины", desc: "заказы из Instagram и с сайта" },
-    { icon: IconCrossMed, label: "Клиники", desc: "запись на приём" },
-    { icon: IconBook, label: "Онлайн-обучение", desc: "заявки на курсы и вебинары" },
-    { icon: IconBuilding, label: "Недвижимость", desc: "заявки на просмотр и звонки" },
-    { icon: IconBriefcase, label: "B2B-услуги", desc: "заявки для отдела продаж" },
-    { icon: IconSpa, label: "Массажные салоны", desc: "запись на сеансы" },
-    { icon: IconFlower, label: "Цветочные магазины", desc: "заказы букетов" },
-    { icon: IconCoffee, label: "Кофейни", desc: "гости из ближайших кварталов" },
+    { icon: IconNicheShop, label: "Интернет-магазины", desc: "заказы из Instagram и с сайта" },
+    { icon: IconNicheClinic, label: "Клиники", desc: "запись на приём" },
+    { icon: IconNicheEducation, label: "Онлайн-обучение", desc: "заявки на курсы и вебинары" },
+    { icon: IconNicheRealty, label: "Недвижимость", desc: "заявки на просмотр и звонки" },
+    { icon: IconNicheB2B, label: "B2B-услуги", desc: "заявки для отдела продаж" },
+    { icon: IconNicheMassage, label: "Массажные салоны", desc: "запись на сеансы" },
+    { icon: IconNicheFlowers, label: "Цветочные магазины", desc: "заказы букетов" },
+    { icon: IconNicheCoffee, label: "Кофейни", desc: "гости из ближайших кварталов" },
   ],
   SERVICES: [
     {
@@ -162,14 +162,14 @@ const kk = {
     coffee: { label: "кофехана", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
-    { icon: IconBag, label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
-    { icon: IconCrossMed, label: "Клиникалар", desc: "қабылдауға жазылу" },
-    { icon: IconBook, label: "Онлайн-оқыту", desc: "курстар мен вебинарларға өтінімдер" },
-    { icon: IconBuilding, label: "Жылжымайтын мүлік", desc: "көруге өтінімдер мен қоңыраулар" },
-    { icon: IconBriefcase, label: "B2B-қызметтер", desc: "сату бөліміне өтінімдер" },
-    { icon: IconSpa, label: "Массаж салондары", desc: "сеанстарға жазылу" },
-    { icon: IconFlower, label: "Гүл дүкендері", desc: "гүл шоқтарына тапсырыстар" },
-    { icon: IconCoffee, label: "Кофеханалар", desc: "жақын маңдағы қонақтар" },
+    { icon: IconNicheShop, label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
+    { icon: IconNicheClinic, label: "Клиникалар", desc: "қабылдауға жазылу" },
+    { icon: IconNicheEducation, label: "Онлайн-оқыту", desc: "курстар мен вебинарларға өтінімдер" },
+    { icon: IconNicheRealty, label: "Жылжымайтын мүлік", desc: "көруге өтінімдер мен қоңыраулар" },
+    { icon: IconNicheB2B, label: "B2B-қызметтер", desc: "сату бөліміне өтінімдер" },
+    { icon: IconNicheMassage, label: "Массаж салондары", desc: "сеанстарға жазылу" },
+    { icon: IconNicheFlowers, label: "Гүл дүкендері", desc: "гүл шоқтарына тапсырыстар" },
+    { icon: IconNicheCoffee, label: "Кофеханалар", desc: "жақын маңдағы қонақтар" },
   ],
   SERVICES: [
     {
@@ -281,14 +281,14 @@ const en = {
     coffee: { label: "coffee shop", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
-    { icon: IconBag, label: "Online stores", desc: "orders from Instagram and your site" },
-    { icon: IconCrossMed, label: "Clinics", desc: "appointment bookings" },
-    { icon: IconBook, label: "Online education", desc: "sign-ups for courses and webinars" },
-    { icon: IconBuilding, label: "Real estate", desc: "viewing requests and calls" },
-    { icon: IconBriefcase, label: "B2B services", desc: "leads for your sales team" },
-    { icon: IconSpa, label: "Massage salons", desc: "session bookings" },
-    { icon: IconFlower, label: "Flower shops", desc: "bouquet orders" },
-    { icon: IconCoffee, label: "Coffee shops", desc: "guests from the neighborhood" },
+    { icon: IconNicheShop, label: "Online stores", desc: "orders from Instagram and your site" },
+    { icon: IconNicheClinic, label: "Clinics", desc: "appointment bookings" },
+    { icon: IconNicheEducation, label: "Online education", desc: "sign-ups for courses and webinars" },
+    { icon: IconNicheRealty, label: "Real estate", desc: "viewing requests and calls" },
+    { icon: IconNicheB2B, label: "B2B services", desc: "leads for your sales team" },
+    { icon: IconNicheMassage, label: "Massage salons", desc: "session bookings" },
+    { icon: IconNicheFlowers, label: "Flower shops", desc: "bouquet orders" },
+    { icon: IconNicheCoffee, label: "Coffee shops", desc: "guests from the neighborhood" },
   ],
   SERVICES: [
     {

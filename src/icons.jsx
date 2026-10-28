@@ -8,14 +8,59 @@ const IconMark = (p) => (
     <path d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
   </svg>
 );
-const IconBag = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><path d="M6 8h12l-1 12H7L6 8z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" /><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke="currentColor" strokeWidth="1.7" /></svg>);
-const IconCrossMed = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.7" /><path d="M12 8v8M8 12h8" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /></svg>);
-const IconBook = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" /><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5a1.5 1.5 0 0 0 1.5-1.5v-13z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" /></svg>);
-const IconBuilding = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><rect x="5" y="3" width="10" height="18" rx="1" stroke="currentColor" strokeWidth="1.7" /><path d="M15 21h4V9l-4-2" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" /></svg>);
-const IconBriefcase = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><rect x="3" y="7" width="18" height="12" rx="2" stroke="currentColor" strokeWidth="1.7" /><path d="M8 7V5.5A1.5 1.5 0 0 1 9.5 4h5A1.5 1.5 0 0 1 16 5.5V7" stroke="currentColor" strokeWidth="1.7" /></svg>);
-const IconSpa = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><path d="M12 21c-4-2-6-5.5-6-9 2 0 4 1 6 3 2-2 4-3 6-3 0 3.5-2 7-6 9z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" /><path d="M12 12V6M9 5c0 1.7 1.3 3 3 3s3-1.3 3-3" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" /></svg>);
-const IconFlower = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><circle cx="12" cy="12" r="2.2" fill="currentColor" /><circle cx="12" cy="6.5" r="2.8" stroke="currentColor" strokeWidth="1.5" /><circle cx="12" cy="17.5" r="2.8" stroke="currentColor" strokeWidth="1.5" /><circle cx="6.5" cy="12" r="2.8" stroke="currentColor" strokeWidth="1.5" /><circle cx="17.5" cy="12" r="2.8" stroke="currentColor" strokeWidth="1.5" /></svg>);
-const IconCoffee = (p) => (<svg width="17" height="17" viewBox="0 0 24 24" fill="none" {...p}><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" /><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17" stroke="currentColor" strokeWidth="1.7" /></svg>);
+/*! Иконки блока «С кем работаю»: Lucide (https://lucide.dev), один набор
+    и одна толщина линии, чтобы плитки смотрелись ровно.
+    ISC License. Copyright (c) 2026 Lucide Icons and Contributors.
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted, provided that the above
+    copyright notice and this permission notice appear in all copies.
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+    ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+    Иконка shopping-bag взята Lucide из Feather: The MIT License (MIT),
+    Copyright (c) 2013-present Cole Bemis. Permission is hereby granted, free
+    of charge, to any person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use, copy, modify,
+    merge, publish, distribute, sublicense, and/or sell copies of the Software,
+    and to permit persons to whom the Software is furnished to do so, subject
+    to the following conditions: The above copyright notice and this permission
+    notice shall be included in all copies or substantial portions of the
+    Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+    NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+    OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+    USE OR OTHER DEALINGS IN THE SOFTWARE. Полный текст: LICENSES/lucide.txt */
+const lucide = (shapes) => {
+  const Icon = (p) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false" {...p}>{shapes}</svg>
+  );
+  return Icon;
+};
+/* интернет-магазины: shopping-bag */
+const IconNicheShop = lucide(<><path d="M16 10a4 4 0 0 1-8 0" /><path d="M3.103 6.034h17.794" /><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" /></>);
+/* клиники: stethoscope */
+const IconNicheClinic = lucide(<><path d="M11 2v2" /><path d="M5 2v2" /><path d="M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1" /><path d="M8 15a6 6 0 0 0 12 0v-3" /><circle cx="20" cy="10" r="2" /></>);
+/* онлайн-обучение: graduation-cap */
+const IconNicheEducation = lucide(<><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /><path d="M22 10v6" /><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></>);
+/* недвижимость: house */
+const IconNicheRealty = lucide(<><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></>);
+/* b2b-услуги: briefcase-business */
+const IconNicheB2B = lucide(<><path d="M12 12h.01" /><path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" /><path d="M22 13a18.15 18.15 0 0 1-20 0" /><rect width="20" height="14" x="2" y="6" rx="2" /></>);
+/* массажные салоны: hand-heart */
+const IconNicheMassage = lucide(<><path d="M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16" /><path d="m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95" /><path d="m2 15 6 6" /><path d="m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91" /></>);
+/* цветочные магазины: flower-2 */
+const IconNicheFlowers = lucide(<><path d="M12 5a3 3 0 1 1 3 3m-3-3a3 3 0 1 0-3 3m3-3v1M9 8a3 3 0 1 0 3 3M9 8h1m5 0a3 3 0 1 1-3 3m3-3h-1m-2 3v-1" /><circle cx="12" cy="8" r="2" /><path d="M12 10v12" /><path d="M12 22c4.2 0 7-1.667 7-5-4.2 0-7 1.667-7 5Z" /><path d="M12 22c-4.2 0-7-1.667-7-5 4.2 0 7 1.667 7 5Z" /></>);
+/* кофейни: coffee */
+const IconNicheCoffee = lucide(<><path d="M10 2v2" /><path d="M14 2v2" /><path d="M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1" /><path d="M6 2v2" /></>);
+/* жёлтая плитка «Твоей ниши нет?»: message-circle-more */
+const IconNicheAsk = lucide(<><path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" /><path d="M8 12h.01" /><path d="M12 12h.01" /><path d="M16 12h.01" /></>);
 
 
 /* Нейтральные глифы-заглушки для карусели.
@@ -65,6 +110,14 @@ const IconCross = (p) => ui("M5 5l14 14M19 5L5 19", p, 2.6);
 const IconPlus = (p) => ui("M12 4v16M4 12h16", p);
 const IconChevronDown = (p) => ui("M5 9l7 7 7-7", p);
 const IconExpand = (p) => ui("M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7", p, 2.2);
+/* глобус на кнопке переключателя языка */
+const IconGlobe = (p) => (
+  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" {...p}>
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2" />
+    <ellipse cx="12" cy="12" rx="4" ry="9" stroke="currentColor" strokeWidth="2" />
+    <path d="M3 12h18" stroke="currentColor" strokeWidth="2" />
+  </svg>
+);
 /* нейтральное «облачко» сообщения для кнопок WhatsApp (без фирменного знака) */
 const IconChat = (p) => (
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" {...p}>
@@ -74,7 +127,8 @@ const IconChat = (p) => (
 );
 
 export {
-  IconMark, IconBag, IconCrossMed, IconBook, IconBuilding, IconBriefcase, IconSpa, IconFlower, IconCoffee,
+  IconMark, IconNicheShop, IconNicheClinic, IconNicheEducation, IconNicheRealty, IconNicheB2B,
+  IconNicheMassage, IconNicheFlowers, IconNicheCoffee, IconNicheAsk, IconGlobe,
   IconCamera, IconNote, IconAt, IconSearch, IconLike, IconCrosshair, IconLayout, IconLayers, IconPulse,
   IconAds, IconWebDev, IconDesign, IconAnalyticsP, IconConsultant, IconCaseStudies,
   IconConsultation, IconStrategy, IconKPI, IconSuccess, IconSupport, IconTransparency,

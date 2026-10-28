@@ -15,10 +15,12 @@
 import { useState, useEffect, startTransition } from "react";
 import { LANG_PATHS, SEO, langFromPath } from "./seo.js";
 
+/* label: код на кнопке переключателя, name: название в выпадающем списке
+   (каждое на своём языке, так его узнают те, кто ищет свой язык) */
 export const LANGS = [
-  { code: "ru", label: "RU" },
-  { code: "kk", label: "KZ" },
-  { code: "en", label: "EN" },
+  { code: "ru", label: "RU", name: "Русский" },
+  { code: "kk", label: "KZ", name: "Қазақша" },
+  { code: "en", label: "EN", name: "English" },
 ];
 
 export function useLang(initialLang = "ru") {
@@ -57,7 +59,7 @@ export function useLang(initialLang = "ru") {
 export const UI = {
   ru: {
     nav: { services: "Услуги", work: "Кейсы", results: "Цифры", pricing: "Тарифы", contact: "Контакт" },
-    common: { whatsapp: "Написать в WhatsApp", instagram: "Instagram", toTop: "Наверх" },
+    common: { whatsapp: "Написать в WhatsApp", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
       greetingMorning: "Доброе утро, это LeadBoost",
       greetingDay: "Добрый день, это LeadBoost",
@@ -156,7 +158,7 @@ export const UI = {
 
   kk: {
     nav: { services: "Қызметтер", work: "Кейстер", results: "Цифрлар", pricing: "Тарифтер", contact: "Байланыс" },
-    common: { whatsapp: "WhatsApp-қа жазу", instagram: "Instagram", toTop: "Жоғарыға" },
+    common: { whatsapp: "WhatsApp-қа жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
     hero: {
       greetingMorning: "Қайырлы таң, бұл LeadBoost",
       greetingDay: "Қайырлы күн, бұл LeadBoost",
@@ -255,7 +257,7 @@ export const UI = {
 
   en: {
     nav: { services: "Services", work: "Cases", results: "Numbers", pricing: "Pricing", contact: "Contact" },
-    common: { whatsapp: "Message on WhatsApp", instagram: "Instagram", toTop: "Back to top" },
+    common: { whatsapp: "Message on WhatsApp", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
       greetingMorning: "Good morning, this is LeadBoost",
       greetingDay: "Good afternoon, this is LeadBoost",

@@ -48,7 +48,9 @@ const client = await build({
   publicPath: "/assets/",
   minify: true,
   target: ["es2019"],
-  legalComments: "none",
+  /* тексты лицензий (React, иконки Lucide и т.п.) уходят в отдельный файл
+     рядом со скриптом (*.LEGAL.txt), в самом JS только ссылка на него */
+  legalComments: "linked",
   metafile: true,
 });
 const outputs = Object.keys(client.metafile.outputs).map((p) => "/" + p.replace(/^public\//, ""));

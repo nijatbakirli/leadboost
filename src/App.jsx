@@ -10,12 +10,12 @@
    клик или скролл обновляет одну секцию, а не всю страницу,
    и не задевает секции, которые браузер ещё «оживляет» (см. Part).
    ============================================================ */
-import React, { useState, Suspense, useSyncExternalStore } from "react";
+import React, { useState, useEffect, useRef, Suspense, useSyncExternalStore } from "react";
 import { asset } from "./assets.js";
 import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconChat, IconCamera,
+  IconChevronDown, IconExpand, IconChat, IconCamera, IconGlobe, IconNicheAsk,
 } from "./icons.jsx";
 import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer } from "./widgets.jsx";
 import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
@@ -101,7 +101,61 @@ function NavProgress() {
   return <div className="nav-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>;
 }
 
-/* НАВБАР-ПИЛЮЛЯ */
+/* Переключатель языка: одна кнопка с текущим языком, по нажатию список.
+   В списке настоящие ссылки на /, /kk/, /en/ (их видят поисковики), но клик
+   меняет язык без перезагрузки. Закрывается по клику мимо, Esc и уходу фокуса. */
+function LangMenu({ t, lang, setLang }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const onKey = (e) => {
+      if (e.key !== "Escape") return;
+      setOpen(false);
+      ref.current?.querySelector(".lang-btn")?.focus();
+    };
+    document.addEventListener("pointerdown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
+  }, [open]);
+  const current = LANGS.find((l) => l.code === lang) || LANGS[0];
+  return (
+    <div
+      className={`lang-menu ${open ? "open" : ""}`}
+      ref={ref}
+      onBlur={(e) => { if (open && ref.current && !ref.current.contains(e.relatedTarget)) setOpen(false); }}
+    >
+      <button type="button" className="lang-btn" aria-expanded={open} aria-controls="lang-list" onClick={() => setOpen(!open)}>
+        <IconGlobe className="lang-globe" />
+        <span className="sr-only">{t.common.language}: </span>
+        <span className="lang-cur">{current.label}</span>
+        <IconChevronDown className="lang-chev" />
+      </button>
+      <ul className="lang-list" id="lang-list">
+        {LANGS.map((l) => (
+          <li key={l.code}>
+            <a
+              href={LANG_PATHS[l.code]}
+              hrefLang={l.code}
+              lang={l.code}
+              aria-current={lang === l.code ? "true" : undefined}
+              onClick={(e) => { e.preventDefault(); setOpen(false); setLang(l.code); }}
+            >
+              <span className="lang-code" aria-hidden="true">{l.label}</span>
+              <span className="lang-name">{l.name}</span>
+              {lang === l.code && <IconCheck className="lang-check" />}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* НАВБАР-ПИЛЮЛЯ. Логотип фиксированного размера и никогда не сжимается;
+   ссылки прячутся по ширине экрана (классы nav-hide-*), чтобы всё
+   помещалось в «пилюлю» на любом телефоне и на любом из трёх языков. */
 function Nav({ t, lang, setLang }) {
   return (
     <nav className="nav" aria-label="LeadBoost">
@@ -109,25 +163,13 @@ function Nav({ t, lang, setLang }) {
         <img src={LOGO_SRC} alt="LeadBoost" width="114" height="20" />
       </a>
       <ul className="nav-links">
-        <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
+        <li className="nav-hide-xxs"><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
         <li className="nav-hide-xs"><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
         <li className="nav-hide-sm"><a href="#results" onClick={scrollToId("results")}>{t.nav.results}</a></li>
         <li className="nav-hide-sm"><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
         <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
       </ul>
-      <div className="lang-switch" role="group" aria-label="Language">
-        {LANGS.map((l) => (
-          <a
-            key={l.code}
-            href={LANG_PATHS[l.code]}
-            hrefLang={l.code}
-            lang={l.code}
-            className="lang-pill"
-            aria-current={lang === l.code ? "true" : undefined}
-            onClick={(e) => { e.preventDefault(); setLang(l.code); }}
-          >{l.label}</a>
-        ))}
-      </div>
+      <LangMenu t={t} lang={lang} setLang={setLang} />
       <NavProgress />
     </nav>
   );
@@ -245,7 +287,7 @@ function Niches({ t, D }) {
           ))}
           <li className="niche-cta-item">
             <a className="tile niche niche-cta" href={CONTACTS.whatsapp} {...ext}>
-              <span className="niche-ic" aria-hidden="true"><IconChat /></span>
+              <span className="niche-ic" aria-hidden="true"><IconNicheAsk /></span>
               <span className="niche-txt">
                 <span className="niche-name">{t.niches.ctaTitle}</span>
                 <span className="niche-desc">{t.niches.ctaText}</span>
