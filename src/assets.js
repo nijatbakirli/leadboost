@@ -3,7 +3,13 @@
    На сайте это корень "/": страницы /kk/ и /en/ берут картинки
    оттуда же. В превью-артефакте статика лежит рядом со страницей,
    там index.html задаёт window.LB_BASE = "./".
+   Относительный путь превращаем в полный адрес один раз при загрузке:
+   иначе после смены языка (адрес страницы меняется на /en/ или /kk/)
+   браузер искал бы картинки в /en/img/... и показывал битые иконки.
    При сборке HTML (на сервере) window нет, и тоже берётся "/".
    ============================================================ */
-export const BASE = (typeof window !== "undefined" && window.LB_BASE) || "/";
+const RAW = typeof window !== "undefined" ? window.LB_BASE : "";
+export const BASE = RAW ? new URL(RAW, document.baseURI).href : "/";
 export const asset = (path) => BASE + path;
+/* превью-артефакт: страница живёт не на адресах сайта (/kk/, /en/) */
+export const IS_PREVIEW = Boolean(RAW);

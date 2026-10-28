@@ -15,7 +15,7 @@ import { asset } from "./assets.js";
 import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconChat, IconCamera, IconGlobe, IconNicheAsk,
+  IconChevronDown, IconExpand, IconChat, IconCamera, IconNicheAsk, FlagRU, FlagKZ, FlagGB,
 } from "./icons.jsx";
 import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer } from "./widgets.jsx";
 import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
@@ -101,10 +101,14 @@ function NavProgress() {
   return <div className="nav-progress" aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>;
 }
 
-/* Переключатель языка: одна кнопка с текущим языком, по нажатию список.
-   В списке настоящие ссылки на /, /kk/, /en/ (их видят поисковики), но клик
-   меняет язык без перезагрузки. Закрывается по клику мимо, Esc и уходу фокуса. */
-function LangMenu({ t, lang, setLang }) {
+/* круглые флаги языков; для английского британский флаг */
+const FLAGS = { ru: FlagRU, kk: FlagKZ, en: FlagGB };
+
+/* Переключатель языка: кнопка с флагом и коротким названием (RU / KZ / EN),
+   по нажатию список. В списке настоящие ссылки на /, /kk/, /en/ (их видят
+   поисковики), но клик меняет язык без перезагрузки. Закрывается по клику
+   мимо, Esc и уходу фокуса. onOpen: закрыть мобильное меню, если открыто. */
+function LangMenu({ t, lang, setLang, onOpen }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
@@ -120,58 +124,149 @@ function LangMenu({ t, lang, setLang }) {
     return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
   }, [open]);
   const current = LANGS.find((l) => l.code === lang) || LANGS[0];
+  const CurFlag = FLAGS[current.code];
+  const toggle = () => { if (!open && onOpen) onOpen(); setOpen(!open); };
   return (
     <div
       className={`lang-menu ${open ? "open" : ""}`}
       ref={ref}
       onBlur={(e) => { if (open && ref.current && !ref.current.contains(e.relatedTarget)) setOpen(false); }}
     >
-      <button type="button" className="lang-btn" aria-expanded={open} aria-controls="lang-list" onClick={() => setOpen(!open)}>
-        <IconGlobe className="lang-globe" />
+      <button type="button" className="lang-btn" aria-expanded={open} aria-controls="lang-list" onClick={toggle}>
+        <CurFlag />
         <span className="sr-only">{t.common.language}: </span>
         <span className="lang-cur">{current.label}</span>
         <IconChevronDown className="lang-chev" />
       </button>
       <ul className="lang-list" id="lang-list">
-        {LANGS.map((l) => (
-          <li key={l.code}>
-            <a
-              href={LANG_PATHS[l.code]}
-              hrefLang={l.code}
-              lang={l.code}
-              aria-current={lang === l.code ? "true" : undefined}
-              onClick={(e) => { e.preventDefault(); setOpen(false); setLang(l.code); }}
-            >
-              <span className="lang-code" aria-hidden="true">{l.label}</span>
-              <span className="lang-name">{l.name}</span>
-              {lang === l.code && <IconCheck className="lang-check" />}
-            </a>
-          </li>
-        ))}
+        {LANGS.map((l) => {
+          const Flag = FLAGS[l.code];
+          return (
+            <li key={l.code}>
+              <a
+                href={LANG_PATHS[l.code]}
+                hrefLang={l.code}
+                lang={l.code}
+                aria-current={lang === l.code ? "true" : undefined}
+                onClick={(e) => { e.preventDefault(); setOpen(false); setLang(l.code); }}
+              >
+                <Flag />
+                <span className="lang-code">{l.label}</span>
+                <span className="sr-only"> {l.name}</span>
+                {lang === l.code && <IconCheck className="lang-check" />}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
 }
 
-/* НАВБАР-ПИЛЮЛЯ. Логотип фиксированного размера и никогда не сжимается;
-   ссылки прячутся по ширине экрана (классы nav-hide-*), чтобы всё
-   помещалось в «пилюлю» на любом телефоне и на любом из трёх языков. */
-function Nav({ t, lang, setLang }) {
+/* разделы в мобильном меню (id секций на странице, подписи в UI.nav) */
+const MENU_IDS = ["services", "niches", "work", "results", "pricing", "faq", "contact"];
+
+/* МОБИЛЬНОЕ МЕНЮ (до 760px): панель под шапкой со всеми разделами и кнопками
+   WhatsApp и Instagram. Стоит вне <nav>: у навбара есть transform и
+   backdrop-filter, и внутри него position: fixed считался бы от навбара,
+   а не от экрана. Пока меню открыто, страница под ним не прокручивается. */
+function MobileMenu({ t, open, close, burgerRef }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    root.style.overflow = "hidden";
+    const onKey = (e) => {
+      if (e.key !== "Escape") return;
+      close();
+      burgerRef.current?.focus();
+    };
+    const onResize = () => { if (window.innerWidth > 760) close(); };
+    document.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      root.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [open]);
+  /* пункт меню: закрыть, вернуть прокрутку и плавно доехать до раздела */
+  const go = (id) => (e) => {
+    e.preventDefault();
+    document.documentElement.style.overflow = "";
+    close();
+    scrollToId(id)();
+  };
   return (
-    <nav className="nav" aria-label="LeadBoost">
-      <a href="#top" className="nav-logo" onClick={scrollToTop}>
-        <img src={LOGO_SRC} alt="LeadBoost" width="114" height="20" />
-      </a>
-      <ul className="nav-links">
-        <li className="nav-hide-xxs"><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
-        <li className="nav-hide-xs"><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
-        <li className="nav-hide-sm"><a href="#results" onClick={scrollToId("results")}>{t.nav.results}</a></li>
-        <li className="nav-hide-sm"><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
-        <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
-      </ul>
-      <LangMenu t={t} lang={lang} setLang={setLang} />
-      <NavProgress />
-    </nav>
+    <>
+      <div className={`m-menu-backdrop ${open ? "open" : ""}`} onClick={close} aria-hidden="true" />
+      <div
+        id="m-menu"
+        className={`m-menu ${open ? "open" : ""}`}
+        ref={ref}
+        onBlur={(e) => {
+          const to = e.relatedTarget;
+          if (open && to && !ref.current.contains(to) && to !== burgerRef.current) close();
+        }}
+      >
+        <ol className="m-menu-list">
+          {MENU_IDS.map((id, i) => (
+            <li key={id}>
+              <a href={`#${id}`} onClick={go(id)}>
+                <span className="m-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+                <span className="m-txt">{t.nav[id]}</span>
+                <IconArrowRight className="m-arrow" />
+              </a>
+            </li>
+          ))}
+        </ol>
+        <div className="m-menu-cta">
+          <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />{t.common.whatsapp}</a>
+          <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />{CONTACTS.instagramHandle}</a>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* ШАПКА: навбар-пилюля + мобильное меню.
+   Компьютер (от 761px): логотип, пять ссылок, язык.
+   Телефон и планшет: логотип, язык и кнопка меню, ссылки в панели.
+   Логотип фиксированного размера и никогда не сжимается (иначе Safari
+   на iPhone ужимал его до нуля, когда в шапке не хватало места). */
+function Header({ t, lang, setLang }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const burgerRef = useRef(null);
+  const closeMenu = () => setMenuOpen(false);
+  return (
+    <>
+      <nav className="nav" aria-label="LeadBoost">
+        <a href="#top" className="nav-logo" onClick={(e) => { document.documentElement.style.overflow = ""; closeMenu(); scrollToTop(e); }}>
+          <img src={LOGO_SRC} alt="LeadBoost" width="114" height="20" />
+        </a>
+        <ul className="nav-links">
+          <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
+          <li><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
+          <li><a href="#results" onClick={scrollToId("results")}>{t.nav.results}</a></li>
+          <li><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
+          <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
+        </ul>
+        <LangMenu t={t} lang={lang} setLang={setLang} onOpen={closeMenu} />
+        <button
+          type="button"
+          ref={burgerRef}
+          className={`burger ${menuOpen ? "open" : ""}`}
+          aria-label={t.nav.menu}
+          aria-expanded={menuOpen}
+          aria-controls="m-menu"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          <i /><i /><i />
+        </button>
+        <NavProgress />
+      </nav>
+      <MobileMenu t={t} open={menuOpen} close={closeMenu} burgerRef={burgerRef} />
+    </>
   );
 }
 
@@ -731,7 +826,7 @@ export default function App({ initialLang = "ru" }) {
   return (
     <div className="cl-root" ref={rootRef}>
       <div className="spotlight" aria-hidden="true" />
-      <Nav t={t} lang={lang} setLang={setLang} />
+      <Header t={t} lang={lang} setLang={setLang} />
 
       <main>
         <Hero t={t} D={D} />
