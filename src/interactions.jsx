@@ -8,22 +8,34 @@ import { useState, useEffect, useRef } from "react";
 const pointerFine = () => window.matchMedia("(pointer: fine)").matches;
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/** Прогресс чтения страницы (0–100) + флаг показа плавающих CTA. */
-export function useScrollProgress(ctaThreshold = 650) {
+/** Прогресс чтения страницы, 0–100 (полоска в навбаре).
+ *  Вызывать в маленьком компоненте: он перерисовывается на каждый скролл. */
+export function useScrollProgress() {
   const [progress, setProgress] = useState(0);
-  const [ctaVisible, setCtaVisible] = useState(false);
   useEffect(() => {
     const onScroll = () => {
       const h = document.documentElement;
       const max = h.scrollHeight - h.clientHeight;
       setProgress(max > 0 ? (h.scrollTop / max) * 100 : 0);
-      setCtaVisible(h.scrollTop > ctaThreshold);
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [ctaThreshold]);
-  return { progress, ctaVisible };
+  }, []);
+  return progress;
+}
+
+/** true, когда страница прокручена ниже порога (показ плавающих кнопок).
+ *  Меняется только при пересечении порога, а не на каждый скролл. */
+export function useScrolledPast(threshold = 650) {
+  const [past, setPast] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setPast(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+  return past;
 }
 
 /** Статус «на связи» по рабочим часам владельца (в его часовом поясе).

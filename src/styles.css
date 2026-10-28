@@ -359,31 +359,83 @@ html, body { background: #0F1216; margin: 0; }
   .svc-chips { padding: 0 16px 18px; }
 }
 
-.niches { margin-top: 56px; }
-.niche-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
-.niche {
-  display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px 10px 14px;
-  background: var(--tile); border: 2px solid var(--line); border-radius: 999px;
-  font-weight: 600; font-size: 15.5px; color: var(--ink-2);
+/* ---------- с кем работаю: сетка ниш 3×3 ---------- */
+/* все ряды одной высоты (1fr): плитки ровные, даже если где-то подпись в две строки */
+.niche-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 20px; }
+.niche { display: flex; align-items: center; gap: 16px; padding: 22px 24px; }
+.niche-ic {
+  width: 60px; height: 60px; flex-shrink: 0; border-radius: 16px;
+  background: var(--tile-2); color: var(--y); display: flex; align-items: center; justify-content: center;
 }
-.niche-ic { width: 20px; height: 20px; color: var(--y); flex-shrink: 0; }
+.niche-ic svg { display: block; width: 30px; height: 30px; }
+.niche-txt { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.niche-name {
+  font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink);
+  font-size: clamp(20px, 1.6vw, 23px); line-height: 1.15; overflow-wrap: break-word;
+}
+.niche-desc { font-size: 15px; line-height: 1.4; color: var(--muted); }
+/* девятая плитка: жёлтая, ведёт в WhatsApp */
+.niche-cta-item { display: flex; }
+.niche-cta { flex: 1; min-width: 0; text-decoration: none; background: var(--y); border-color: var(--y); transition: transform .18s ease; }
+.niche-cta:hover { transform: translateY(-3px); }
+.cl-root .niche-cta:focus-visible { border-radius: var(--r-tile); }
+.niche-cta .niche-ic { background: var(--y-ink); }
+.niche-cta .niche-ic svg { width: 28px; height: 28px; }
+.niche-cta .niche-name { color: var(--y-ink); }
+.niche-cta .niche-desc { color: rgba(15,18,22,0.8); }
+.niche-arrow { width: 24px; height: 24px; flex-shrink: 0; margin-left: auto; color: var(--y-ink); transition: transform .2s ease; }
+.niche-cta:hover .niche-arrow { transform: translateX(4px); }
+@media (max-width: 1100px) {
+  .niche-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .niche-cta-item { grid-column: 1 / -1; }
+}
+@media (max-width: 720px) { .cl-root .niche-cta:focus-visible { border-radius: 22px; } }
+@media (max-width: 560px) {
+  .niche-grid { gap: 12px; grid-auto-rows: auto; }
+  .niche { flex-direction: column; align-items: flex-start; gap: 14px; padding: 18px 14px 20px; }
+  .niche-ic { width: 46px; height: 46px; border-radius: 13px; }
+  .niche-ic svg { width: 24px; height: 24px; }
+  /* размер от ширины экрана: «НЕДВИЖИМОСТЬ», «ЖЫЛЖЫМАЙТЫН» влезают и на 360px */
+  .niche-name { font-size: clamp(15px, 4.5vw, 18px); }
+  .niche-desc { font-size: 14.5px; }
+  .niche-cta { flex-direction: row; align-items: center; }
+  .niche-cta .niche-ic svg { width: 22px; height: 22px; }
+}
+/* самые узкие телефоны: по одной плитке в ряд, иконка слева (иначе длинные слова не влезают) */
+@media (max-width: 359px) {
+  .niche-grid { grid-template-columns: minmax(0, 1fr); }
+  .niche { flex-direction: row; align-items: center; }
+  .niche-name { font-size: 17px; }
+}
 
-/* ---------- кейсы ---------- */
-.case-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-.case { display: flex; flex-direction: column; min-height: 330px; }
-.case-top { display: flex; flex-direction: column; gap: 6px; margin-bottom: auto; }
+/* ---------- кейсы: две равные карточки + полоса «скоро» ---------- */
+.case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.case { display: flex; flex-direction: column; padding: 34px 40px 36px; }
+.case-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px 16px; }
 .case-top .lbl { margin: 0; }
-.case-cat { font-size: 14.5px; color: var(--dim); }
-.case-big { margin-top: 34px; font-family: var(--f-display); font-weight: 700; color: var(--y); font-size: clamp(64px, 6.6vw, 100px); line-height: 0.95; letter-spacing: -0.01em; }
-.case-h { margin: 8px 0 0; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: clamp(22px, 2.1vw, 28px); line-height: 1.15; }
-.case-h-soon { margin-top: 34px; font-size: clamp(30px, 3vw, 40px); }
+.case-cat {
+  font-family: var(--f-mono); font-weight: 700; text-transform: uppercase; font-size: 12.5px; line-height: 1; letter-spacing: .07em;
+  color: var(--muted); border: 2px solid var(--line-2); border-radius: 999px; padding: 7px 11px; white-space: nowrap;
+}
+.case-big { margin-top: 36px; font-family: var(--f-display); font-weight: 700; color: var(--y); font-size: clamp(72px, 8vw, 116px); line-height: 0.95; letter-spacing: -0.01em; }
+.case-h { margin: 12px 0 0; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: clamp(22px, 2.1vw, 28px); line-height: 1.15; }
 .case-desc { margin: 10px 0 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
-.case-soon { background: transparent; border-style: dashed; border-color: var(--line-2); }
-.case-btn { align-self: flex-start; margin-top: 20px; }
+.case-soon {
+  margin-top: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 22px 40px;
+  padding: 28px 40px; background: transparent; border-style: dashed; border-color: var(--line-2);
+}
+.case-soon-txt { flex: 1 1 420px; min-width: 0; }
+.case-soon .case-top { justify-content: flex-start; }
+.case-soon .case-h { margin-top: 16px; font-size: clamp(26px, 2.6vw, 34px); }
+.case-soon .case-desc { max-width: 620px; }
 @media (max-width: 900px) {
   .case-grid { grid-template-columns: 1fr; gap: 14px; }
-  .case { min-height: 0; }
-  .case-big, .case-h-soon { margin-top: 22px; }
+  .case-soon { margin-top: 14px; }
+}
+@media (max-width: 720px) {
+  .case, .case-soon { padding: 22px; }
+  .case-big { margin-top: 26px; }
+  .case-soon .btn { width: 100%; }
 }
 
 /* ---------- цифры из кабинета ---------- */
@@ -444,6 +496,16 @@ html, body { background: #0F1216; margin: 0; }
 .not-promise { margin: 20px 0 0; font-size: 16.5px; line-height: 1.65; color: var(--muted); }
 .not-promise b { color: var(--ink); font-weight: 600; }
 @media (max-width: 760px) { .pr-grid { grid-template-columns: 1fr; gap: 14px; } }
+/* две карточки в ряд: заголовки, тексты и блоки «На практике» на одном уровне,
+   блоки «На практике» одной высоты (CSS subgrid; без него карточки просто как раньше) */
+@media (min-width: 761px) {
+  .pr-grid { row-gap: 0; }
+  .pr { display: grid; grid-row: span 4; grid-template-rows: subgrid; row-gap: 0; }
+  .pr:nth-child(n+3) { margin-top: 20px; }
+  .pr-title { margin-top: 20px; }
+  .pr-front { margin-top: 14px; }
+  .pr-back { margin-top: 18px; }
+}
 
 /* ---------- кому подходит ---------- */
 .fit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
@@ -459,13 +521,20 @@ html, body { background: #0F1216; margin: 0; }
 .fit-yes .fit-ic { color: var(--y); }
 .fit-no .fit-ic { color: var(--dim); }
 @media (max-width: 780px) { .fit-grid { grid-template-columns: 1fr; gap: 14px; } }
+/* пункты «Подходит» и «Пока рано» строка в строку (число строк задаёт App.jsx) */
+@media (min-width: 781px) {
+  .fit-grid { row-gap: 0; }
+  .fit { display: grid; grid-row: span var(--fit-span, 5); grid-template-rows: subgrid; row-gap: 0; }
+  .fit ul { display: grid; grid-row: span var(--fit-rows, 4); grid-template-rows: subgrid; row-gap: 0; }
+}
 
 /* ---------- тарифы ---------- */
 .price-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .price { display: flex; flex-direction: column; }
 .price.pop { border-color: var(--y); }
-.price-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; min-height: 28px; }
-.price-top .lbl { margin: 0; }
+/* в узкой карточке плашка «Выбор большинства» уходит под название, а не рвёт его */
+.price-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 10px; min-height: 28px; }
+.price-top .lbl { margin: 0; white-space: nowrap; }
 .price-val { display: flex; align-items: baseline; gap: 10px; margin: 18px 0 6px; }
 .price-num { font-family: var(--f-display); font-weight: 700; font-size: 64px; line-height: 1; color: var(--ink); }
 .price.pop .price-num { color: var(--y); }
@@ -479,6 +548,11 @@ html, body { background: #0F1216; margin: 0; }
 .web-note strong { display: block; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 22px; line-height: 1.2; }
 .web-note span { display: block; margin-top: 6px; color: var(--muted); font-size: 16px; }
 @media (max-width: 900px) { .price-grid { grid-template-columns: 1fr; gap: 14px; } }
+/* три тарифа в ряд: цена, подпись, список и кнопка на одном уровне во всех карточках */
+@media (min-width: 901px) {
+  .price-grid { row-gap: 0; }
+  .price { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; }
+}
 
 /* ---------- поля ввода ---------- */
 .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
@@ -498,8 +572,12 @@ select.input option { color: #E9EDF2; background: #151A21; }
 
 /* ---------- калькулятор ---------- */
 .roi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; overflow: hidden; }
-.roi-inputs { padding: 32px; }
+.roi-inputs { padding: 32px; display: flex; flex-direction: column; justify-content: center; }
 .roi-range { width: 100%; accent-color: var(--y); margin-top: 6px; }
+.roi-scale {
+  display: flex; justify-content: space-between; margin-top: 8px;
+  font-family: var(--f-mono); font-weight: 700; font-size: 13px; letter-spacing: .04em; color: var(--dim);
+}
 .roi-results { background: var(--tile-2); padding: 30px 32px; display: flex; flex-direction: column; justify-content: center; }
 .roi-out { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 14px 0; border-top: 2px solid var(--line-2); }
 .roi-out:first-child { border-top: 0; }
@@ -512,9 +590,21 @@ select.input option { color: #E9EDF2; background: #151A21; }
   .roi-inputs, .roi-results { padding: 22px; }
 }
 
-/* ---------- вопросы ---------- */
-.hd-faq { margin-bottom: 40px; }
-.faq-list { display: flex; flex-direction: column; gap: 12px; max-width: 900px; }
+/* ---------- вопросы: заголовок слева (едет вместе со списком), вопросы справа ---------- */
+.faq-layout { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0 64px; align-items: start; }
+.faq-side { position: sticky; top: 110px; }
+.hd-faq { font-size: clamp(34px, 4.4vw, 60px); }
+.faq-more { margin-top: 30px; }
+.faq-more p { margin: 0 0 18px; max-width: 420px; font-size: 17px; line-height: 1.6; color: var(--muted); }
+.faq-list { display: flex; flex-direction: column; gap: 12px; }
+@media (max-width: 900px) {
+  .faq-layout { display: flex; flex-direction: column; }
+  .faq-side { display: contents; }
+  .faq-head { order: 0; margin-bottom: 30px; }
+  .faq-list { order: 1; }
+  .faq-more { order: 2; margin-top: 26px; }
+}
+@media (max-width: 720px) { .faq-more .btn { width: 100%; } }
 .faq { padding: 0; overflow: hidden; transition: border-color .2s ease; }
 .faq.open { border-color: var(--y); }
 .faq-q {
@@ -530,12 +620,25 @@ select.input option { color: #E9EDF2; background: #151A21; }
 .faq-a p { margin: 0; padding: 0 26px 24px; font-size: 16.5px; line-height: 1.6; color: var(--body); }
 @media (max-width: 720px) { .faq-q { padding: 18px; font-size: 17px; } .faq-a p { padding: 0 18px 20px; } }
 
-/* ---------- мини-игра ---------- */
-.game-card { display: flex; flex-direction: column; align-items: flex-start; gap: 22px; }
+/* ---------- мини-игра: текст и кнопка слева, большая мишень справа ---------- */
+.game-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 28px 48px; padding: 40px 48px; overflow: hidden; }
+.game-card.playing { grid-template-columns: minmax(0, 1fr); }
 .game-head .lbl { margin-bottom: 14px; }
-.game-title { margin: 0; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: clamp(28px, 3.4vw, 44px); line-height: 1.15; }
-.game-head p { margin: 10px 0 0; color: var(--muted); font-size: 16.5px; }
-.game-area { position: relative; width: 100%; height: 320px; border: 2px dashed var(--line-2); border-radius: 20px; overflow: hidden; background: var(--bg); }
+.game-title { margin: 0; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: clamp(28px, 3.4vw, 46px); line-height: 1.15; }
+.game-head p { margin: 12px 0 0; max-width: 540px; color: var(--muted); font-size: 17px; line-height: 1.55; }
+.game-play { margin-top: 26px; }
+.game-deco { width: clamp(170px, 17vw, 230px); aspect-ratio: 1; color: var(--y); cursor: crosshair; margin: -10px 0; }
+.game-deco svg { display: block; width: 100%; height: 100%; }
+.game-deco-spin { transform-box: fill-box; transform-origin: 50% 50%; animation: deco-spin 30s linear infinite; }
+@keyframes deco-spin { to { transform: rotate(360deg); } }
+.game-deco-core { transform-box: fill-box; transform-origin: 50% 50%; transition: transform .25s ease; }
+.game-deco:hover .game-deco-core { transform: scale(1.3); }
+.game-area { grid-column: 1 / -1; position: relative; width: 100%; height: 320px; border: 2px dashed var(--line-2); border-radius: 20px; overflow: hidden; background: var(--bg); }
+@media (max-width: 720px) {
+  .game-card { grid-template-columns: minmax(0, 1fr); padding: 22px; }
+  .game-deco { display: none; }
+  .game-play { width: 100%; }
+}
 .game-target {
   position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; padding: 0; border: 0;
   background: none; color: var(--y); cursor: crosshair; border-radius: 50%;
@@ -656,7 +759,7 @@ select.input option { color: #E9EDF2; background: #151A21; }
 }
 @media (pointer: coarse) { .spotlight { display: none; } }
 
-#top, #services, #work, #results, #how, #fit, #pricing, #calculator, #faq, #game, #contact { scroll-margin-top: 90px; }
+#top, #services, #niches, #work, #results, #how, #fit, #pricing, #calculator, #faq, #game, #contact { scroll-margin-top: 90px; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {

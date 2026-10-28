@@ -111,14 +111,25 @@ function TargetGame({ strings, promoWord, need = 5 }) {
   return (
     <section className="section game-section" id="game">
       <div className="wrap">
-        <div className="tile game-card">
+        <div className={`tile game-card ${playing ? "playing" : ""}`}>
           <div className="game-head">
             <SecLabel>{strings.label}</SecLabel>
             <h3 className="game-title">{strings.title}</h3>
             <p>{strings.subtitle(need)}</p>
+            {!playing && <button type="button" className="btn btn-ghost game-play" onClick={start}>{strings.playBtn}</button>}
           </div>
           {!playing ? (
-            <button className="btn btn-ghost" onClick={start}>{strings.playBtn}</button>
+            /* большая мишень справа: украшение, клик мышкой тоже запускает игру
+               (с клавиатуры для этого есть кнопка «Играть») */
+            <div className="game-deco" aria-hidden="true" onClick={start}>
+              <svg viewBox="0 0 220 220" fill="none">
+                <path d="M110 0v58M110 162v58M0 110h58M162 110h58" stroke="#2A323C" strokeWidth="2" />
+                <circle className="game-deco-spin" cx="110" cy="110" r="100" stroke="currentColor" strokeWidth="3" strokeDasharray="3 12" strokeLinecap="round" opacity=".55" />
+                <circle cx="110" cy="110" r="76" stroke="currentColor" strokeWidth="4" />
+                <circle cx="110" cy="110" r="50" stroke="currentColor" strokeWidth="4" />
+                <circle className="game-deco-core" cx="110" cy="110" r="22" fill="currentColor" />
+              </svg>
+            </div>
           ) : (
             <div className="game-area">
               <div className="game-hud">{strings.hudLabel} <b>{hits}</b> / {need}</div>

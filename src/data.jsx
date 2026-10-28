@@ -40,15 +40,16 @@ const ru = {
     flower: { label: "цветочный магазин", cpl: 2.3, roas: "200–280%" },
     coffee: { label: "кофешоп", cpl: 1.7, roas: "180–250%" },
   },
+  /* блок «С кем работаю»: ниша и что реклама в ней приводит */
   NICHES: [
-    { icon: IconBag, label: "интернет-магазины" },
-    { icon: IconCrossMed, label: "клиники" },
-    { icon: IconBook, label: "онлайн-обучение" },
-    { icon: IconBuilding, label: "недвижимость" },
-    { icon: IconBriefcase, label: "b2b-услуги" },
-    { icon: IconSpa, label: "массажный салон" },
-    { icon: IconFlower, label: "цветочный магазин" },
-    { icon: IconCoffee, label: "кофешоп" },
+    { icon: IconBag, label: "Интернет-магазины", desc: "заказы из Instagram и с сайта" },
+    { icon: IconCrossMed, label: "Клиники", desc: "запись на приём" },
+    { icon: IconBook, label: "Онлайн-обучение", desc: "заявки на курсы и вебинары" },
+    { icon: IconBuilding, label: "Недвижимость", desc: "заявки на просмотр и звонки" },
+    { icon: IconBriefcase, label: "B2B-услуги", desc: "заявки для отдела продаж" },
+    { icon: IconSpa, label: "Массажные салоны", desc: "запись на сеансы" },
+    { icon: IconFlower, label: "Цветочные магазины", desc: "заказы букетов" },
+    { icon: IconCoffee, label: "Кофейни", desc: "гости из ближайших кварталов" },
   ],
   SERVICES: [
     {
@@ -123,11 +124,11 @@ const ru = {
       shots: [{ ...SHOTS.s52, alt: "Скрин Meta Ads Manager: 52 начатые переписки, $0,25 за переписку, потрачено $12,79, охват 2 789, показы 3 694" }],
     },
     {
-      label: "Бюджет $10 в день", big: "75", unit: "переписок", sub: "по $0,67 за каждую, потрачено $50",
+      label: "Бюджет $10 в день", big: "75", unit: "переписок", sub: "по $0,67 за каждую, потрачено $50. Рекламу увидели 20 572 человека.",
       shots: [{ ...SHOTS.s75, alt: "Скрин Meta Ads Manager: 75 начатых переписок, $0,67 за переписку, потрачено $50,12, дневной бюджет $10, охват 20 572, показы 29 456" }],
     },
     {
-      label: "Трафик в Instagram", big: "$0,05", unit: "за посещение профиля", sub: "6,7 тыс. посещений профиля за $361. Рядом вторая кампания: 189 переписок по $1,74.",
+      label: "Трафик в Instagram", big: "$0,05", unit: "за визит в профиль", sub: "6,7 тыс. посещений профиля за $361. Рядом вторая кампания: 189 переписок по $1,74.",
       shots: [
         { ...SHOTS.traffic, alt: "Скрин кампании «Трафик» в Meta Ads Manager: 6,7 тыс. посещений профиля Instagram, $0,05 за посещение, затраты $361,48" },
         { ...SHOTS.engagement, alt: "Скрин кампании «Вовлеченность» в Meta Ads Manager: 189 начатых переписок, $1,74 за переписку, затраты $329,11" },
@@ -161,14 +162,14 @@ const kk = {
     coffee: { label: "кофехана", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
-    { icon: IconBag, label: "интернет-дүкендер" },
-    { icon: IconCrossMed, label: "клиникалар" },
-    { icon: IconBook, label: "онлайн-оқыту" },
-    { icon: IconBuilding, label: "жылжымайтын мүлік" },
-    { icon: IconBriefcase, label: "b2b-қызметтер" },
-    { icon: IconSpa, label: "массаж салоны" },
-    { icon: IconFlower, label: "гүл дүкені" },
-    { icon: IconCoffee, label: "кофехана" },
+    { icon: IconBag, label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
+    { icon: IconCrossMed, label: "Клиникалар", desc: "қабылдауға жазылу" },
+    { icon: IconBook, label: "Онлайн-оқыту", desc: "курстар мен вебинарларға өтінімдер" },
+    { icon: IconBuilding, label: "Жылжымайтын мүлік", desc: "көруге өтінімдер мен қоңыраулар" },
+    { icon: IconBriefcase, label: "B2B-қызметтер", desc: "сату бөліміне өтінімдер" },
+    { icon: IconSpa, label: "Массаж салондары", desc: "сеанстарға жазылу" },
+    { icon: IconFlower, label: "Гүл дүкендері", desc: "гүл шоқтарына тапсырыстар" },
+    { icon: IconCoffee, label: "Кофеханалар", desc: "жақын маңдағы қонақтар" },
   ],
   SERVICES: [
     {
@@ -243,7 +244,7 @@ const kk = {
       shots: [{ ...SHOTS.s52, alt: "Meta Ads Manager скрині: 52 басталған хат алмасу, әрқайсысы $0,25, жұмсалғаны $12,79, қамту 2 789, көрсетілім 3 694" }],
     },
     {
-      label: "Күніне $10 бюджет", big: "75", unit: "хат алмасу", sub: "әрқайсысы $0,67, жұмсалғаны $50",
+      label: "Күніне $10 бюджет", big: "75", unit: "хат алмасу", sub: "әрқайсысы $0,67, жұмсалғаны $50. Жарнаманы 20 572 адам көрді.",
       shots: [{ ...SHOTS.s75, alt: "Meta Ads Manager скрині: 75 басталған хат алмасу, әрқайсысы $0,67, жұмсалғаны $50,12, күндік бюджет $10, қамту 20 572, көрсетілім 29 456" }],
     },
     {
@@ -280,14 +281,14 @@ const en = {
     coffee: { label: "coffee shop", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
-    { icon: IconBag, label: "online stores" },
-    { icon: IconCrossMed, label: "clinics" },
-    { icon: IconBook, label: "online education" },
-    { icon: IconBuilding, label: "real estate" },
-    { icon: IconBriefcase, label: "b2b services" },
-    { icon: IconSpa, label: "massage salons" },
-    { icon: IconFlower, label: "flower shops" },
-    { icon: IconCoffee, label: "coffee shops" },
+    { icon: IconBag, label: "Online stores", desc: "orders from Instagram and your site" },
+    { icon: IconCrossMed, label: "Clinics", desc: "appointment bookings" },
+    { icon: IconBook, label: "Online education", desc: "sign-ups for courses and webinars" },
+    { icon: IconBuilding, label: "Real estate", desc: "viewing requests and calls" },
+    { icon: IconBriefcase, label: "B2B services", desc: "leads for your sales team" },
+    { icon: IconSpa, label: "Massage salons", desc: "session bookings" },
+    { icon: IconFlower, label: "Flower shops", desc: "bouquet orders" },
+    { icon: IconCoffee, label: "Coffee shops", desc: "guests from the neighborhood" },
   ],
   SERVICES: [
     {
@@ -362,7 +363,7 @@ const en = {
       shots: [{ ...SHOTS.s52, alt: "Meta Ads Manager screenshot: 52 conversations started, $0.25 per conversation, $12.79 spent, reach 2,789, impressions 3,694" }],
     },
     {
-      label: "$10 a day budget", big: "75", unit: "conversations", sub: "$0.67 each, $50 spent",
+      label: "$10 a day budget", big: "75", unit: "conversations", sub: "$0.67 each, $50 spent. The ads reached 20,572 people.",
       shots: [{ ...SHOTS.s75, alt: "Meta Ads Manager screenshot: 75 conversations started, $0.67 per conversation, $50.12 spent, daily budget $10, reach 20,572, impressions 29,456" }],
     },
     {

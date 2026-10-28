@@ -12,7 +12,7 @@
    `pre` обычным белым, последняя строка `mark` на жёлтой плашке.
    Русский: обращение на «ты», без длинных тире (—).
    ============================================================ */
-import { useState, useEffect } from "react";
+import { useState, useEffect, startTransition } from "react";
 import { LANG_PATHS, SEO, langFromPath } from "./seo.js";
 
 export const LANGS = [
@@ -29,15 +29,20 @@ export function useLang(initialLang = "ru") {
     document.title = SEO[lang].title;
   }, [lang]);
 
+  /* Смена языка перерисовывает всю страницу. startTransition: если часть
+     страницы ещё «оживает» (см. Part в App.jsx), React сначала доживит её,
+     а не выбросит готовый HTML с ошибкой в консоли. */
+  const switchTo = (code) => startTransition(() => setLangState(code));
+
   /* кнопка «назад» в браузере возвращает и язык */
   useEffect(() => {
-    const onPop = () => setLangState(langFromPath(window.location.pathname));
+    const onPop = () => switchTo(langFromPath(window.location.pathname));
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
   const setLang = (code) => {
-    setLangState(code);
+    switchTo(code);
     try {
       const path = LANG_PATHS[code];
       if (/^https?:$/.test(window.location.protocol) && window.location.pathname !== path) {
@@ -69,7 +74,11 @@ export const UI = {
     services: {
       label: "Услуги", pre: "От «где клиенты?»", mark: "до системы",
       sub: "Основное: таргетированная реклама в Instagram и Facebook. Дополнительно: сайты под рекламу, креативы и понятные отчёты.",
-      nichesLabel: "С кем работаю",
+    },
+    niches: {
+      label: "Ниши", pre: "С кем", mark: "работаю",
+      sub: "У каждой ниши своя цель: где-то нужна запись, где-то заказ или звонок. Под эту цель и настраиваю рекламу.",
+      ctaTitle: "Твоей ниши нет?", ctaText: "Напиши, скажу честно, возьмусь или нет.",
     },
     work: {
       label: "Кейсы", pre: "Кампании", mark: "с цифрами",
@@ -108,7 +117,7 @@ export const UI = {
       out3: "Насколько окупится реклама (ROAS)",
       note: "Примерный расчёт по средним цифрам ниши. Точные значения зависят от цены товара и сезона, скажу на созвоне.",
     },
-    faq: { label: "Вопросы", pre: "Отвечаю", mark: "просто" },
+    faq: { label: "Вопросы", pre: "Отвечаю", mark: "просто", more: "Не нашёл свой вопрос? Напиши, отвечу сам.", moreBtn: "Спросить в WhatsApp" },
     game: {
       label: "Мини-игра",
       title: "Проверь мою меткость на себе",
@@ -164,7 +173,11 @@ export const UI = {
     services: {
       label: "Қызметтер", pre: "«Клиент қайда?» сұрағынан", mark: "жүйеге дейін",
       sub: "Негізгісі: Instagram мен Facebook-тағы таргеттелген жарнама. Қосымша: жарнамаға арналған сайттар, креативтер және түсінікті есептер.",
-      nichesLabel: "Кіммен жұмыс істеймін",
+    },
+    niches: {
+      label: "Салалар", pre: "Кіммен", mark: "жұмыс істеймін",
+      sub: "Әр саланың өз мақсаты бар: бірінде жазылу керек, бірінде тапсырыс не қоңырау. Жарнаманы осы мақсатқа баптаймын.",
+      ctaTitle: "Салаңыз жоқ па?", ctaText: "Жазыңыз, көмектесе аламын ба, адал айтамын.",
     },
     work: {
       label: "Кейстер", pre: "Цифрлары бар", mark: "науқандар",
@@ -203,7 +216,7 @@ export const UI = {
       out3: "Жарнама қаншалықты өтеледі (ROAS)",
       note: "Сала бойынша орташа цифрлармен болжамды есеп. Нақты мәндер тауар бағасы мен маусымға байланысты, қоңырауда айтамын.",
     },
-    faq: { label: "Сұрақтар", pre: "Қарапайым", mark: "жауап беремін" },
+    faq: { label: "Сұрақтар", pre: "Қарапайым", mark: "жауап беремін", more: "Сұрағыңызды таппадыңыз ба? Жазыңыз, өзім жауап беремін.", moreBtn: "WhatsApp-та сұрау" },
     game: {
       label: "Мини-ойын",
       title: "Менің дәлдігімді өзіңізде тексеріңіз",
@@ -259,7 +272,11 @@ export const UI = {
     services: {
       label: "Services", pre: "From “where are the customers?”", mark: "to a system",
       sub: "Core: targeted advertising on Instagram and Facebook. Add-ons: websites built for ads, creatives and clear reporting.",
-      nichesLabel: "Who I work with",
+    },
+    niches: {
+      label: "Niches", pre: "Who I", mark: "work with",
+      sub: "Every niche has its own goal: bookings for some, orders or calls for others. That's the goal I set the ads up for.",
+      ctaTitle: "Not on the list?", ctaText: "Message me and I'll tell you honestly if I can help.",
     },
     work: {
       label: "Case studies", pre: "Campaigns", mark: "with numbers",
@@ -298,7 +315,7 @@ export const UI = {
       out3: "Expected return on ad spend (ROAS)",
       note: "A rough estimate based on niche averages. Exact numbers depend on product price and season, I'll tell you on a call.",
     },
-    faq: { label: "Questions", pre: "Straight", mark: "answers" },
+    faq: { label: "Questions", pre: "Straight", mark: "answers", more: "Didn't find your question? Message me, I reply myself.", moreBtn: "Ask on WhatsApp" },
     game: {
       label: "Mini-game",
       title: "Test my aim yourself",
