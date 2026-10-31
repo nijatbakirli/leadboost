@@ -15,7 +15,7 @@ import { asset } from "./assets.js";
 import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconChat, IconSend, IconCamera, IconNicheAsk, FlagRU, FlagKZ, FlagGB,
+  IconChevronDown, IconExpand, IconChat, IconNicheAsk, FlagRU, FlagKZ, FlagGB,
 } from "./icons.jsx";
 import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer } from "./widgets.jsx";
 import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
@@ -222,8 +222,8 @@ function MobileMenu({ t, open, close, burgerRef }) {
         </ol>
         <div className="m-menu-cta">
           <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />{t.common.whatsapp}</a>
-          <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><IconSend className="btn-ic" />{t.common.telegram}</a>
-          <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />{t.common.instagram}</a>
+          <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><img className="btn-ic" src={asset("img/icons/social/telegram.webp")} alt="" width="20" height="20" decoding="async" />{t.common.telegram}</a>
+          <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><img className="btn-ic" src={asset("img/icons/social/instagram.webp")} alt="" width="20" height="20" decoding="async" />{t.common.instagram}</a>
         </div>
       </div>
     </>
@@ -654,7 +654,7 @@ function Contact({ t, D }) {
   const onFormSubmit = async (e) => {
     e.preventDefault();
     setSendError(false);
-    const nicheLabel = RU.NICHE_DATA[form.niche]?.label || form.niche || "не указана";
+    const nicheLabel = form.niche === "other" ? "Другое" : RU.NICHE_DATA[form.niche]?.label || form.niche || "не указана";
     setSending(true);
     try {
       const res = await fetch("/api/telegram", {
@@ -683,8 +683,8 @@ function Contact({ t, D }) {
               <p>{t.contact.fastText}</p>
               <div className="contact-btns">
                 <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />WhatsApp</a>
-                <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><IconSend className="btn-ic" />Telegram</a>
-                <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />Instagram</a>
+                <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><img className="btn-ic" src={asset("img/icons/social/telegram.webp")} alt="" width="20" height="20" decoding="async" />Telegram</a>
+                <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><img className="btn-ic" src={asset("img/icons/social/instagram.webp")} alt="" width="20" height="20" decoding="async" />Instagram</a>
               </div>
             </div>
             <div className="contact-note">
@@ -720,6 +720,7 @@ function Contact({ t, D }) {
                       <option value="Реклама">{t.contact.form.serviceAds}</option>
                       <option value="Сайт">{t.contact.form.serviceSite}</option>
                       <option value="Реклама и сайт">{t.contact.form.serviceBoth}</option>
+                      <option value="Другое">{t.contact.form.other}</option>
                     </select>
                   </label>
                   <label className="field">
@@ -727,6 +728,7 @@ function Contact({ t, D }) {
                     <select className="input" name="niche" required value={form.niche} onChange={onFormChange}>
                       <option value="" disabled>{t.contact.form.nicheChoose}</option>
                       {Object.entries(D.NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
+                      <option value="other">{t.contact.form.other}</option>
                     </select>
                   </label>
                 </div>

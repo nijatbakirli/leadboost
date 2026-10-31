@@ -141,7 +141,7 @@ export const UI = {
       form: {
         nameLabel: "Имя", namePh: "Как тебя зовут",
         contactLabel: "Телефон или Telegram", contactPh: "+7… или @username",
-        serviceLabel: "Что интересует", serviceChoose: "Выбери", serviceAds: "Реклама", serviceSite: "Сайт", serviceBoth: "И реклама, и сайт",
+        serviceLabel: "Что интересует", serviceChoose: "Выбери", serviceAds: "Реклама", serviceSite: "Сайт", serviceBoth: "И реклама, и сайт", other: "Другое",
         nicheLabel: "Чем занимаешься", nicheChoose: "Выбери нишу",
         budgetLabel: "Бюджет на рекламу в месяц (если есть)", budgetPh: "Например: $1 000",
         submit: "Отправить заявку", sending: "Отправляю…",
@@ -240,7 +240,7 @@ export const UI = {
       form: {
         nameLabel: "Аты", namePh: "Атыңыз кім",
         contactLabel: "Телефон немесе Telegram", contactPh: "+7… немесе @username",
-        serviceLabel: "Немен қызығасыз", serviceChoose: "Таңдаңыз", serviceAds: "Жарнама", serviceSite: "Сайт", serviceBoth: "Жарнама және сайт",
+        serviceLabel: "Немен қызығасыз", serviceChoose: "Таңдаңыз", serviceAds: "Жарнама", serviceSite: "Сайт", serviceBoth: "Жарнама және сайт", other: "Басқа",
         nicheLabel: "Немен айналысасыз", nicheChoose: "Саланы таңдаңыз",
         budgetLabel: "Айына жарнама бюджеті (бар болса)", budgetPh: "Мысалы: $1 000",
         submit: "Өтінім жіберу", sending: "Жіберілуде…",
@@ -339,7 +339,7 @@ export const UI = {
       form: {
         nameLabel: "Name", namePh: "What's your name",
         contactLabel: "Phone or Telegram", contactPh: "+1… or @username",
-        serviceLabel: "What are you interested in", serviceChoose: "Choose", serviceAds: "Advertising", serviceSite: "Website", serviceBoth: "Advertising & website",
+        serviceLabel: "What are you interested in", serviceChoose: "Choose", serviceAds: "Advertising", serviceSite: "Website", serviceBoth: "Advertising & website", other: "Other",
         nicheLabel: "What do you do", nicheChoose: "Choose a niche",
         budgetLabel: "Monthly ad budget (if any)", budgetPh: "E.g.: $1,000",
         submit: "Send request", sending: "Sending…",

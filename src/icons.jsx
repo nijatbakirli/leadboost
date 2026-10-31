@@ -146,13 +146,6 @@ const IconChat = (p) => (
     <path d="M8 10.5h8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
   </svg>
 );
-/* нейтральный «бумажный самолётик» для кнопок Telegram (тоже без фирменного знака) */
-const IconSend = (p) => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" {...p}>
-    <path d="M21 3 3 10.5l7 2.5 2.5 7L21 3z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-    <path d="M10 13l5-5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-  </svg>
-);
 
 export {
   IconMark, IconNicheShop, IconNicheClinic, IconNicheEducation, IconNicheRealty, IconNicheB2B,
@@ -161,5 +154,5 @@ export {
   IconAds, IconWebDev, IconDesign, IconAnalyticsP, IconConsultant, IconCaseStudies,
   IconConsultation, IconStrategy, IconKPI, IconSuccess, IconSupport, IconTransparency,
   IconArrowRight, IconArrowDown, IconArrowUp, IconArrowUpRight, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconChat, IconSend,
+  IconChevronDown, IconExpand, IconChat,
 };
