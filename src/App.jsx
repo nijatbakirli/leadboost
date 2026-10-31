@@ -799,23 +799,31 @@ function Footer({ t }) {
         <div className="footer-base">
           <span>{t.footer.copyright}</span>
           <span>{t.footer.services}</span>
-          <a href="#top" onClick={scrollToTop}>{t.common.toTop}<IconArrowUp className="btn-ic" /></a>
         </div>
       </div>
     </footer>
   );
 }
 
-/* Плавающий WhatsApp (компьютер) и нижняя панель (телефон):
-   появляются после первого экрана; скролл перерисовывает только их */
+/* Плавающий WhatsApp (компьютер), нижняя панель (телефон) и кнопка «Наверх»
+   над ними: появляются после первого экрана; скролл перерисовывает только их.
+   «Наверх» две: на компьютере над боковой кнопкой, на телефоне внутри
+   нижней панели (сидит над ней, какой бы высоты панель ни была). */
 function FloatingCta({ t }) {
   const show = useScrolledPast(650);
+  const up = (cls) => (
+    <a className={`up-btn ${cls}`} href="#top" onClick={scrollToTop} aria-label={t.common.toTop} title={t.common.toTop} tabIndex={show ? 0 : -1}>
+      <IconArrowUp className="up-ic" />
+    </a>
+  );
   return (
     <>
+      {up(`to-top ${show ? "show" : ""}`)}
       <a className={`wa-float ${show ? "show" : ""}`} href={CONTACTS.whatsapp} {...ext} aria-label={t.common.whatsapp} tabIndex={show ? 0 : -1}>
         <SocialIcon name="whatsapp" className="wa-ic" />
       </a>
       <div className={`m-cta ${show ? "show" : ""}`} aria-hidden={!show}>
+        {up("m-up")}
         <span className="spots"><SpotsBar />{t.mcta.spots(SPOTS_LEFT, SPOTS_TOTAL)}</span>
         <a className="btn btn-y btn-sm" href={CONTACTS.whatsapp} {...ext} tabIndex={show ? 0 : -1}><SocialIcon name="whatsapp" />{t.mcta.cta}</a>
       </div>

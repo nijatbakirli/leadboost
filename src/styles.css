@@ -816,9 +816,12 @@ select.input option { color: #E9EDF2; background: #151A21; }
   margin-top: 34px; padding: 22px 0 28px; border-top: 2px solid var(--line);
   font-size: 14.5px; color: var(--dim);
 }
-.footer-base a { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); text-decoration: none; }
-.footer-base a:hover { color: var(--ink); }
-.footer-base .btn-ic { width: 16px; height: 16px; }
+/* справа внизу висят «Наверх» и WhatsApp (до 100px от края экрана). Где
+   поле справа у страницы уже, правый край нижних строк подвала отступает,
+   чтобы кнопки не закрывали «Написать →» и подпись */
+@media (min-width: 761px) {
+  .brand-line, .footer-base { padding-right: clamp(0px, calc(72px - (100vw - 1200px) / 2), 72px); }
+}
 @media (max-width: 900px) {
   .footer-top { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .footer-top > :first-child { grid-column: 1 / -1; }
@@ -826,7 +829,9 @@ select.input option { color: #E9EDF2; background: #151A21; }
 @media (max-width: 760px) {
   .footer { padding-top: 56px; }
   .brand-line { gap: 12px; margin-top: 50px; }
-  .footer-base { padding-bottom: 100px; } /* место под нижнюю панель с WhatsApp */
+  /* место под нижнюю панель с WhatsApp; строки слева столбиком, чтобы
+     кнопка «Наверх» над панелью справа их не закрывала */
+  .footer-base { padding-bottom: 100px; flex-direction: column; gap: 4px; }
 }
 
 /* ---------- плавающие CTA ---------- */
@@ -843,6 +848,28 @@ select.input option { color: #E9EDF2; background: #151A21; }
 .wa-float .wa-ic { width: 28px; height: 28px; }
 @media (max-width: 760px) { .wa-float { display: none; } }
 
+/* «Наверх» (бывшая ссылка в подвале). На компьютере .to-top стоит над
+   боковой кнопкой WhatsApp по её центру; на телефоне .m-up сидит внутри
+   нижней панели и висит над её правым краем. Появляются вместе с ними. */
+.up-btn {
+  width: 48px; height: 48px; border-radius: var(--r-btn);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--tile); color: var(--ink-2); border: 2px solid var(--line-2);
+  box-shadow: 0 14px 34px rgba(0,0,0,0.5);
+  transition: transform .3s ease, color .15s, border-color .15s;
+}
+.up-btn:hover { color: var(--y); border-color: var(--y); }
+.up-ic { width: 20px; height: 20px; }
+.to-top {
+  position: fixed; z-index: 90;
+  right: calc(28px + env(safe-area-inset-right, 0px)); bottom: calc(94px + env(safe-area-inset-bottom, 0px));
+  transform: translateY(220px);
+}
+.to-top.show { transform: translateY(0); }
+.to-top.show:hover { transform: translateY(-3px); }
+@media (max-width: 760px) { .to-top { display: none; } }
+.m-up { position: absolute; right: -2px; bottom: calc(100% + 12px); width: 46px; height: 46px; }
+
 .m-cta {
   position: fixed; z-index: 90;
   left: calc(10px + env(safe-area-inset-left, 0px)); right: calc(10px + env(safe-area-inset-right, 0px));
@@ -850,7 +877,8 @@ select.input option { color: #E9EDF2; background: #151A21; }
   display: none; align-items: center; justify-content: space-between; gap: 10px;
   padding: 8px 8px 8px 14px; background: rgba(21,26,33,0.96); border: 2px solid var(--line); border-radius: 18px;
   box-shadow: 0 14px 40px rgba(0,0,0,0.5);
-  transform: translateY(150%); transition: transform .3s ease;
+  /* спрятана ниже экрана вместе с кнопкой «Наверх» над ней */
+  transform: translateY(calc(100% + 100px)); transition: transform .3s ease;
 }
 .m-cta.show { transform: translateY(0); }
 .m-cta .spots { display: inline-flex; align-items: center; gap: 10px; font-size: 13.5px; color: var(--muted); }
