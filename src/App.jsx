@@ -223,7 +223,7 @@ function MobileMenu({ t, open, close, burgerRef }) {
         <div className="m-menu-cta">
           <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />{t.common.whatsapp}</a>
           <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><IconSend className="btn-ic" />{t.common.telegram}</a>
-          <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />{CONTACTS.instagramHandle}</a>
+          <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />{t.common.instagram}</a>
         </div>
       </div>
     </>
@@ -684,7 +684,7 @@ function Contact({ t, D }) {
               <div className="contact-btns">
                 <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />WhatsApp</a>
                 <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><IconSend className="btn-ic" />Telegram</a>
-                <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />{CONTACTS.instagramHandle}</a>
+                <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><IconCamera className="btn-ic" />Instagram</a>
               </div>
             </div>
             <div className="contact-note">
@@ -778,8 +778,8 @@ function Footer({ t }) {
             <SecLabel className="lbl-sm">{t.footer.contactsLabel}</SecLabel>
             <ul>
               <li><a href={CONTACTS.whatsapp} {...ext}>WhatsApp</a></li>
-              <li><a href={CONTACTS.telegram} {...ext}>Telegram {CONTACTS.telegramHandle}</a></li>
-              <li><a href={CONTACTS.instagram} {...ext}>Instagram {CONTACTS.instagramHandle}</a></li>
+              <li><a href={CONTACTS.telegram} {...ext}>Telegram</a></li>
+              <li><a href={CONTACTS.instagram} {...ext}>Instagram</a></li>
             </ul>
           </div>
           <div className="f-col">
