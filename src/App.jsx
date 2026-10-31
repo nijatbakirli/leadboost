@@ -863,7 +863,7 @@ export default function App({ initialLang = "ru" }) {
         <Part><Calculator t={t} D={D} lang={lang} /></Part>
         <Part><Faq t={t} D={D} /></Part>
         {/* МИНИ-ИГРА */}
-        <Part><TargetGame strings={t.game} promoWord={GAME.promoWord} need={GAME.hitsToWin} /></Part>
+        <Part><TargetGame strings={t.game} promoWord={GAME.promoWord[lang] || GAME.promoWord.ru} need={GAME.hitsToWin} /></Part>
         <Part><Contact t={t} D={D} /></Part>
       </main>
 

@@ -90,7 +90,7 @@ function Heading({ as: Tag = "h2", pre, mark, className = "", instant = false })
 
 /* мини-игра: попади в цель N раз и получи бонус (тематика таргетинга).
    strings: тексты интерфейса на текущем языке (см. src/i18n.jsx),
-   promoWord: кодовое слово из config.js (одно на все языки). */
+   promoWord: кодовое слово из config.js на текущем языке. */
 function TargetGame({ strings, promoWord, need = 5 }) {
   const [playing, setPlaying] = useState(false);
   const [hits, setHits] = useState(0);

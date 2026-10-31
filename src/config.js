@@ -35,5 +35,10 @@ export const SPOTS_TOTAL = 3;
 export const WORK_HOURS = { from: 9, to: 21 };
 export const WORK_TZ = "Asia/Baku";
 
-/* Сколько попаданий нужно в мини-игре и кодовое слово-приз */
-export const GAME = { hitsToWin: 5, promoWord: "МЕТКИЙ" };
+/* Сколько попаданий нужно в мини-игре и кодовое слово-приз на языке
+   сайта. Все три значат «меткий стрелок»: с любым из них посетитель
+   получает бесплатный мини-аудит.                                    */
+export const GAME = {
+  hitsToWin: 5,
+  promoWord: { ru: "МЕТКИЙ", kk: "МЕРГЕН", en: "SHARPSHOOTER" },
+};
