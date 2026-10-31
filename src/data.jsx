@@ -31,14 +31,14 @@ const SHOTS = {
 /* ============================== RU ============================== */
 const ru = {
   NICHE_DATA: {
-    ecommerce: { label: "интернет-магазин", cpl: 4.2, roas: "310–420%" },
-    clinic: { label: "клиника / медицина", cpl: 9.1, roas: "260–340%" },
-    education: { label: "онлайн-обучение", cpl: 5.9, roas: "290–380%" },
-    realestate: { label: "недвижимость", cpl: 12.4, roas: "220–300%" },
-    b2b: { label: "b2b-услуги", cpl: 9.9, roas: "240–330%" },
-    massage: { label: "массажный салон", cpl: 3.4, roas: "250–330%" },
-    flower: { label: "цветочный магазин", cpl: 2.3, roas: "200–280%" },
-    coffee: { label: "кофешоп", cpl: 1.7, roas: "180–250%" },
+    ecommerce: { label: "Интернет-магазин", cpl: 4.2, roas: "310–420%" },
+    clinic: { label: "Клиника / медицина", cpl: 9.1, roas: "260–340%" },
+    education: { label: "Онлайн-обучение", cpl: 5.9, roas: "290–380%" },
+    realestate: { label: "Недвижимость", cpl: 12.4, roas: "220–300%" },
+    b2b: { label: "B2B-услуги", cpl: 9.9, roas: "240–330%" },
+    massage: { label: "Массажный салон", cpl: 3.4, roas: "250–330%" },
+    flower: { label: "Цветочный магазин", cpl: 2.3, roas: "200–280%" },
+    coffee: { label: "Кофешоп", cpl: 1.7, roas: "180–250%" },
   },
   /* блок «С кем работаю»: ниша и что реклама в ней приводит */
   NICHES: [
@@ -152,14 +152,14 @@ const ru = {
 /* ============================== KK ============================== */
 const kk = {
   NICHE_DATA: {
-    ecommerce: { label: "интернет-дүкен", cpl: 4.2, roas: "310–420%" },
-    clinic: { label: "клиника / медицина", cpl: 9.1, roas: "260–340%" },
-    education: { label: "онлайн-оқыту", cpl: 5.9, roas: "290–380%" },
-    realestate: { label: "жылжымайтын мүлік", cpl: 12.4, roas: "220–300%" },
-    b2b: { label: "b2b-қызметтер", cpl: 9.9, roas: "240–330%" },
-    massage: { label: "массаж салоны", cpl: 3.4, roas: "250–330%" },
-    flower: { label: "гүл дүкені", cpl: 2.3, roas: "200–280%" },
-    coffee: { label: "кофехана", cpl: 1.7, roas: "180–250%" },
+    ecommerce: { label: "Интернет-дүкен", cpl: 4.2, roas: "310–420%" },
+    clinic: { label: "Клиника / медицина", cpl: 9.1, roas: "260–340%" },
+    education: { label: "Онлайн-оқыту", cpl: 5.9, roas: "290–380%" },
+    realestate: { label: "Жылжымайтын мүлік", cpl: 12.4, roas: "220–300%" },
+    b2b: { label: "B2B-қызметтер", cpl: 9.9, roas: "240–330%" },
+    massage: { label: "Массаж салоны", cpl: 3.4, roas: "250–330%" },
+    flower: { label: "Гүл дүкені", cpl: 2.3, roas: "200–280%" },
+    coffee: { label: "Кофехана", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
     { icon: IconNicheShop, label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
@@ -271,14 +271,14 @@ const kk = {
 /* ============================== EN ============================== */
 const en = {
   NICHE_DATA: {
-    ecommerce: { label: "online store", cpl: 4.2, roas: "310–420%" },
-    clinic: { label: "clinic / medical", cpl: 9.1, roas: "260–340%" },
-    education: { label: "online education", cpl: 5.9, roas: "290–380%" },
-    realestate: { label: "real estate", cpl: 12.4, roas: "220–300%" },
-    b2b: { label: "b2b services", cpl: 9.9, roas: "240–330%" },
-    massage: { label: "massage salon", cpl: 3.4, roas: "250–330%" },
-    flower: { label: "flower shop", cpl: 2.3, roas: "200–280%" },
-    coffee: { label: "coffee shop", cpl: 1.7, roas: "180–250%" },
+    ecommerce: { label: "Online store", cpl: 4.2, roas: "310–420%" },
+    clinic: { label: "Clinic / medical", cpl: 9.1, roas: "260–340%" },
+    education: { label: "Online education", cpl: 5.9, roas: "290–380%" },
+    realestate: { label: "Real estate", cpl: 12.4, roas: "220–300%" },
+    b2b: { label: "B2B services", cpl: 9.9, roas: "240–330%" },
+    massage: { label: "Massage salon", cpl: 3.4, roas: "250–330%" },
+    flower: { label: "Flower shop", cpl: 2.3, roas: "200–280%" },
+    coffee: { label: "Coffee shop", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
     { icon: IconNicheShop, label: "Online stores", desc: "orders from Instagram and your site" },

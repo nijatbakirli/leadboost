@@ -19,6 +19,7 @@ export default async function handler(req, res) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) {
+    console.error("Заявка не отправлена: на Vercel не заданы TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID");
     res.status(500).json({ error: "TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID не заданы в переменных окружения" });
     return;
   }
@@ -31,7 +32,14 @@ export default async function handler(req, res) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId, text }),
     });
-    if (!tgRes.ok) throw new Error("Telegram API error");
+    if (!tgRes.ok) {
+      /* Причина видна в Vercel → Logs: 401 Unauthorized = неверный или
+         отозванный токен бота, 400 chat not found = неверный chat_id,
+         403 bot was blocked = бота остановили в Telegram (нажать Start). */
+      const detail = await tgRes.text().catch(() => "");
+      console.error("Telegram API error", tgRes.status, detail.slice(0, 300));
+      throw new Error("Telegram API error");
+    }
     res.status(200).json({ ok: true });
   } catch {
     res.status(502).json({ error: "Не удалось отправить в Telegram" });
