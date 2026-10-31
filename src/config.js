@@ -11,14 +11,17 @@
    и TELEGRAM_CHAT_ID в настройках проекта на Vercel (Settings → Environment
    Variables), см. README.md, раздел «Публикация».                       */
 
-/* Прямые контакты: кнопки WhatsApp / Instagram на сайте и запасной
-   вариант, если форма не отправилась.                                  */
+/* Прямые контакты: кнопки WhatsApp / Telegram / Instagram на сайте и
+   запасной вариант, если форма не отправилась. TikTok и Threads только
+   ссылками в подвале.                                                   */
 export const CONTACTS = {
   whatsapp: "https://wa.me/message/7AFNG7HRORNYD1",
   instagram: "https://www.instagram.com/leadboost_agency/",
   instagramHandle: "@leadboost_agency",
   telegram: "https://t.me/leadboost_agency",
   telegramHandle: "@leadboost_agency",
+  tiktok: "https://www.tiktok.com/@leadboost_agency",
+  threads: "https://www.threads.com/@leadboost_agency",
 };
 
 /* Честный счётчик: сколько мест РЕАЛЬНО свободно в этом месяце.

@@ -782,6 +782,8 @@ function Footer({ t }) {
               <li><a href={CONTACTS.whatsapp} {...ext}>WhatsApp</a></li>
               <li><a href={CONTACTS.telegram} {...ext}>Telegram</a></li>
               <li><a href={CONTACTS.instagram} {...ext}>Instagram</a></li>
+              <li><a href={CONTACTS.tiktok} {...ext}>TikTok</a></li>
+              <li><a href={CONTACTS.threads} {...ext}>Threads</a></li>
             </ul>
           </div>
           <div className="f-col">

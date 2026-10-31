@@ -57,7 +57,7 @@ export function structuredData({ site, lang, content, contacts }) {
         url: `${site}/`,
         logo: `${site}/img/icons/icon-512.png`,
         image: `${site}/img/og/og-ru.jpg`,
-        sameAs: [contacts.instagram, contacts.telegram],
+        sameAs: [contacts.instagram, contacts.telegram, contacts.tiktok, contacts.threads],
         contactPoint: [{
           "@type": "ContactPoint",
           contactType: "sales",
