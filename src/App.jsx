@@ -15,9 +15,9 @@ import { asset } from "./assets.js";
 import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconChat, IconNicheAsk, FlagRU, FlagKZ, FlagGB,
+  IconChevronDown, IconExpand, IconNicheAsk, FlagRU, FlagKZ, FlagGB,
 } from "./icons.jsx";
-import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer } from "./widgets.jsx";
+import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer, SocialIcon } from "./widgets.jsx";
 import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
 import { CONTENT } from "./data.jsx";
 import { UI, LANGS, useLang } from "./i18n.jsx";
@@ -221,9 +221,9 @@ function MobileMenu({ t, open, close, burgerRef }) {
           ))}
         </ol>
         <div className="m-menu-cta">
-          <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />{t.common.whatsapp}</a>
-          <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><img className="btn-ic" src={asset("img/icons/social/telegram.webp")} alt="" width="20" height="20" decoding="async" />{t.common.telegram}</a>
-          <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><img className="btn-ic" src={asset("img/icons/social/instagram.webp")} alt="" width="20" height="20" decoding="async" />{t.common.instagram}</a>
+          <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" />{t.common.whatsapp}</a>
+          <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><SocialIcon name="telegram" />{t.common.telegram}</a>
+          <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><SocialIcon name="instagram" />{t.common.instagram}</a>
         </div>
       </div>
     </>
@@ -296,7 +296,7 @@ function Hero({ t, D }) {
             <div>
               <p className="hero-lead">{t.hero.lead}</p>
               <div className="hero-actions">
-                <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />{t.hero.ctaPrimary}</a>
+                <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" />{t.hero.ctaPrimary}</a>
                 <a className="btn btn-ghost" href="#contact" onClick={scrollToId("contact")}>{t.hero.ctaSecondary}<IconArrowRight className="btn-ic" /></a>
               </div>
             </div>
@@ -617,7 +617,7 @@ function Faq({ t, D }) {
           </div>
           <div className="faq-more">
             <p>{t.faq.more}</p>
-            <a className="btn btn-ghost" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />{t.faq.moreBtn}</a>
+            <a className="btn btn-ghost" href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" />{t.faq.moreBtn}</a>
           </div>
         </div>
         <div className="faq-list">
@@ -682,9 +682,9 @@ function Contact({ t, D }) {
               <SecLabel className="lbl-sm">{t.contact.fastLabel}</SecLabel>
               <p>{t.contact.fastText}</p>
               <div className="contact-btns">
-                <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><IconChat className="btn-ic" />WhatsApp</a>
-                <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><img className="btn-ic" src={asset("img/icons/social/telegram.webp")} alt="" width="20" height="20" decoding="async" />Telegram</a>
-                <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><img className="btn-ic" src={asset("img/icons/social/instagram.webp")} alt="" width="20" height="20" decoding="async" />Instagram</a>
+                <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" />WhatsApp</a>
+                <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><SocialIcon name="telegram" />Telegram</a>
+                <a className="btn btn-ghost" href={CONTACTS.instagram} {...ext}><SocialIcon name="instagram" />Instagram</a>
               </div>
             </div>
             <div className="contact-note">
@@ -811,11 +811,11 @@ function FloatingCta({ t }) {
   return (
     <>
       <a className={`wa-float ${show ? "show" : ""}`} href={CONTACTS.whatsapp} {...ext} aria-label={t.common.whatsapp} tabIndex={show ? 0 : -1}>
-        <IconChat />
+        <SocialIcon name="whatsapp" size={28} className="wa-ic" />
       </a>
       <div className={`m-cta ${show ? "show" : ""}`} aria-hidden={!show}>
         <span className="spots"><SpotsBar />{t.mcta.spots(SPOTS_LEFT, SPOTS_TOTAL)}</span>
-        <a className="btn btn-y btn-sm" href={CONTACTS.whatsapp} {...ext} tabIndex={show ? 0 : -1}><IconChat className="btn-ic" />{t.mcta.cta}</a>
+        <a className="btn btn-y btn-sm" href={CONTACTS.whatsapp} {...ext} tabIndex={show ? 0 : -1}><SocialIcon name="whatsapp" />{t.mcta.cta}</a>
       </div>
     </>
   );

@@ -139,13 +139,6 @@ const flag = (shapes) => {
 const FlagRU = flag(<><path fill="#0052b4" d="M512 170v172l-256 32L0 342V170l256-32z" /><path fill="#eee" d="M512 0v170H0V0Z" /><path fill="#d80027" d="M512 342v170H0V342Z" /></>);
 const FlagKZ = flag(<><path fill="#338af3" d="M0 0h512v512H0z" /><path fill="#ffda44" d="M400.7 258.8H111.3c0 20 17.4 36.2 37.4 36.2h-1.2c0 20 16.2 36.1 36.2 36.1 0 20 16.1 36.2 36.1 36.2h72.4c20 0 36.1-16.2 36.1-36.2 20 0 36.2-16.2 36.2-36.1h-1.2c20 0 37.4-16.2 37.4-36.2z" /><path fill="#338af3" d="M356.2 211.5a100.2 100.2 0 0 1-200.4 0" /><path fill="#ffda44" d="m332.5 211.5-31.3 14.7 16.7 30.3-34-6.5-4.3 34.3L256 259l-23.6 25.3L228 250l-34 6.5 16.6-30.3-31.2-14.7 31.2-14.7-16.6-30.3 34 6.5 4.3-34.3 23.6 25.2 23.6-25.2L284 173l34-6.5-16.6 30.3z" /></>);
 const FlagGB = flag(<><path fill="#eee" d="m0 0 8 22-8 23v23l32 54-32 54v32l32 48-32 48v32l32 54-32 54v68l22-8 23 8h23l54-32 54 32h32l48-32 48 32h32l54-32 54 32h68l-8-22 8-23v-23l-32-54 32-54v-32l-32-48 32-48v-32l-32-54 32-54V0l-22 8-23-8h-23l-54 32-54-32h-32l-48 32-48-32h-32l-54 32L68 0H0z" /><path fill="#0052b4" d="M336 0v108L444 0Zm176 68L404 176h108zM0 176h108L0 68ZM68 0l108 108V0Zm108 512V404L68 512ZM0 444l108-108H0Zm512-108H404l108 108Zm-68 176L336 404v108z" /><path fill="#d80027" d="M0 0v45l131 131h45L0 0zm208 0v208H0v96h208v208h96V304h208v-96H304V0h-96zm259 0L336 131v45L512 0h-45zM176 336 0 512h45l131-131v-45zm160 0 176 176v-45L381 336h-45z" /></>);
-/* нейтральное «облачко» сообщения для кнопок WhatsApp (без фирменного знака) */
-const IconChat = (p) => (
-  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false" {...p}>
-    <path d="M4 5h16v11H10l-5 4v-4H4V5z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-    <path d="M8 10.5h8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-  </svg>
-);
 
 export {
   IconMark, IconNicheShop, IconNicheClinic, IconNicheEducation, IconNicheRealty, IconNicheB2B,
@@ -154,5 +147,5 @@ export {
   IconAds, IconWebDev, IconDesign, IconAnalyticsP, IconConsultant, IconCaseStudies,
   IconConsultation, IconStrategy, IconKPI, IconSuccess, IconSupport, IconTransparency,
   IconArrowRight, IconArrowDown, IconArrowUp, IconArrowUpRight, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconChat,
+  IconChevronDown, IconExpand,
 };

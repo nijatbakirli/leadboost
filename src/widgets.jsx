@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useReveal } from "./hooks.jsx";
 import { IconCross } from "./icons.jsx";
+import { asset } from "./assets.js";
 
 /* scramble: строка "расшифровывается" из случайных символов */
 function ScrambleText({ text, className = "", speed = 28 }) {
@@ -207,4 +208,10 @@ function ShotViewer({ item, onClose, closeLabel, sourceLabel }) {
   );
 }
 
-export { ScrambleText, CountMetric, Mark, SecLabel, Heading, TargetGame, ShotViewer };
+/* Официальные значки соцсетей (прислал владелец): img/icons/social/*.webp,
+   96×96, на кнопке 20px. Рядом всегда есть подпись, поэтому alt пустой. */
+function SocialIcon({ name, size = 20, className = "btn-ic" }) {
+  return <img className={className} src={asset(`img/icons/social/${name}.webp`)} alt="" width={size} height={size} decoding="async" />;
+}
+
+export { ScrambleText, CountMetric, Mark, SecLabel, Heading, TargetGame, ShotViewer, SocialIcon };

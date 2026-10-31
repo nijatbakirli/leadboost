@@ -829,7 +829,7 @@ select.input option { color: #E9EDF2; background: #151A21; }
 }
 .wa-float.show { transform: translateY(0); }
 .wa-float:hover { transform: translateY(-3px); }
-.wa-float svg { width: 28px; height: 28px; }
+.wa-float .wa-ic { width: 28px; height: 28px; }
 @media (max-width: 760px) { .wa-float { display: none; } }
 
 .m-cta {
