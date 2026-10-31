@@ -811,7 +811,7 @@ function FloatingCta({ t }) {
   return (
     <>
       <a className={`wa-float ${show ? "show" : ""}`} href={CONTACTS.whatsapp} {...ext} aria-label={t.common.whatsapp} tabIndex={show ? 0 : -1}>
-        <SocialIcon name="whatsapp" size={28} className="wa-ic" />
+        <SocialIcon name="whatsapp" className="wa-ic" />
       </a>
       <div className={`m-cta ${show ? "show" : ""}`} aria-hidden={!show}>
         <span className="spots"><SpotsBar />{t.mcta.spots(SPOTS_LEFT, SPOTS_TOTAL)}</span>

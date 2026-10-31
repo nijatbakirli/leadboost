@@ -208,10 +208,14 @@ function ShotViewer({ item, onClose, closeLabel, sourceLabel }) {
   );
 }
 
-/* Официальные значки соцсетей (прислал владелец): img/icons/social/*.webp,
-   96×96, на кнопке 20px. Рядом всегда есть подпись, поэтому alt пустой. */
-function SocialIcon({ name, size = 20, className = "btn-ic" }) {
-  return <img className={className} src={asset(`img/icons/social/${name}.webp`)} alt="" width={size} height={size} decoding="async" />;
+/* Значки соцсетей (официальные, прислал владелец), одноцветные. Файл
+   img/icons/social/*.webp (96×96, белый на прозрачном) задаёт только
+   форму, цвет берётся из текста кнопки через CSS-маску (.soc-ic в
+   styles.css): тёмный на жёлтой кнопке, светлый на тёмной, жёлтый при
+   наведении. Рядом всегда есть подпись, поэтому значок скрыт от
+   экранного диктора. */
+function SocialIcon({ name, className = "btn-ic" }) {
+  return <span className={`soc-ic ${className}`} style={{ "--ic": `url("${asset(`img/icons/social/${name}.webp`)}")` }} aria-hidden="true" />;
 }
 
 export { ScrambleText, CountMetric, Mark, SecLabel, Heading, TargetGame, ShotViewer, SocialIcon };
