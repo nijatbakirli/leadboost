@@ -17,6 +17,8 @@ export const CONTACTS = {
   whatsapp: "https://wa.me/message/7AFNG7HRORNYD1",
   instagram: "https://www.instagram.com/leadboost_agency/",
   instagramHandle: "@leadboost_agency",
+  telegram: "https://t.me/leadboost_agency",
+  telegramHandle: "@leadboost_agency",
 };
 
 /* Честный счётчик: сколько мест РЕАЛЬНО свободно в этом месяце.

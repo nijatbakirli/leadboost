@@ -68,7 +68,7 @@ src/
 ├── prerender.jsx     — точка входа для сборки HTML в Node (в браузер не попадает)
 ├── App.jsx           — ТОЛЬКО композиция и разметка, без контента/конфига
 │                        (секции — компоненты со своим состоянием, App хранит только язык)
-├── config.js          — настройки владельца (контакты WhatsApp/Instagram, места, часы работы)
+├── config.js          — настройки владельца (контакты WhatsApp/Telegram/Instagram, места, часы работы)
 ├── data.jsx            — ВЕСЬ контент по языкам: CONTENT.{ru,kk,en}
 ├── i18n.jsx             — UI-строки интерфейса по языкам (UI.{ru,kk,en}) + useLang
 ├── seo.js               — адреса языков, title/description/OG, JSON-LD

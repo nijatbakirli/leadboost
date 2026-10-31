@@ -62,7 +62,7 @@ export function useLang(initialLang = "ru") {
 export const UI = {
   ru: {
     nav: { services: "Услуги", niches: "С кем работаю", work: "Кейсы", results: "Цифры", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню" },
-    common: { whatsapp: "Написать в WhatsApp", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
+    common: { whatsapp: "Написать в WhatsApp", telegram: "Написать в Telegram", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
       greetingMorning: "Доброе утро, это LeadBoost",
       greetingDay: "Добрый день, это LeadBoost",
@@ -135,7 +135,7 @@ export const UI = {
     contact: {
       label: "Контакт", pre: ["Принеси задачу,", "которую не решить"], mark: "шаблоном",
       intro: "Расскажи, что меняется, что буксует и что должна дать следующая версия твоей рекламы или сайта. Отвечу по делу, без продающей рассылки.",
-      fastLabel: "Быстрее всего", fastText: "Пиши в WhatsApp или в директ Instagram, отвечаю сам.",
+      fastLabel: "Быстрее всего", fastText: "Пиши в WhatsApp, Telegram или в директ Instagram, отвечаю сам.",
       note: (left, total) => `Отвечаю в течение дня. Сейчас свободно ${left} из ${total} мест на месяц. Если мест нет, честно скажу, когда освобожусь.`,
       formTitle: "Или оставь заявку",
       form: {
@@ -145,7 +145,7 @@ export const UI = {
         nicheLabel: "Чем занимаешься", nicheChoose: "Выбери нишу",
         budgetLabel: "Бюджет на рекламу в месяц (если есть)", budgetPh: "Например: $1 000",
         submit: "Отправить заявку", sending: "Отправляю…",
-        errorText: "Не получилось отправить автоматически. Напиши мне напрямую", errorLink: "в WhatsApp",
+        errorText: "Не получилось отправить автоматически. Напиши мне напрямую", errorLink: "в WhatsApp", errorOr: "или", errorLinkTg: "в Telegram",
         ok: "Заявка у меня. Свяжусь в течение дня.",
         planLabel: "Тариф", planRemove: "Убрать тариф",
       },
@@ -161,7 +161,7 @@ export const UI = {
 
   kk: {
     nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", work: "Кейстер", results: "Цифрлар", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір" },
-    common: { whatsapp: "WhatsApp-қа жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
+    common: { whatsapp: "WhatsApp-қа жазу", telegram: "Telegram-ға жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
     hero: {
       greetingMorning: "Қайырлы таң, бұл LeadBoost",
       greetingDay: "Қайырлы күн, бұл LeadBoost",
@@ -234,7 +234,7 @@ export const UI = {
     contact: {
       label: "Байланыс", pre: "Үлгімен шешілмейтін", mark: "тапсырманы әкеліңіз",
       intro: "Не өзгеріп жатқанын, не тұрып қалғанын және жарнамаңыздың немесе сайтыңыздың келесі нұсқасы не беруі керектігін айтыңыз. Сатушы хатпен емес, нақты жауап беремін.",
-      fastLabel: "Ең жылдамы", fastText: "WhatsApp-қа немесе Instagram директке жазыңыз, өзім жауап беремін.",
+      fastLabel: "Ең жылдамы", fastText: "WhatsApp-қа, Telegram-ға немесе Instagram директке жазыңыз, өзім жауап беремін.",
       note: (left, total) => `Бір күн ішінде жауап беремін. Қазір айына ${total} орынның ${left} бос. Орын болмаса, қашан босайтынымды адал айтамын.`,
       formTitle: "Немесе өтінім қалдырыңыз",
       form: {
@@ -244,7 +244,7 @@ export const UI = {
         nicheLabel: "Немен айналысасыз", nicheChoose: "Саланы таңдаңыз",
         budgetLabel: "Айына жарнама бюджеті (бар болса)", budgetPh: "Мысалы: $1 000",
         submit: "Өтінім жіберу", sending: "Жіберілуде…",
-        errorText: "Автоматты түрде жіберілмеді. Маған тікелей жазыңыз", errorLink: "WhatsApp-қа",
+        errorText: "Автоматты түрде жіберілмеді. Маған тікелей жазыңыз", errorLink: "WhatsApp-қа", errorOr: "немесе", errorLinkTg: "Telegram-ға",
         ok: "Өтінім менде. Бір күн ішінде хабарласамын.",
         planLabel: "Тариф", planRemove: "Тарифті алып тастау",
       },
@@ -260,7 +260,7 @@ export const UI = {
 
   en: {
     nav: { services: "Services", niches: "Who I work with", work: "Cases", results: "Numbers", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu" },
-    common: { whatsapp: "Message on WhatsApp", instagram: "Instagram", toTop: "Back to top", language: "Language" },
+    common: { whatsapp: "Message on WhatsApp", telegram: "Message on Telegram", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
       greetingMorning: "Good morning, this is LeadBoost",
       greetingDay: "Good afternoon, this is LeadBoost",
@@ -333,7 +333,7 @@ export const UI = {
     contact: {
       label: "Contact", pre: ["Bring a problem", "a template"], mark: "can't solve",
       intro: "Tell me what's changing, what's stuck and what the next version of your ads or website needs to deliver. I'll reply with specifics, not a sales blast.",
-      fastLabel: "Fastest", fastText: "Message me on WhatsApp or Instagram DM, I reply myself.",
+      fastLabel: "Fastest", fastText: "Message me on WhatsApp, Telegram or Instagram DM, I reply myself.",
       note: (left, total) => `I reply within a day. Right now ${left} of ${total} slots are open this month. If none are left, I'll tell you honestly when I free up.`,
       formTitle: "Or send a request",
       form: {
@@ -343,7 +343,7 @@ export const UI = {
         nicheLabel: "What do you do", nicheChoose: "Choose a niche",
         budgetLabel: "Monthly ad budget (if any)", budgetPh: "E.g.: $1,000",
         submit: "Send request", sending: "Sending…",
-        errorText: "Couldn't send automatically. Message me directly", errorLink: "on WhatsApp",
+        errorText: "Couldn't send automatically. Message me directly", errorLink: "on WhatsApp", errorOr: "or", errorLinkTg: "on Telegram",
         ok: "Got your request. I'll get back to you within a day.",
         planLabel: "Plan", planRemove: "Remove plan",
       },
