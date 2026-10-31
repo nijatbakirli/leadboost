@@ -795,6 +795,11 @@ select.input option { color: #E9EDF2; background: #151A21; }
 .f-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .f-col a { color: var(--body); text-decoration: none; font-weight: 600; font-size: 16px; transition: color .15s; }
 .f-col a:hover { color: var(--y); }
+/* соцсети в подвале: одноцветный значок перед названием, при наведении жёлтый
+   вместе с текстом. Значок стоит в строке текста (не flex): так строки той же
+   высоты, что в колонке «Ссылки», и обе колонки идут ровно строка в строку */
+.f-social a { white-space: nowrap; }
+.f-social .f-ic { width: 18px; height: 18px; margin-right: 10px; vertical-align: -0.2em; }
 .f-col .status { text-transform: none; letter-spacing: 0; font-family: var(--f-body); font-weight: 600; font-size: 16px; color: var(--body); }
 .brand-line {
   display: flex; align-items: center; gap: 24px; margin-top: 72px; text-decoration: none;

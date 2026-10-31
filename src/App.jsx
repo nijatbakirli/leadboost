@@ -776,14 +776,14 @@ function Footer({ t }) {
               <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
             </ul>
           </nav>
-          <div className="f-col">
+          <div className="f-col f-social">
             <SecLabel className="lbl-sm">{t.footer.contactsLabel}</SecLabel>
             <ul>
-              <li><a href={CONTACTS.whatsapp} {...ext}>WhatsApp</a></li>
-              <li><a href={CONTACTS.telegram} {...ext}>Telegram</a></li>
-              <li><a href={CONTACTS.instagram} {...ext}>Instagram</a></li>
-              <li><a href={CONTACTS.tiktok} {...ext}>TikTok</a></li>
-              <li><a href={CONTACTS.threads} {...ext}>Threads</a></li>
+              <li><a href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" className="f-ic" />WhatsApp</a></li>
+              <li><a href={CONTACTS.telegram} {...ext}><SocialIcon name="telegram" className="f-ic" />Telegram</a></li>
+              <li><a href={CONTACTS.instagram} {...ext}><SocialIcon name="instagram" className="f-ic" />Instagram</a></li>
+              <li><a href={CONTACTS.tiktok} {...ext}><SocialIcon name="tiktok" className="f-ic" />TikTok</a></li>
+              <li><a href={CONTACTS.threads} {...ext}><SocialIcon name="threads" className="f-ic" />Threads</a></li>
             </ul>
           </div>
           <div className="f-col">
