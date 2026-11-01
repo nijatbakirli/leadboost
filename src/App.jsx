@@ -661,7 +661,7 @@ function Contact({ t, D }) {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name, contact: form.contact, service: form.service, niche: nicheLabel, budget: form.budget,
-          plan: plan !== null ? RU.PLANS[plan].name : "",
+          plan: plan !== null ? `${RU.PLANS[plan].name} (${RU.PLANS[plan].price} в месяц)` : "не выбрал, нужен совет",
         }),
       });
       if (!res.ok) throw new Error("send error");
@@ -696,12 +696,14 @@ function Contact({ t, D }) {
             <h3 className="form-title">{t.contact.formTitle}</h3>
             {!sent ? (
               <form onSubmit={onFormSubmit}>
-                {plan !== null && (
-                  <div className="form-plan">
-                    <span>{t.contact.form.planLabel}: <b>{D.PLANS[plan].name} · {D.PLANS[plan].price}</b></span>
-                    <button type="button" className="icon-btn icon-btn-sm" onClick={() => planStore.set(null)} aria-label={t.contact.form.planRemove}><IconCross /></button>
-                  </div>
-                )}
+                {/* тариф: тот же выбор, что ставит кнопка «Выбрать» в тарифах (planStore) */}
+                <label className="field">
+                  <span className="field-lbl">{t.contact.form.planLabel}</span>
+                  <select className="input" name="plan" value={plan === null ? "" : String(plan)} onChange={(e) => planStore.set(e.target.value === "" ? null : Number(e.target.value))}>
+                    <option value="">{t.contact.form.planChoose}</option>
+                    {D.PLANS.map((p, i) => <option key={p.name} value={i}>{p.name} · {p.price} {t.pricing.perMonth}</option>)}
+                  </select>
+                </label>
                 <div className="form-row">
                   <label className="field">
                     <span className="field-lbl">{t.contact.form.nameLabel}</span>

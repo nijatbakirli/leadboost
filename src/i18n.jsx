@@ -147,7 +147,7 @@ export const UI = {
         submit: "Отправить заявку", sending: "Отправляю…",
         errorText: "Не получилось отправить автоматически. Напиши мне напрямую", errorLink: "в WhatsApp", errorOr: "или", errorLinkTg: "в Telegram",
         ok: "Заявка у меня. Свяжусь в течение дня.",
-        planLabel: "Тариф", planRemove: "Убрать тариф",
+        planLabel: "Тариф", planChoose: "Пока не знаю, нужен совет",
       },
     },
     footer: {
@@ -246,7 +246,7 @@ export const UI = {
         submit: "Өтінім жіберу", sending: "Жіберілуде…",
         errorText: "Автоматты түрде жіберілмеді. Маған тікелей жазыңыз", errorLink: "WhatsApp-қа", errorOr: "немесе", errorLinkTg: "Telegram-ға",
         ok: "Өтінім менде. Бір күн ішінде хабарласамын.",
-        planLabel: "Тариф", planRemove: "Тарифті алып тастау",
+        planLabel: "Тариф", planChoose: "Әзірге білмеймін, кеңес керек",
       },
     },
     footer: {
@@ -345,7 +345,7 @@ export const UI = {
         submit: "Send request", sending: "Sending…",
         errorText: "Couldn't send automatically. Message me directly", errorLink: "on WhatsApp", errorOr: "or", errorLinkTg: "on Telegram",
         ok: "Got your request. I'll get back to you within a day.",
-        planLabel: "Plan", planRemove: "Remove plan",
+        planLabel: "Plan", planChoose: "Not sure yet, I need advice",
       },
     },
     footer: {
