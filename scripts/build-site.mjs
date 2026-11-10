@@ -167,8 +167,8 @@ writeFileSync(`${OUT}/site.webmanifest`, JSON.stringify({
   lang: "ru",
   start_url: "/",
   display: "browser",
-  background_color: "#0F1216",
-  theme_color: "#0F1216",
+  background_color: "#FAFAF7",
+  theme_color: "#FAFAF7",
   icons: [
     { src: "/img/icons/icon-192.png", sizes: "192x192", type: "image/png" },
     { src: "/img/icons/icon-512.png", sizes: "512x512", type: "image/png" },
@@ -185,14 +185,15 @@ writeFileSync(`${OUT}/404.html`, `<!doctype html>
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="stylesheet" href="${CSS}" />
   <style>
-    html,body{margin:0;background:#0F1216;color:#D3D9E2;font:500 17px/1.55 Inter,-apple-system,'Segoe UI',sans-serif}
-    body{min-height:100vh;display:flex;align-items:center;background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);background-size:60px 60px}
+    html,body{margin:0;background:#FAFAF7;color:#2E353D;font:500 17px/1.55 Inter,-apple-system,'Segoe UI',sans-serif}
+    body{min-height:100vh;display:flex;align-items:center;background-image:linear-gradient(rgba(15,18,22,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,18,22,.05) 1px,transparent 1px);background-size:60px 60px}
     main{max-width:640px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left,0px))}
-    .lbl{font:700 14px/1.3 'JetBrains Mono',monospace;letter-spacing:.06em;color:#E9EDF2;margin:0 0 18px}
-    h1{font:700 clamp(40px,9vw,72px)/1.2 Oswald,'Arial Narrow',sans-serif;text-transform:uppercase;color:#fff;margin:0 0 18px}
+    .lbl{font:700 14px/1.3 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5C6570;margin:0 0 18px}
+    h1{font:700 clamp(40px,9vw,72px)/1.2 Oswald,'Arial Narrow',sans-serif;text-transform:uppercase;color:#0F1216;margin:0 0 18px}
     h1 span{background:#F0E60D;color:#0F1216;padding:0 .13em}
-    a{display:inline-block;margin-top:10px;background:#F0E60D;color:#0F1216;text-decoration:none;font:700 18px/1 Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;padding:16px 22px;border-radius:14px}
-    a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+    a{display:inline-block;margin-top:10px;background:#0F1216;color:#fff;text-decoration:none;font:700 18px/1 Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;padding:16px 22px;border-radius:14px}
+    a:hover{background:#F0E60D;color:#0F1216}
+    a:focus-visible{outline:3px solid #0F1216;outline-offset:3px}
   </style>
 </head>
 <body>

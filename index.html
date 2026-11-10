@@ -8,12 +8,15 @@
   <title>Таргетированная реклама в Казахстане и СНГ | TARGET PRO</title>
   <meta name="description" content="Таргетированная реклама в Instagram и Facebook для бизнеса в Казахстане и СНГ: заявки в WhatsApp, отчёт каждую неделю, запуск за 7 дней. От $170 в месяц." />
   <!-- seo:end -->
-  <meta name="theme-color" content="#0F1216" />
+  <meta name="theme-color" content="#FAFAF7" />
+  <!-- тема: светлая основа; тёмную посетитель выбирает переключателем в шапке.
+       Скрипт стоит до стилей, чтобы тёмная тема включилась до первой отрисовки, без мигания -->
+  <script>try{if(localStorage.getItem("tp-theme")==="dark"){document.documentElement.setAttribute("data-theme","dark");document.querySelector('meta[name="theme-color"]').setAttribute("content","#0F1216")}}catch(e){}</script>
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="icon" type="image/png" sizes="32x32" href="/img/icons/favicon-32.png" />
   <link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png" />
   <link rel="manifest" href="/site.webmanifest" />
-  <style>*{margin:0;padding:0}html,body{margin:0;background:#0F1216}</style>
+  <style>*{margin:0;padding:0}html,body{margin:0;background:#FAFAF7}html[data-theme=dark],html[data-theme=dark] body{background:#0F1216}</style>
   <link rel="stylesheet" href="/dist/main.css" />
 </head>
 <body>

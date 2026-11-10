@@ -3,7 +3,7 @@
    Вся императивная логика (скролл, курсор, анимации) вынесена
    из разметки в именованные хуки.
    ============================================================ */
-import { useState, useEffect, useRef } from "react";
+import { useSyncExternalStore, useState, useEffect, useRef } from "react";
 
 const pointerFine = () => window.matchMedia("(pointer: fine)").matches;
 const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -57,6 +57,31 @@ export function useClockStatus(workHours, timeZone) {
 }
 
 /** true после первого рендера в браузере (для всего, что зависит от времени). */
+/* Тема сайта: светлая основа, тёмная по выбору посетителя.
+   Выбор лежит в localStorage (ключ tp-theme) только как удобство этого
+   браузера; до загрузки скрипта тему ставит маленький скрипт в <head>
+   (index.html), поэтому страница не мигает. Сервер и первый рендер всегда
+   считают тему светлой (getServerSnapshot), настоящая тема приходит после
+   оживления: так нет расхождений hydration. */
+const THEME_KEY = "tp-theme";
+const themeListeners = new Set();
+const readTheme = () => (typeof document !== "undefined" && document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light");
+export function setTheme(next) {
+  const root = document.documentElement;
+  if (next === "dark") root.setAttribute("data-theme", "dark"); else root.removeAttribute("data-theme");
+  try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* приватный режим: тема просто не запомнится */ }
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute("content", next === "dark" ? "#0F1216" : "#FAFAF7");
+  themeListeners.forEach((f) => f());
+}
+export function useTheme() {
+  return useSyncExternalStore(
+    (f) => { themeListeners.add(f); return () => themeListeners.delete(f); },
+    readTheme,
+    () => "light",
+  );
+}
+
 export function useMounted() {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);

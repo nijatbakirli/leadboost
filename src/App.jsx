@@ -15,7 +15,7 @@ import { asset } from "./assets.js";
 import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconNicheAsk, FlagRU, FlagKZ, FlagGB,
+  IconChevronDown, IconExpand, IconNicheAsk, IconSun, IconMoon, FlagRU, FlagKZ, FlagGB,
 } from "./icons.jsx";
 import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer, SocialIcon } from "./widgets.jsx";
 import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
@@ -24,7 +24,7 @@ import { UI, LANGS, useLang } from "./i18n.jsx";
 import { LANG_PATHS } from "./seo.js";
 import {
   useScrollProgress, useScrolledPast, useClockStatus, useMounted, useSpotlight, useVelocityMarquee,
-  magnetHandlers, scrollToId, scrollToTop,
+  magnetHandlers, scrollToId, scrollToTop, useTheme, setTheme,
 } from "./interactions.jsx";
 
 const ext = { target: "_blank", rel: "noopener noreferrer" };
@@ -33,7 +33,9 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
    а то, по чему человек кликнул, React оживляет в первую очередь. */
 const Part = ({ children }) => <Suspense fallback={null}>{children}</Suspense>;
 /* логотип отдельным файлом (раньше был base64 внутри JS и утяжелял страницу) */
-const LOGO_SRC = asset("img/logo.svg");
+/* логотип в двух файлах: PRO тёмным для светлой темы, белым для тёмной; показ решает CSS по html[data-theme] */
+const LOGO_LIGHT = asset("img/logo.svg");
+const LOGO_DARK = asset("img/logo-dark.svg");
 const NBSP = String.fromCharCode(160);
 
 /* Выбранный тариф: кнопка «Выбрать» в тарифах ставит, форма заявки показывает.
@@ -108,6 +110,28 @@ const FLAGS = { ru: FlagRU, kk: FlagKZ, en: FlagGB };
    по нажатию список. В списке настоящие ссылки на /, /kk/, /en/ (их видят
    поисковики), но клик меняет язык без перезагрузки. Закрывается по клику
    мимо, Esc и уходу фокуса. onOpen: закрыть мобильное меню, если открыто. */
+/* Переключатель темы (рядом с языком и в меню на телефоне). Состояние общее
+   через useTheme, поэтому обе кнопки всегда показывают одно и то же. Иконку
+   (луна в светлой, солнце в тёмной) переключает CSS, разметка одна. */
+function ThemeToggle({ t, className = "", withText = false }) {
+  const dark = useTheme() === "dark";
+  return (
+    <button
+      type="button"
+      className={`theme-btn ${className}`}
+      aria-pressed={dark}
+      aria-label={withText ? undefined : t.nav.theme}
+      title={withText ? undefined : t.nav.theme}
+      onClick={() => setTheme(dark ? "light" : "dark")}
+    >
+      <IconMoon className="i-moon" />
+      <IconSun className="i-sun" />
+      {withText && <span className="theme-txt">{t.nav.theme}</span>}
+      {withText && <span className="theme-sw" aria-hidden="true"><i /></span>}
+    </button>
+  );
+}
+
 function LangMenu({ t, lang, setLang, onOpen }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -220,6 +244,7 @@ function MobileMenu({ t, open, close, burgerRef }) {
             </li>
           ))}
         </ol>
+        <ThemeToggle t={t} className="m-theme" withText />
         <div className="m-menu-cta">
           <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" />{t.common.whatsapp}</a>
           <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><SocialIcon name="telegram" />{t.common.telegram}</a>
@@ -243,7 +268,8 @@ function Header({ t, lang, setLang }) {
     <>
       <nav className="nav" aria-label="TARGET PRO">
         <a href="#top" className="nav-logo" onClick={(e) => { document.documentElement.style.overflow = ""; closeMenu(); scrollToTop(e); }}>
-          <img src={LOGO_SRC} alt="TARGET PRO" width="121" height="17" />
+          <img className="logo-lt" src={LOGO_LIGHT} alt="TARGET PRO" width="121" height="17" />
+          <img className="logo-dk" src={LOGO_DARK} alt="TARGET PRO" width="121" height="17" />
         </a>
         <ul className="nav-links">
           <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
@@ -252,7 +278,10 @@ function Header({ t, lang, setLang }) {
           <li><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
           <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
         </ul>
-        <LangMenu t={t} lang={lang} setLang={setLang} onOpen={closeMenu} />
+        <div className="nav-tools">
+          <ThemeToggle t={t} />
+          <LangMenu t={t} lang={lang} setLang={setLang} onOpen={closeMenu} />
+        </div>
         <button
           type="button"
           ref={burgerRef}
@@ -285,8 +314,6 @@ function Hero({ t, D }) {
     <section className="hero" id="top">
       <div className="wrap">
         <div className="hero-bar">
-          <span className="corner tl" aria-hidden="true" />
-          <span className="corner tr" aria-hidden="true" />
           <SecLabel className="hero-greet"><ScrambleText text={greeting} /></SecLabel>
           <span className={`status ${status.cls}`}><i aria-hidden="true" />{status.online === false ? t.hero.statusOffline : t.hero.statusOnline}</span>
         </div>
@@ -341,7 +368,7 @@ function Services({ t, D }) {
             return (
               <div className={`tile svc ${open ? "open" : ""}`} key={s.title}>
                 <button type="button" className="svc-row" onClick={() => setOpenSvc(open ? -1 : i)} aria-expanded={open} aria-controls={`svc-${i}`}>
-                  <span className="svc-ic" aria-hidden="true"><img src={asset(`img/icons/premium/${s.icon}.svg`)} alt="" width="46" height="46" decoding="async" /></span>
+                  <span className="svc-ic" aria-hidden="true"><span className="prem-ic" style={{ "--ic": `url(${asset(`img/icons/premium/${s.icon}.svg`)})` }} /></span>
                   <span className="svc-title">
                     <span className="svc-name">{s.title}</span>
                     {s.badge && <span className={`badge ${s.badgeCls}`}>{s.badge}</span>}
@@ -483,7 +510,7 @@ function Principles({ t, D }) {
         <div className="pr-grid">
           {D.PRINCIPLES.map((p) => (
             <article className="tile pr" key={p.title}>
-              <span className="pr-ic" aria-hidden="true"><img src={asset(`img/icons/premium/${p.icon}.svg`)} alt="" width="42" height="42" loading="lazy" decoding="async" /></span>
+              <span className="pr-ic" aria-hidden="true"><span className="prem-ic" style={{ "--ic": `url(${asset(`img/icons/premium/${p.icon}.svg`)})` }} /></span>
               <h3 className="pr-title">{p.title}</h3>
               <p className="pr-front">{p.front}</p>
               <div className="pr-back">
@@ -850,7 +877,6 @@ export default function App({ initialLang = "ru" }) {
         {/* ЛЕНТЫ: что делаю × где */}
         <Part>
           <div className="tapes" aria-hidden="true">
-            <Tape items={D.TAPE_WHERE} className="tape-w" dir={-1} speed={0.45} />
             <Tape items={D.TAPE_WHAT} className="tape-y" />
           </div>
         </Part>

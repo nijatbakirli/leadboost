@@ -61,7 +61,7 @@ export function useLang(initialLang = "ru") {
 
 export const UI = {
   ru: {
-    nav: { services: "Услуги", niches: "С кем работаю", work: "Кейсы", results: "Цифры", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню" },
+    nav: { services: "Услуги", niches: "С кем работаю", work: "Кейсы", results: "Цифры", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню", theme: "Тёмная тема" },
     common: { whatsapp: "Написать в WhatsApp", telegram: "Написать в Telegram", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
       greetingMorning: "Доброе утро, это TARGET PRO",
@@ -160,7 +160,7 @@ export const UI = {
   },
 
   kk: {
-    nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", work: "Кейстер", results: "Цифрлар", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір" },
+    nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", work: "Кейстер", results: "Цифрлар", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір", theme: "Қараңғы тақырып" },
     common: { whatsapp: "WhatsApp-қа жазу", telegram: "Telegram-ға жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
     hero: {
       greetingMorning: "Қайырлы таң, бұл TARGET PRO",
@@ -259,7 +259,7 @@ export const UI = {
   },
 
   en: {
-    nav: { services: "Services", niches: "Who I work with", work: "Cases", results: "Numbers", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu" },
+    nav: { services: "Services", niches: "Who I work with", work: "Cases", results: "Numbers", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu", theme: "Dark theme" },
     common: { whatsapp: "Message on WhatsApp", telegram: "Message on Telegram", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
       greetingMorning: "Good morning, this is TARGET PRO",
