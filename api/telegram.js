@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  const text = `🎯 Новая заявка с сайта LeadBoost\n\nИмя: ${name}\nКонтакт: ${contact}\nУслуга: ${service || "не указана"}\nНиша: ${niche || "не указана"}\nБюджет: ${budget || "не указан"}\nТариф: ${plan || "не выбран"}`;
+  const text = `🎯 Новая заявка с сайта TARGET PRO\n\nИмя: ${name}\nКонтакт: ${contact}\nУслуга: ${service || "не указана"}\nНиша: ${niche || "не указана"}\nБюджет: ${budget || "не указан"}\nТариф: ${plan || "не выбран"}`;
 
   try {
     const tgRes = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {

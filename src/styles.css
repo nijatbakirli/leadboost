@@ -1,5 +1,5 @@
 /* ============================================================
-   LEADBOOST: стиль как в каруселях Instagram
+   TARGET PRO: стиль как в каруселях Instagram
    - фон #0F1216 с сеткой 60px (белый 5.5%)
    - жёлтый #F0E60D, тёмный текст на жёлтом #0F1216
    - заголовки Oswald Bold капсом, последняя строка на жёлтой
@@ -194,7 +194,7 @@ html, body { background: #0F1216; margin: 0; }
 /* логотип: точный размер и запрет сжатия. Без этого на узком экране
    Safari (iPhone) ужимал картинку до нуля, и логотип пропадал */
 .nav-logo { display: flex; align-items: center; flex-shrink: 0; }
-.nav-logo img { display: block; flex-shrink: 0; width: 114px; height: 20px; max-width: none; }
+.nav-logo img { display: block; flex-shrink: 0; width: 121px; height: 17px; max-width: none; }
 /* запасной вариант: если ссылкам не хватит места, они обрежутся,
    а не сдвинут логотип и язык (поля -6px оставляют место рамке фокуса) */
 .nav-links { display: flex; gap: 18px; list-style: none; margin: -6px; padding: 6px; min-width: 0; overflow: hidden; }
@@ -307,13 +307,13 @@ html, body { background: #0F1216; margin: 0; }
   }
   .nav-links { display: none; }
   .nav-logo { margin-right: auto; }
-  .nav-logo img { width: 108px; height: 19px; }
+  .nav-logo img { width: 114px; height: 16px; }
   .lang-btn { height: 40px; }
   .burger { display: block; }
 }
 @media (max-width: 330px) {
   .nav { padding-left: 13px; }
-  .nav-logo img { width: 97px; height: 17px; }
+  .nav-logo img { width: 100px; height: 14px; }
   .lang-btn { gap: 6px; padding: 0 9px 0 7px; }
 }
 

@@ -3,7 +3,7 @@
    Только композиция и разметка. Настройки в config.js,
    контент в data.jsx, тексты интерфейса в i18n.jsx,
    логика в interactions.jsx, мелкие компоненты в widgets.jsx.
-   Визуальный стиль как в каруселях LeadBoost (см. styles.css).
+   Визуальный стиль как в каруселях TARGET PRO (см. styles.css).
 
    Каждая секция — свой компонент со своим состоянием (открытый
    вопрос, калькулятор, форма). App хранит только язык, поэтому
@@ -33,7 +33,7 @@ const ext = { target: "_blank", rel: "noopener noreferrer" };
    а то, по чему человек кликнул, React оживляет в первую очередь. */
 const Part = ({ children }) => <Suspense fallback={null}>{children}</Suspense>;
 /* логотип отдельным файлом (раньше был base64 внутри JS и утяжелял страницу) */
-const LOGO_SRC = asset("img/logo.webp");
+const LOGO_SRC = asset("img/logo.svg");
 const NBSP = String.fromCharCode(160);
 
 /* Выбранный тариф: кнопка «Выбрать» в тарифах ставит, форма заявки показывает.
@@ -241,9 +241,9 @@ function Header({ t, lang, setLang }) {
   const closeMenu = () => setMenuOpen(false);
   return (
     <>
-      <nav className="nav" aria-label="LeadBoost">
+      <nav className="nav" aria-label="TARGET PRO">
         <a href="#top" className="nav-logo" onClick={(e) => { document.documentElement.style.overflow = ""; closeMenu(); scrollToTop(e); }}>
-          <img src={LOGO_SRC} alt="LeadBoost" width="114" height="20" />
+          <img src={LOGO_SRC} alt="TARGET PRO" width="121" height="17" />
         </a>
         <ul className="nav-links">
           <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
@@ -794,7 +794,7 @@ function Footer({ t }) {
           </div>
         </div>
         <a className="brand-line" href={CONTACTS.whatsapp} {...ext}>
-          <span className="bl-name">LEADBOOST</span>
+          <span className="bl-name">TARGET PRO</span>
           <span className="bl-rule" aria-hidden="true" />
           <span className="bl-cta">{t.footer.brandCta}<IconArrowRight className="bl-ic" /></span>
         </a>

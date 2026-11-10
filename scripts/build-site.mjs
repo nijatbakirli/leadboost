@@ -99,7 +99,7 @@ function head(lang) {
     ...LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${SITE + LANG_PATHS[l]}" />`),
     `<link rel="alternate" hreflang="x-default" href="${SITE}/" />`,
     `<meta property="og:type" content="website" />`,
-    `<meta property="og:site_name" content="LeadBoost" />`,
+    `<meta property="og:site_name" content="TARGET PRO" />`,
     `<meta property="og:url" content="${url}" />`,
     `<meta property="og:title" content="${esc(s.ogTitle)}" />`,
     `<meta property="og:description" content="${esc(s.ogDescription)}" />`,
@@ -162,8 +162,8 @@ ${alternates}
 `);
 
 writeFileSync(`${OUT}/site.webmanifest`, JSON.stringify({
-  name: "LeadBoost",
-  short_name: "LeadBoost",
+  name: "TARGET PRO",
+  short_name: "TARGET PRO",
   lang: "ru",
   start_url: "/",
   display: "browser",
@@ -181,7 +181,7 @@ writeFileSync(`${OUT}/404.html`, `<!doctype html>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex" />
-  <title>Страница не найдена | LeadBoost</title>
+  <title>Страница не найдена | TARGET PRO</title>
   <link rel="icon" href="/favicon.ico" sizes="48x48" />
   <link rel="stylesheet" href="${CSS}" />
   <style>
@@ -199,7 +199,7 @@ writeFileSync(`${OUT}/404.html`, `<!doctype html>
   <main>
     <p class="lbl">// 404</p>
     <h1>Такой страницы <span>нет</span></h1>
-    <p>Возможно, ссылка устарела. Всё про рекламу и сайты LeadBoost на главной.</p>
+    <p>Возможно, ссылка устарела. Всё про рекламу и сайты TARGET PRO на главной.</p>
     <a href="/">На главную</a>
   </main>
 </body>

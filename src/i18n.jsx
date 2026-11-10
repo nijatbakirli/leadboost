@@ -8,7 +8,7 @@
    HTML, поэтому поисковики индексируют все три. Переключатель
    меняет язык без перезагрузки и адрес в строке браузера.
 
-   Заголовки секций устроены как в каруселях LeadBoost: строка(и)
+   Заголовки секций устроены как в каруселях TARGET PRO: строка(и)
    `pre` обычным белым, последняя строка `mark` на жёлтой плашке.
    Русский: обращение на «ты», без длинных тире (—).
    ============================================================ */
@@ -64,9 +64,9 @@ export const UI = {
     nav: { services: "Услуги", niches: "С кем работаю", work: "Кейсы", results: "Цифры", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню" },
     common: { whatsapp: "Написать в WhatsApp", telegram: "Написать в Telegram", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
-      greetingMorning: "Доброе утро, это LeadBoost",
-      greetingDay: "Добрый день, это LeadBoost",
-      greetingEvening: "Добрый вечер, это LeadBoost",
+      greetingMorning: "Доброе утро, это TARGET PRO",
+      greetingDay: "Добрый день, это TARGET PRO",
+      greetingEvening: "Добрый вечер, это TARGET PRO",
       statusOnline: "На связи", statusOffline: "Отвечу утром",
       h1: ["Реклама,", "которая приводит"], h1Mark: "клиентов",
       lead: "Настраиваю таргетированную рекламу в Instagram и Facebook и делаю сайты, которые выдерживают этот трафик. Реклама, сайт и аналитика в одних руках с первого дня.",
@@ -154,7 +154,7 @@ export const UI = {
       pre: "Ясность,", mark: "которая продаёт",
       linksLabel: "Ссылки", contactsLabel: "Связь", statusLabel: "Статус",
       online: "на связи, отвечаю быстро", offline: "сейчас ночь, отвечу утром",
-      copyright: "© 2026 LeadBoost", services: "Реклама, сайты, аналитика", brandCta: "Написать",
+      copyright: "© 2026 TARGET PRO", services: "Реклама, сайты, аналитика", brandCta: "Написать",
     },
     mcta: { spots: (left, total) => `${left} из ${total} мест свободно`, cta: "WhatsApp" },
   },
@@ -163,9 +163,9 @@ export const UI = {
     nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", work: "Кейстер", results: "Цифрлар", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір" },
     common: { whatsapp: "WhatsApp-қа жазу", telegram: "Telegram-ға жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
     hero: {
-      greetingMorning: "Қайырлы таң, бұл LeadBoost",
-      greetingDay: "Қайырлы күн, бұл LeadBoost",
-      greetingEvening: "Қайырлы кеш, бұл LeadBoost",
+      greetingMorning: "Қайырлы таң, бұл TARGET PRO",
+      greetingDay: "Қайырлы күн, бұл TARGET PRO",
+      greetingEvening: "Қайырлы кеш, бұл TARGET PRO",
       statusOnline: "Байланыстамын", statusOffline: "Таңертең жауап беремін",
       h1: ["Клиент", "әкелетін"], h1Mark: "жарнама",
       lead: "Instagram мен Facebook-та таргеттелген жарнаманы баптаймын және осы трафикті көтере алатын сайттар жасаймын. Жарнама, сайт және аналитика бірінші күннен бір қолда.",
@@ -253,7 +253,7 @@ export const UI = {
       pre: "Сататын", mark: "айқындық",
       linksLabel: "Сілтемелер", contactsLabel: "Байланыс", statusLabel: "Мәртебе",
       online: "байланыстамын, тез жауап беремін", offline: "қазір түн, таңертең жауап беремін",
-      copyright: "© 2026 LeadBoost", services: "Жарнама, сайттар, аналитика", brandCta: "Жазу",
+      copyright: "© 2026 TARGET PRO", services: "Жарнама, сайттар, аналитика", brandCta: "Жазу",
     },
     mcta: { spots: (left, total) => `${total} орынның ${left} бос`, cta: "WhatsApp" },
   },
@@ -262,9 +262,9 @@ export const UI = {
     nav: { services: "Services", niches: "Who I work with", work: "Cases", results: "Numbers", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu" },
     common: { whatsapp: "Message on WhatsApp", telegram: "Message on Telegram", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
-      greetingMorning: "Good morning, this is LeadBoost",
-      greetingDay: "Good afternoon, this is LeadBoost",
-      greetingEvening: "Good evening, this is LeadBoost",
+      greetingMorning: "Good morning, this is TARGET PRO",
+      greetingDay: "Good afternoon, this is TARGET PRO",
+      greetingEvening: "Good evening, this is TARGET PRO",
       statusOnline: "Online", statusOffline: "Will reply in the morning",
       h1: ["Advertising", "that brings in"], h1Mark: "customers",
       lead: "I set up targeted Instagram and Facebook ads and build websites that can handle that traffic. Ads, website and analytics in one pair of hands from day one.",
@@ -352,7 +352,7 @@ export const UI = {
       pre: "Clarity", mark: "that sells",
       linksLabel: "Links", contactsLabel: "Contact", statusLabel: "Status",
       online: "online, quick replies", offline: "night here, will reply in the morning",
-      copyright: "© 2026 LeadBoost", services: "Advertising, websites, analytics", brandCta: "Message me",
+      copyright: "© 2026 TARGET PRO", services: "Advertising, websites, analytics", brandCta: "Message me",
     },
     mcta: { spots: (left, total) => `${left} of ${total} slots open`, cta: "WhatsApp" },
   },
