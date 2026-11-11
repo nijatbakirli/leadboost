@@ -120,20 +120,19 @@ function TargetGame({ strings, promoWord, need = 5 }) {
             {!playing && <button type="button" className="btn btn-ghost game-play" onClick={start}>{strings.playBtn}</button>}
           </div>
           {!playing ? (
-            /* большая мишень справа: украшение, клик мышкой тоже запускает игру
-               (с клавиатуры для этого есть кнопка «Играть») */
+            /* пять пустых квадратов справа: столько попаданий нужно. Клик мышкой
+               тоже запускает игру (с клавиатуры для этого есть кнопка «Играть») */
             <div className="game-deco" aria-hidden="true" onClick={start}>
-              <svg viewBox="0 0 220 220" fill="none">
-                <path d="M110 0v58M110 162v58M0 110h58M162 110h58" stroke="#2A323C" strokeWidth="2" />
-                <circle className="game-deco-spin" cx="110" cy="110" r="100" stroke="currentColor" strokeWidth="3" strokeDasharray="3 12" strokeLinecap="round" opacity=".55" />
-                <circle cx="110" cy="110" r="76" stroke="currentColor" strokeWidth="4" />
-                <circle cx="110" cy="110" r="50" stroke="currentColor" strokeWidth="4" />
-                <circle className="game-deco-core" cx="110" cy="110" r="22" fill="currentColor" />
-              </svg>
+              {Array.from({ length: need }, (_, i) => <i key={i} />)}
             </div>
           ) : (
             <div className="game-area">
-              <div className="game-hud">{strings.hudLabel} <b>{hits}</b> / {need}</div>
+              <div className="game-hud">
+                <span>{strings.hudLabel} <b>{hits}</b> / {need}</span>
+                <span className="game-steps" aria-hidden="true">
+                  {Array.from({ length: need }, (_, i) => <i key={i} className={i < hits ? "on" : ""} />)}
+                </span>
+              </div>
               {!won ? (
                 <button
                   type="button"
@@ -141,13 +140,7 @@ function TargetGame({ strings, promoWord, need = 5 }) {
                   style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
                   onClick={onHit}
                   aria-label={strings.targetAria}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
-                    <circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeWidth="1.6" />
-                    <circle cx="12" cy="12" r="2" fill="currentColor" />
-                  </svg>
-                </button>
+                />
               ) : (
                 <div className="game-win" role="status">
                   <h4>{strings.winTitle}</h4>

@@ -23,7 +23,7 @@ import { CONTENT } from "./data.jsx";
 import { UI, LANGS, useLang } from "./i18n.jsx";
 import { LANG_PATHS } from "./seo.js";
 import {
-  useScrollProgress, useScrolledPast, useClockStatus, useMounted, useSpotlight, useVelocityMarquee,
+  useScrollProgress, useScrolledPast, useClockStatus, useMounted, useVelocityMarquee,
   magnetHandlers, scrollToId, scrollToTop, useTheme, setTheme,
 } from "./interactions.jsx";
 
@@ -865,11 +865,9 @@ export default function App({ initialLang = "ru" }) {
   const { lang, setLang } = useLang(initialLang);
   const D = CONTENT[lang];
   const t = UI[lang];
-  const rootRef = useSpotlight();
 
   return (
-    <div className="cl-root" ref={rootRef}>
-      <div className="spotlight" aria-hidden="true" />
+    <div className="cl-root">
       <Header t={t} lang={lang} setLang={setLang} />
 
       <main>

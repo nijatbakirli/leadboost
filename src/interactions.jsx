@@ -88,26 +88,6 @@ export function useMounted() {
   return mounted;
 }
 
-/** Спотлайт: CSS-переменные --mx/--my следуют за курсором. */
-export function useSpotlight() {
-  const rootRef = useRef(null);
-  useEffect(() => {
-    if (!pointerFine()) return;
-    let raf;
-    const onMove = (e) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        if (!rootRef.current) return;
-        rootRef.current.style.setProperty("--mx", `${e.clientX}px`);
-        rootRef.current.style.setProperty("--my", `${e.clientY}px`);
-      });
-    };
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => { window.removeEventListener("mousemove", onMove); cancelAnimationFrame(raf); };
-  }, []);
-  return rootRef;
-}
-
 /** Бегущая лента: базовая скорость + разгон от скорости скролла.
  *  dir = 1 едет влево, dir = -1 вправо. Внутри трека две одинаковые
  *  половины, поэтому сдвиг на половину ширины даёт бесшовный круг.
