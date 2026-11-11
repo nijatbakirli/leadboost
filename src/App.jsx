@@ -875,6 +875,7 @@ export default function App({ initialLang = "ru" }) {
         {/* ЛЕНТЫ: что делаю × где */}
         <Part>
           <div className="tapes" aria-hidden="true">
+            <Tape items={D.TAPE_WHERE} className="tape-w" dir={-1} speed={0.45} />
             <Tape items={D.TAPE_WHAT} className="tape-y" />
           </div>
         </Part>

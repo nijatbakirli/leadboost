@@ -25,6 +25,8 @@ html[data-theme="dark"], html[data-theme="dark"] body { background: #0F1216; }
   --line: #E3E4DF;
   --line-2: #D5D7D1;
   --sq-line: #D5D7D1; /* пустые квадраты мини-игры */
+  --tape2-bg: #FFFFFF; /* вторая лента под жёлтой */
+  --tape2-line: #D5D7D1; /* края белой ленты, иначе она сливается с бумагой */
   --ink: #0F1216;
   --ink-2: #1B2027;
   --body: #2E353D;
@@ -80,6 +82,8 @@ html[data-theme="dark"] .cl-root {
   --line: #232A33;
   --line-2: #2A323C;
   --sq-line: #3A4450; /* обычная обводка на фоне игры почти не видна */
+  --tape2-bg: #E9EDF2;
+  --tape2-line: transparent;
   --ink: #FFFFFF;
   --ink-2: #E9EDF2;
   --body: #D3D9E2;
@@ -493,26 +497,42 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
   .hero-stat { padding: 18px; }
 }
 
-/* ---------- лента: что делаю, одной спокойной строкой ----------
-   Раньше были две перекрещённые ленты, жёлтая и белая, с крестиками:
-   они читались как сигнальная лента. Теперь одна строка на плитке
-   между тонкими линиями, между словами маленький жёлтый квадрат. */
-.tapes { position: relative; overflow: hidden; margin: 24px 0 0; background: var(--tile); border-top: 2px solid var(--line); border-bottom: 2px solid var(--line); }
-.tape { position: relative; height: 72px; display: flex; align-items: center; overflow: hidden; }
+/* ---------- перекрещённые ленты, как на каруселях ----------
+   Жёлтая сверху (что делаю), белая под ней наискосок (где), текст
+   на обеих тёмный. В тёмной теме белая #E9EDF2 как на каруселях,
+   в светлой #FFFFFF с серыми краями 2px, иначе она сливается с
+   бумагой. Чёрной вторую ленту не делать: жёлтая с чёрной это
+   сигнальная полоса, её брендбук запрещает. Ленты вернул владелец
+   (ноябрь 2026) вместо одной спокойной строки. */
+.tapes { position: relative; height: 230px; overflow: hidden; margin: 24px 0 0; }
+.tape { position: absolute; left: -6%; width: 112%; height: 80px; display: flex; align-items: center; overflow: hidden; }
+.tape-y { top: 50px; background: var(--y); color: var(--y-ink); transform: rotate(-3deg); z-index: 2; }
+.tape-w {
+  top: 94px; background: var(--tape2-bg); color: var(--y-ink); transform: rotate(2.5deg); z-index: 1;
+  box-shadow: inset 0 2px 0 var(--tape2-line), inset 0 -2px 0 var(--tape2-line);
+}
 .tape-track { display: flex; width: max-content; will-change: transform; }
 .tape-run {
-  display: flex; align-items: center; gap: 28px; padding-right: 28px;
+  display: flex; align-items: center; gap: 26px; padding-right: 26px;
   font-family: var(--f-display); font-weight: 700; text-transform: uppercase;
-  font-size: 28px; letter-spacing: 0.08em; color: var(--ink); white-space: nowrap;
+  font-size: 36px; letter-spacing: 0.1em; color: inherit; white-space: nowrap;
 }
-.tape-word { display: inline-flex; align-items: center; gap: 28px; }
-.tape-word::after { content: ""; width: 10px; height: 10px; flex-shrink: 0; background: var(--y); }
+/* крестик после каждого слова цветом текста ленты: одна CSS-маска
+   вместо десятков SVG в разметке */
+.tape-word { display: inline-flex; align-items: center; gap: 26px; }
+.tape-word::after {
+  content: ""; width: 24px; height: 24px; flex-shrink: 0; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 5l14 14M19 5L5 19' stroke='%23000' stroke-width='2.6' fill='none'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 5l14 14M19 5L5 19' stroke='%23000' stroke-width='2.6' fill='none'/%3E%3C/svg%3E") center / contain no-repeat;
+}
 @media (max-width: 720px) {
-  .tapes { margin-top: 10px; }
-  .tape { height: 56px; }
-  .tape-run { font-size: 21px; gap: 18px; padding-right: 18px; }
-  .tape-word { gap: 18px; }
-  .tape-word::after { width: 8px; height: 8px; }
+  .tapes { height: 150px; margin-top: 10px; }
+  .tape { height: 54px; }
+  .tape-y { top: 30px; }
+  .tape-w { top: 66px; }
+  .tape-run { font-size: 24px; gap: 16px; padding-right: 16px; }
+  .tape-word { gap: 16px; }
+  .tape-word::after { width: 16px; height: 16px; }
 }
 
 /* ---------- стейтмент ---------- */
