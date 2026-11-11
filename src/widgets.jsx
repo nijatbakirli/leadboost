@@ -59,13 +59,23 @@ function CountMetric({ value, className = "" }) {
   return <span ref={ref} className={className}>{display}</span>;
 }
 
-/* жёлтая плашка-выделение, как последняя строка заголовка в каруселях:
-   при появлении на экране плашка "наезжает" слева направо.
+/* жёлтая плашка-выделение, как последняя строка заголовка в каруселях,
+   в виде мазка маркера: при появлении на экране мазок тянется слева
+   направо. Вариант мазка (a/b/c, см. .hl-a в styles.css) выбирается по
+   тексту: одинаково на сервере и в браузере, поэтому hydration не
+   расходится, а соседние заголовки обычно получают разные мазки.
    instant: плашка видна сразу, без анимации (первый экран: он должен
    выглядеть готовым ещё до загрузки JavaScript) */
+function hlVariant(text) {
+  // FNV-1a и перемешивание битов: варианты расходятся ровнее, чем от простой суммы
+  let h = 0x811c9dc5;
+  for (const ch of String(text)) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  h ^= h >>> 16; h = Math.imul(h, 0x85ebca6b) >>> 0; h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35) >>> 0; h ^= h >>> 16;
+  return "abc"[(h >>> 0) % 3];
+}
 function Mark({ children, instant = false }) {
   const [ref, show] = useReveal();
-  return <span ref={ref} className={`hl ${instant || show ? "show" : ""}`}>{children}</span>;
+  return <span ref={ref} className={`hl hl-${hlVariant(children)} ${instant || show ? "show" : ""}`}>{children}</span>;
 }
 
 /* моно-лейбл секции: "// УСЛУГИ" */
