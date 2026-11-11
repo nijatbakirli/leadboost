@@ -78,13 +78,10 @@ function Mark({ children, instant = false }) {
   return <span ref={ref} className={`hl hl-${hlVariant(children)} ${instant || show ? "show" : ""}`}>{children}</span>;
 }
 
-/* моно-лейбл секции: "// УСЛУГИ" */
+/* моно-лейбл секции: "УСЛУГИ". Без "//" перед текстом: владелец убрал
+   их в ноябре 2026, они придавали сайту вид сделанного ИИ */
 function SecLabel({ children, className = "" }) {
-  return (
-    <div className={`lbl ${className}`}>
-      <span className="lbl-sl" aria-hidden="true">//</span> {children}
-    </div>
-  );
+  return <div className={`lbl ${className}`}>{children}</div>;
 }
 
 /* заголовок в стиле каруселей: строки pre белым + строка mark на жёлтой плашке */
