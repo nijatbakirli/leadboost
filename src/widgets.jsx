@@ -1,137 +1,100 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useReveal } from "./hooks.jsx";
+import { IconCross } from "./icons.jsx";
+import { asset } from "./assets.js";
 
-/* scramble: заголовок "расшифровывается" из случайных символов */
-function ScrambleText({ text, className = "", speed = 28 }) {
+/* жёлтая плашка-выделение, как последняя строка заголовка в каруселях,
+   в виде мазка маркера: при появлении на экране мазок тянется слева
+   направо. Вариант мазка (a/b/c, см. .hl-a в styles.css) выбирается по
+   тексту: одинаково на сервере и в браузере, поэтому hydration не
+   расходится, а соседние заголовки обычно получают разные мазки.
+   instant: плашка видна сразу, без анимации (первый экран: он должен
+   выглядеть готовым ещё до загрузки JavaScript) */
+function hlVariant(text) {
+  // FNV-1a и перемешивание битов: варианты расходятся ровнее, чем от простой суммы
+  let h = 0x811c9dc5;
+  for (const ch of String(text)) { h ^= ch.codePointAt(0); h = Math.imul(h, 0x01000193) >>> 0; }
+  h ^= h >>> 16; h = Math.imul(h, 0x85ebca6b) >>> 0; h ^= h >>> 13; h = Math.imul(h, 0xc2b2ae35) >>> 0; h ^= h >>> 16;
+  return "abc"[(h >>> 0) % 3];
+}
+function Mark({ children, instant = false }) {
   const [ref, show] = useReveal();
-  const [display, setDisplay] = useState(text);
-  useEffect(() => {
-    if (!show) return;
-    const chars = "▓▒░#%&@$?!АБВГДЕКЛМНОПРСТ0123456789";
-    let frame = 0;
-    const total = text.length;
-    const id = setInterval(() => {
-      frame++;
-      const fixed = Math.floor((frame / 2.2));
-      let out = "";
-      for (let i = 0; i < total; i++) {
-        if (text[i] === " ") { out += " "; continue; }
-        out += i < fixed ? text[i] : chars[Math.floor(Math.random() * chars.length)];
-      }
-      setDisplay(out);
-      if (fixed >= total) { setDisplay(text); clearInterval(id); }
-    }, speed);
-    return () => clearInterval(id);
-  }, [show, text, speed]);
-  return <span ref={ref} className={className}>{display}</span>;
+  return <span ref={ref} className={`hl hl-${hlVariant(children)} ${instant || show ? "show" : ""}`}>{children}</span>;
 }
 
-/* каскадное появление заголовка по словам */
-function WordReveal({ text, className = "" }) {
-  const [ref, show] = useReveal();
-  const words = String(text).split(" ");
+/* моно-лейбл капсом внутри плитки ("ИЗ МОЕГО КАБИНЕТА META", название
+   тарифа). Над заголовками секций его больше нет (ноябрь 2026). Без "//"
+   перед текстом: владелец убрал их, они придавали сайту вид сделанного ИИ */
+function SecLabel({ children, className = "" }) {
+  return <div className={`lbl ${className}`}>{children}</div>;
+}
+
+/* заголовок в стиле каруселей: строки pre цветом текста + строка mark на
+   жёлтом мазке. mark необязателен: мазок только на четырёх экранах */
+function Heading({ as: Tag = "h2", pre, mark, className = "", instant = false }) {
+  const lines = (Array.isArray(pre) ? pre : [pre]).filter(Boolean);
+  /* пробел между строками: на экране строки и так с новой строки (display:
+     block), а поисковики и экранный диктор без него читали бы слова слитно
+     («Instagramи Facebook») */
   return (
-    <span ref={ref} className={`word-reveal ${show ? "show" : ""} ${className}`}>
-      {words.map((w, i) => (
-        <React.Fragment key={i}>
-          <span className="w" style={{ transitionDelay: `${i * 45}ms` }}>{w}</span>{" "}
-        </React.Fragment>
-      ))}
-    </span>
+    <Tag className={`hd ${className}`}>
+      {lines.map((l, i) => <React.Fragment key={i}>{i > 0 && " "}<span className="hd-line">{l}</span></React.Fragment>)}
+      {mark && <>{lines.length > 0 && " "}<span className="hd-line"><Mark instant={instant}>{mark}</Mark></span></>}
+    </Tag>
   );
 }
 
-/* метрика с анимацией счёта при появлении */
-function CountMetric({ value, inline }) {
-  const [ref, show] = useReveal();
-  const [display, setDisplay] = useState(value);
+/* просмотр скрина из кабинета крупно: нативный <dialog> (Esc, фокус,
+   клик по фону закрывают; страница под ним не прокручивается) */
+function ShotViewer({ item, onClose, closeLabel, sourceLabel }) {
+  const ref = useRef(null);
   useEffect(() => {
-    const m = String(value).match(/^([^\d]*)([\d\s]+(?:[.,]\d+)?)(.*)$/);
-    if (!show || !m) { setDisplay(value); return; }
-    const prefix = m[1], numRaw = m[2].replace(/\s/g, "").replace(",", "."), suffix = m[3];
-    const target = parseFloat(numRaw), hasDec = numRaw.includes(".");
-    let start = null;
-    const dur = 1100;
-    const step = (t) => {
-      if (!start) start = t;
-      const p = Math.min((t - start) / dur, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const cur = target * eased;
-      setDisplay(`${prefix}${hasDec ? cur.toFixed(1) : Math.round(cur).toLocaleString("ru-RU")}${suffix}`);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  }, [show, value]);
-  return <div ref={ref} className={inline ? "" : "big"}>{display}</div>;
-}
-
-/* фраза с жёлтым маркером, который "рисуется" при появлении */
-function Mark({ children }) {
-  const [ref, show] = useReveal();
-  return <span ref={ref} className={`marklight ${show ? "show" : ""}`}>{children}</span>;
-}
-
-/* мини-игра: попади в цель 5 раз — получи бонус (тематика таргетинга).
-   strings — тексты интерфейса на текущем языке (см. src/i18n.jsx),
-   promoWord — кодовое слово из config.js (одно на все языки). */
-function TargetGame({ strings, promoWord, need = 5 }) {
-  const [playing, setPlaying] = useState(false);
-  const [hits, setHits] = useState(0);
-  const [pos, setPos] = useState({ x: 45, y: 40 });
-  const [won, setWon] = useState(false);
-
-  const moveTarget = () => {
-    setPos({ x: 8 + Math.random() * 80, y: 12 + Math.random() * 68 });
-  };
-  const onHit = () => {
-    if (navigator.vibrate) navigator.vibrate(18);
-    const next = hits + 1;
-    setHits(next);
-    if (next >= need) { setWon(true); return; }
-    moveTarget();
-  };
-  const start = () => { setPlaying(true); setHits(0); setWon(false); moveTarget(); };
+    const d = ref.current;
+    if (!d) return;
+    if (item && !d.open) {
+      if (typeof d.showModal === "function") d.showModal(); else d.setAttribute("open", "");
+      document.documentElement.style.overflow = "hidden";
+    }
+    if (!item && d.open) d.close();
+    if (!item) document.documentElement.style.overflow = "";
+  }, [item]);
+  useEffect(() => () => { document.documentElement.style.overflow = ""; }, []);
 
   return (
-    <section className="section game-section" id="game">
-      <div className="wrap">
-        <div className="sec-num center"><span className="circle">09.1</span> {strings.secLabel}</div>
-        <div className="game-card">
-          <h3 className="h-mid">{strings.title}</h3>
-          <p>{strings.subtitle(need)}</p>
-          {!playing ? (
-            <button className="game-btn" onClick={start}>{strings.playBtn}</button>
-          ) : (
-            <div className="game-area">
-              <div className="game-hud">{strings.hudLabel} <b>{hits}</b> / {need}</div>
-              {!won ? (
-                <div
-                  className="game-target"
-                  style={{ left: `${pos.x}%`, top: `${pos.y}%` }}
-                  onClick={onHit}
-                  role="button"
-                  aria-label={strings.targetAria}
-                >
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.4" />
-                    <circle cx="12" cy="12" r="5.5" stroke="currentColor" strokeWidth="1.4" />
-                    <circle cx="12" cy="12" r="2" fill="currentColor" />
-                  </svg>
-                </div>
-              ) : (
-                <div className="game-win">
-                  <h4>{strings.winTitle}</h4>
-                  <p style={{ margin: 0 }}>{strings.winLine1}</p>
-                  <span className="code">{promoWord}</span>
-                  <p style={{ margin: 0, fontSize: 12 }}>{strings.winLine2}</p>
-                </div>
-              )}
-            </div>
-          )}
+    <dialog
+      ref={ref}
+      className="shot-dialog"
+      aria-label={sourceLabel}
+      onClose={onClose}
+      onCancel={onClose}
+      onClick={(e) => { if (e.target === ref.current) onClose(); }}
+    >
+      {item && (
+        <div className="shot-dialog-inner">
+          <div className="shot-dialog-head">
+            <SecLabel className="lbl-sm">{sourceLabel}</SecLabel>
+            <button type="button" className="icon-btn" onClick={onClose} aria-label={closeLabel} autoFocus>
+              <IconCross />
+            </button>
+          </div>
+          <div className="shot-dialog-imgs">
+            {item.shots.map((s) => <img key={s.src} src={s.src} width={s.w} height={s.h} alt={s.alt} />)}
+          </div>
+          <p className="shot-dialog-cap"><b>{item.big} {item.unit}</b> {item.sub}</p>
         </div>
-      </div>
-    </section>
+      )}
+    </dialog>
   );
 }
 
-export { ScrambleText, WordReveal, CountMetric, Mark, TargetGame };
+/* Значки соцсетей (официальные, прислал владелец), одноцветные. Файл
+   img/icons/social/*.webp (96×96, белый на прозрачном) задаёт только
+   форму, цвет берётся из текста кнопки через CSS-маску (.soc-ic в
+   styles.css): тёмный на жёлтой кнопке, светлый на тёмной, жёлтый при
+   наведении. Рядом всегда есть подпись, поэтому значок скрыт от
+   экранного диктора. */
+function SocialIcon({ name, className = "btn-ic" }) {
+  return <span className={`soc-ic ${className}`} style={{ "--ic": `url("${asset(`img/icons/social/${name}.webp`)}")` }} aria-hidden="true" />;
+}
+
+export { Mark, SecLabel, Heading, ShotViewer, SocialIcon };
