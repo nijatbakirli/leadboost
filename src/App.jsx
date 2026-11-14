@@ -6,13 +6,12 @@
    Визуальный стиль как в каруселях TARGET PRO (см. styles.css).
 
    Каждая секция — свой компонент со своим состоянием (открытый
-   вопрос, калькулятор, форма). App хранит только язык, поэтому
+   вопрос, открытая услуга, форма). App хранит только язык, поэтому
    клик или скролл обновляет одну секцию, а не всю страницу,
    и не задевает секции, которые браузер ещё «оживляет» (см. Part).
    ============================================================ */
 import React, { useState, useEffect, useRef, Suspense, useSyncExternalStore } from "react";
 import { asset } from "./assets.js";
-import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
   IconChevronDown, IconExpand, IconSun, IconMoon, FlagRU, FlagKZ, FlagGB,
@@ -36,7 +35,6 @@ const Part = ({ children }) => <Suspense fallback={null}>{children}</Suspense>;
 /* логотип в двух файлах: PRO тёмным для светлой темы, белым для тёмной; показ решает CSS по html[data-theme] */
 const LOGO_LIGHT = asset("img/logo.svg");
 const LOGO_DARK = asset("img/logo-dark.svg");
-const NBSP = String.fromCharCode(160);
 
 /* Выбранный тариф: кнопка «Выбрать» в тарифах ставит, форма заявки показывает.
    Маленькое общее хранилище вместо состояния в App: выбор тарифа
@@ -571,56 +569,6 @@ function Pricing({ t, D }) {
   );
 }
 
-/* КАЛЬКУЛЯТОР */
-const ROI_MIN = 300, ROI_MAX = 6000;
-function Calculator({ t, D, lang }) {
-  const [roiBudget, setRoiBudget] = useState(1000);
-  const [roiNiche, setRoiNiche] = useState("ecommerce");
-  const nicheInfo = D.NICHE_DATA[roiNiche];
-  /* сколько напишут и сколько из них купят: примерные цифры ниши
-     (NICHE_NUM в data.jsx). ROAS раньше был готовой строкой без расчёта:
-     без цены товара его честно не посчитать */
-  const estLeads = Math.max(1, Math.round(roiBudget / nicheInfo.cpl));
-  const estClients = Math.max(1, Math.round(estLeads * nicheInfo.conv));
-  const animatedCpl = useTween(nicheInfo.cpl, 500, 1);
-  const animatedLeads = useTween(estLeads, 500, 0);
-  const animatedClients = useTween(estClients, 500, 0);
-  const dec = (n) => (lang === "en" ? String(n) : String(n).replace(".", ","));
-  /* подписи под ползунком: $300 и $6 000 (разделитель тысяч по языку) */
-  const money = (n) => "$" + (lang === "en" ? n.toLocaleString("en-US") : String(n).replace(/\B(?=(\d{3})+$)/g, NBSP));
-  /* целые числа с разделителем тысяч: 1 250 / 1,250 */
-  const int = (n) => (lang === "en" ? n.toLocaleString("en-US") : String(n).replace(/\B(?=(\d{3})+$)/g, NBSP));
-  return (
-    <section className="section" id="calculator">
-      <div className="wrap">
-        <SecHead s={t.calculator} />
-        <div className="tile roi">
-          <div className="roi-inputs">
-            <label className="field">
-              <span className="field-lbl">{t.calculator.nicheLabel}</span>
-              <select className="input" value={roiNiche} onChange={(e) => setRoiNiche(e.target.value)}>
-                {Object.entries(D.NICHE_DATA).map(([key, n]) => <option key={key} value={key}>{n.label}</option>)}
-              </select>
-            </label>
-            <label className="field">
-              <span className="field-lbl">{t.calculator.budgetLabel}</span>
-              <input className="input" type="number" inputMode="numeric" min="0" step="100" value={roiBudget} onChange={(e) => setRoiBudget(Math.max(0, Number(e.target.value)))} />
-            </label>
-            <input className="roi-range" type="range" min={ROI_MIN} max={ROI_MAX} step="100" value={roiBudget} aria-label={t.calculator.budgetLabel} onChange={(e) => setRoiBudget(Number(e.target.value))} />
-            <div className="roi-scale" aria-hidden="true"><span>{money(ROI_MIN)}</span><span>{money(ROI_MAX)}</span></div>
-          </div>
-          <div className="roi-results" aria-live="polite">
-            <div className="roi-out"><span className="k">{t.calculator.out1}</span><span className="v">~${dec(animatedCpl)}</span></div>
-            <div className="roi-out"><span className="k">{t.calculator.out2}</span><span className="v">~{int(animatedLeads)}</span></div>
-            <div className="roi-out"><span className="k">{t.calculator.out3}</span><span className="v">~{int(animatedClients)}</span></div>
-            <p className="roi-note">{t.calculator.note}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ВОПРОСЫ. Компьютер: заголовок и кнопка слева (едут вместе со списком),
    вопросы справа. Телефон: заголовок, вопросы, потом кнопка.
    Вопросы простым списком с линиями, без карточек */
@@ -877,7 +825,6 @@ export default function App({ initialLang = "ru" }) {
         <Part><Principles t={t} D={D} /></Part>
         <Part><Fit t={t} D={D} /></Part>
         <Part><Pricing t={t} D={D} /></Part>
-        <Part><Calculator t={t} D={D} lang={lang} /></Part>
         <Part><Faq t={t} D={D} /></Part>
         <Part><Contact t={t} D={D} /></Part>
       </main>

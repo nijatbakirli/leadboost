@@ -780,26 +780,6 @@ select.input {
 }
 select.input option { color: var(--ink-2); background: var(--tile); }
 
-/* ---------- калькулятор ---------- */
-.roi { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0; overflow: hidden; }
-.roi-inputs { padding: 32px; display: flex; flex-direction: column; justify-content: center; }
-.roi-range { width: 100%; accent-color: var(--accent); margin-top: 6px; }
-.roi-scale {
-  display: flex; justify-content: space-between; margin-top: 8px;
-  font-family: var(--f-mono); font-weight: 700; font-size: 13px; letter-spacing: .04em; color: var(--dim);
-}
-.roi-results { background: var(--tile-2); padding: 30px 32px; display: flex; flex-direction: column; justify-content: center; }
-.roi-out { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 14px 0; border-top: 2px solid var(--line-2); }
-.roi-out:first-child { border-top: 0; }
-.roi-out .k { font-size: 16px; line-height: 1.4; color: var(--muted); }
-/* числа калькулятора в моноширинном: при пересчёте они не прыгают */
-.roi-out .v { font-family: var(--f-mono); font-weight: 700; font-size: 24px; color: var(--accent); white-space: nowrap; }
-.roi-note { margin: 16px 0 0; font-size: 14.5px; line-height: 1.55; color: var(--dim); }
-@media (max-width: 860px) {
-  .roi { grid-template-columns: 1fr; }
-  .roi-inputs, .roi-results { padding: 22px; }
-}
-
 /* ---------- вопросы: заголовок слева (едет вместе со списком), вопросы справа ---------- */
 .faq-layout { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 0 64px; align-items: start; }
 .faq-side { position: sticky; top: 110px; }
@@ -953,7 +933,7 @@ select.input option { color: var(--ink-2); background: var(--tile); }
 @media (max-width: 760px) { .m-cta { display: flex; } }
 
 
-#top, #services, #niches, #work, #results, #how, #fit, #pricing, #calculator, #faq, #contact { scroll-margin-top: 90px; }
+#top, #services, #niches, #work, #results, #how, #fit, #pricing, #faq, #contact { scroll-margin-top: 90px; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {

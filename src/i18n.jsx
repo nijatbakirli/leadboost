@@ -104,15 +104,6 @@ export const UI = {
       webNoteText: "От простого лендинга до интернет-магазина. Цену и сроки скажу после короткого созвона.",
       webNoteBtn: "Обсудить сайт",
     },
-    calculator: {
-      pre: "Посчитай сам",
-      sub: "Сколько примерно клиентов принесёт твой рекламный бюджет.",
-      nicheLabel: "Ниша", budgetLabel: "Бюджет на рекламу в месяц, $",
-      out1: "Сколько будет стоить один человек, который напишет",
-      out2: "Сколько таких людей будет в месяц",
-      out3: "Сколько из них станут клиентами",
-      note: "Условный пример: средняя цена переписки в нише и доля тех, кто покупает после переписки. На деле зависит от цены, сезона и того, как быстро ты отвечаешь. Точнее скажу на созвоне.",
-    },
     faq: { pre: "Частые вопросы", more: "Не нашёл свой вопрос? Напиши, отвечу сам.", moreBtn: "Спросить в WhatsApp" },
     contact: {
       pre: "Напиши, отвечу сам", mark: "в течение дня",
@@ -184,15 +175,6 @@ export const UI = {
       webNoteText: "Қарапайым лендингтен интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын.",
       webNoteBtn: "Сайтты талқылау",
     },
-    calculator: {
-      pre: "Өзіңіз есептеңіз",
-      sub: "Жарнама бюджетіңіз шамамен қанша клиент әкеледі.",
-      nicheLabel: "Сала", budgetLabel: "Айына жарнама бюджеті, $",
-      out1: "Жазатын бір адам қанша тұрады",
-      out2: "Айына осындай адамдар саны",
-      out3: "Олардың қаншасы клиент болады",
-      note: "Шартты мысал: саладағы хат алмасудың орташа бағасы және жазғаннан кейін сатып алатындардың үлесі. Іс жүзінде баға мен маусымға және қаншалықты тез жауап беретініңізге байланысты. Нақтырақ қоңырауда айтамын.",
-    },
     faq: { pre: "Жиі қойылатын сұрақтар", more: "Сұрағыңызды таппадыңыз ба? Жазыңыз, өзім жауап беремін.", moreBtn: "WhatsApp-та сұрау" },
     contact: {
       pre: "Жазыңыз, бір күн ішінде", mark: "өзім жауап беремін",
@@ -263,15 +245,6 @@ export const UI = {
       webNoteTitle: "A website is separate from ad plans",
       webNoteText: "From a simple landing page to a full online store. Price and timeline after a short call.",
       webNoteBtn: "Discuss a website",
-    },
-    calculator: {
-      pre: "Do the math yourself",
-      sub: "Roughly how many customers your ad budget will bring.",
-      nicheLabel: "Niche", budgetLabel: "Monthly ad budget, $",
-      out1: "Cost per person who messages you",
-      out2: "How many such people per month",
-      out3: "How many may become customers",
-      note: "An illustrative example: the average cost of a conversation in the niche and the share of people who buy after messaging. In practice it depends on price, season and how fast you reply. I'll be more precise on a call.",
     },
     faq: { pre: "Common questions", more: "Didn't find your question? Message me, I reply myself.", moreBtn: "Ask on WhatsApp" },
     contact: {

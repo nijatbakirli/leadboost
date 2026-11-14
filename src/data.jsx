@@ -26,36 +26,18 @@ const SHOTS = {
   traffic: { src: asset("img/results/meta-campaign-traffic.webp"), w: 764, h: 214 },
 };
 
-/* Калькулятор: примерные цифры по нишам (общие для всех языков).
-   cpl: сколько в среднем стоит одна переписка (человек написал), $;
-   conv: какая доля написавших становится клиентами.
-   Это условный пример, не замер: владелец попросил поставить примерные
-   цифры (ноябрь 2026). Ориентиры: его скрины из кабинета Meta ($0,21-0,67
-   за переписку в недорогих нишах, $1,74 в дорогой) и обычные цены в
-   Казахстане, где переписка в недвижимости и B2B в разы дороже, чем в
-   магазине. Когда у владельца будут свои средние по нишам, заменить. */
-const NICHE_NUM = {
-  ecommerce: { cpl: 0.8, conv: 0.1 },
-  clinic: { cpl: 2.5, conv: 0.15 },
-  education: { cpl: 1.5, conv: 0.05 },
-  realestate: { cpl: 5, conv: 0.01 },
-  b2b: { cpl: 5, conv: 0.04 },
-  massage: { cpl: 1.2, conv: 0.15 },
-  flower: { cpl: 0.8, conv: 0.12 },
-  coffee: { cpl: 1, conv: 0.2 },
-};
-
 /* ============================== RU ============================== */
 const ru = {
+  /* ниши в форме заявки (калькулятор убран в ноябре 2026) */
   NICHE_DATA: {
-    ecommerce: { label: "Интернет-магазин", ...NICHE_NUM.ecommerce },
-    clinic: { label: "Клиника / медицина", ...NICHE_NUM.clinic },
-    education: { label: "Онлайн-обучение", ...NICHE_NUM.education },
-    realestate: { label: "Недвижимость", ...NICHE_NUM.realestate },
-    b2b: { label: "B2B-услуги", ...NICHE_NUM.b2b },
-    massage: { label: "Массажный салон", ...NICHE_NUM.massage },
-    flower: { label: "Цветочный магазин", ...NICHE_NUM.flower },
-    coffee: { label: "Кофешоп", ...NICHE_NUM.coffee },
+    ecommerce: { label: "Интернет-магазин" },
+    clinic: { label: "Клиника / медицина" },
+    education: { label: "Онлайн-обучение" },
+    realestate: { label: "Недвижимость" },
+    b2b: { label: "B2B-услуги" },
+    massage: { label: "Массажный салон" },
+    flower: { label: "Цветочный магазин" },
+    coffee: { label: "Кофешоп" },
   },
   /* блок «С кем работаю»: ниша и что реклама в ней приводит (без иконок) */
   NICHES: [
@@ -169,14 +151,14 @@ const ru = {
 /* ============================== KK ============================== */
 const kk = {
   NICHE_DATA: {
-    ecommerce: { label: "Интернет-дүкен", ...NICHE_NUM.ecommerce },
-    clinic: { label: "Клиника / медицина", ...NICHE_NUM.clinic },
-    education: { label: "Онлайн-оқыту", ...NICHE_NUM.education },
-    realestate: { label: "Жылжымайтын мүлік", ...NICHE_NUM.realestate },
-    b2b: { label: "B2B-қызметтер", ...NICHE_NUM.b2b },
-    massage: { label: "Массаж салоны", ...NICHE_NUM.massage },
-    flower: { label: "Гүл дүкені", ...NICHE_NUM.flower },
-    coffee: { label: "Кофехана", ...NICHE_NUM.coffee },
+    ecommerce: { label: "Интернет-дүкен" },
+    clinic: { label: "Клиника / медицина" },
+    education: { label: "Онлайн-оқыту" },
+    realestate: { label: "Жылжымайтын мүлік" },
+    b2b: { label: "B2B-қызметтер" },
+    massage: { label: "Массаж салоны" },
+    flower: { label: "Гүл дүкені" },
+    coffee: { label: "Кофехана" },
   },
   NICHES: [
     { label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
@@ -288,14 +270,14 @@ const kk = {
 /* ============================== EN ============================== */
 const en = {
   NICHE_DATA: {
-    ecommerce: { label: "Online store", ...NICHE_NUM.ecommerce },
-    clinic: { label: "Clinic / medical", ...NICHE_NUM.clinic },
-    education: { label: "Online education", ...NICHE_NUM.education },
-    realestate: { label: "Real estate", ...NICHE_NUM.realestate },
-    b2b: { label: "B2B services", ...NICHE_NUM.b2b },
-    massage: { label: "Massage salon", ...NICHE_NUM.massage },
-    flower: { label: "Flower shop", ...NICHE_NUM.flower },
-    coffee: { label: "Coffee shop", ...NICHE_NUM.coffee },
+    ecommerce: { label: "Online store" },
+    clinic: { label: "Clinic / medical" },
+    education: { label: "Online education" },
+    realestate: { label: "Real estate" },
+    b2b: { label: "B2B services" },
+    massage: { label: "Massage salon" },
+    flower: { label: "Flower shop" },
+    coffee: { label: "Coffee shop" },
   },
   NICHES: [
     { label: "Online stores", desc: "orders from Instagram and your site" },
