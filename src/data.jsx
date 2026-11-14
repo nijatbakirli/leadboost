@@ -9,21 +9,19 @@
    клиентов убраны (не были реальными). Скрины в RESULTS настоящие,
    из Meta Ads Manager: цифры не правились, креативы клиентов размыты.
    ============================================================ */
-import {
-  IconNicheShop, IconNicheClinic, IconNicheEducation, IconNicheRealty,
-  IconNicheB2B, IconNicheMassage, IconNicheFlowers, IconNicheCoffee,
-} from "./icons.jsx";
-/* крупные иконки услуг и принципов лежат файлами в img/icons/premium/*.svg
+/* крупные иконки услуг лежат файлами в img/icons/premium/*.svg
    (раньше были SVG внутри JS и утяжеляли и скрипт, и HTML) */
 import { asset } from "./assets.js";
 
 /* Скрины из кабинета (общие для всех языков: сами картинки на русском).
-   Файлы лежат в img/results/, путь через asset() (см. src/assets.js). */
+   Файлы лежат в img/results/, путь через asset() (см. src/assets.js).
+   С четырёх скринов переписок срезана строка выбора периода (от неё
+   оставалось обрезанное «…е 30 дней»), период указан в подписи. */
 const SHOTS = {
-  s4617: { src: asset("img/results/meta-4617-conversations.webp"), w: 764, h: 431 },
-  s165: { src: asset("img/results/meta-165-conversations.webp"), w: 764, h: 431 },
-  s52: { src: asset("img/results/meta-52-conversations.webp"), w: 764, h: 431 },
-  s75: { src: asset("img/results/meta-75-conversations.webp"), w: 764, h: 459 },
+  s4617: { src: asset("img/results/meta-4617-conversations.webp"), w: 764, h: 308 },
+  s165: { src: asset("img/results/meta-165-conversations.webp"), w: 764, h: 308 },
+  s52: { src: asset("img/results/meta-52-conversations.webp"), w: 764, h: 308 },
+  s75: { src: asset("img/results/meta-75-conversations.webp"), w: 764, h: 336 },
   engagement: { src: asset("img/results/meta-campaign-engagement.webp"), w: 764, h: 235 },
   traffic: { src: asset("img/results/meta-campaign-traffic.webp"), w: 764, h: 214 },
 };
@@ -40,22 +38,22 @@ const ru = {
     flower: { label: "Цветочный магазин", cpl: 2.3, roas: "200–280%" },
     coffee: { label: "Кофешоп", cpl: 1.7, roas: "180–250%" },
   },
-  /* блок «С кем работаю»: ниша и что реклама в ней приводит */
+  /* блок «С кем работаю»: ниша и что реклама в ней приводит (без иконок) */
   NICHES: [
-    { icon: IconNicheShop, label: "Интернет-магазины", desc: "заказы из Instagram и с сайта" },
-    { icon: IconNicheClinic, label: "Клиники", desc: "запись на приём" },
-    { icon: IconNicheEducation, label: "Онлайн-обучение", desc: "заявки на курсы и вебинары" },
-    { icon: IconNicheRealty, label: "Недвижимость", desc: "заявки на просмотр и звонки" },
-    { icon: IconNicheB2B, label: "B2B-услуги", desc: "заявки для отдела продаж" },
-    { icon: IconNicheMassage, label: "Массажные салоны", desc: "запись на сеансы" },
-    { icon: IconNicheFlowers, label: "Цветочные магазины", desc: "заказы букетов" },
-    { icon: IconNicheCoffee, label: "Кофейни", desc: "гости из ближайших кварталов" },
+    { label: "Интернет-магазины", desc: "заказы из Instagram и с сайта" },
+    { label: "Клиники", desc: "запись на приём" },
+    { label: "Онлайн-обучение", desc: "заявки на курсы и вебинары" },
+    { label: "Недвижимость", desc: "заявки на просмотр и звонки" },
+    { label: "B2B-услуги", desc: "заявки для отдела продаж" },
+    { label: "Массажные салоны", desc: "запись на сеансы" },
+    { label: "Цветочные магазины", desc: "заказы букетов" },
+    { label: "Кофейни", desc: "гости из ближайших кварталов" },
   ],
   SERVICES: [
     {
       title: "Таргетированная реклама", badge: "основное", badgeCls: "main", icon: "ads",
-      meta: "Instagram · Google · отчёт каждую неделю",
-      chips: ["Настройка на нужную аудиторию", "Путь клиента до покупки", "Понятные еженедельные отчёты", "Слежу и улучшаю постоянно", "Показ тем, кто уже тебя видел"],
+      meta: "Instagram · Google · запуск за 7 дней",
+      chips: ["Настройка на нужную аудиторию", "Путь клиента до покупки", "Слежу и улучшаю постоянно", "Показ тем, кто уже тебя видел"],
     },
     {
       title: "Создание сайтов", badge: "дополнительно", badgeCls: "side", icon: "webdev",
@@ -69,19 +67,19 @@ const ru = {
     },
     {
       title: "Аналитика и отчёты", badge: null, badgeCls: "", icon: "analytics",
-      meta: "Простые цифры без сложных слов",
+      meta: "Цифры по каждой кампании",
       chips: ["Сколько людей написали", "Во сколько обошёлся каждый", "План, что делать дальше"],
     },
   ],
   PRINCIPLES: [
-    { icon: "strategy", title: "Запуск на первой неделе", front: "Первые объявления выходят в течение 7 дней после старта, без долгих согласований.", back: "Созвон в понедельник, к пятнице первые объявления уже крутятся. Никаких «ждём согласования креативов третью неделю»." },
-    { icon: "kpi", title: "Цифры вместо слов", front: "Каждую неделю понятный отчёт: сколько людей написали и во сколько это обошлось.", back: "Каждую пятницу 5 строк в мессенджер. Например: заявок 34, цена $3,8, тестируем новое видео. Всё." },
-    { icon: "consultation", title: "Честно, даже если невыгодно", front: "Скажу прямо, если твоему бизнесу реклама сейчас не поможет.", back: "Если вижу, что реклама сейчас не окупится, говорю это на первом созвоне и объясняю, что поправить сначала." },
-    { icon: "transparency", title: "Без договоров-ловушек", front: "Можно уйти в любой момент. Остаюсь, потому что работает, а не потому что подписано.", back: "Оплата помесячно. Не понравилось, просто не продлеваешь. Кабинет и все настройки остаются у тебя." },
+    { title: "Запуск на первой неделе", front: "Первые объявления выходят в течение 7 дней после старта, без долгих согласований.", back: "Созвон в понедельник, к пятнице первые объявления уже крутятся. Никаких «ждём согласования креативов третью неделю»." },
+    { title: "Цифры вместо слов", front: "Понятный отчёт каждую неделю или раз в 2 недели, по тарифу: сколько людей написали и во сколько это обошлось.", back: "Отчёт приходит в мессенджер, 5 строк. Условный пример: заявок 34, цена $3,8, тестируем новое видео." },
+    { title: "Честно, даже если невыгодно", front: "Скажу прямо, если твоему бизнесу реклама сейчас не поможет.", back: "Если вижу, что реклама сейчас не окупится, говорю это на первом созвоне и объясняю, что поправить сначала." },
+    { title: "Без договоров-ловушек", front: "Можно уйти в любой момент, без штрафов.", back: "Оплата помесячно. Не понравилось, просто не продлеваешь. Кабинет и все настройки остаются у тебя." },
   ],
   FIT_YES: [
     "Есть товар или услуга, и хотя бы пара человек их уже купили",
-    "Есть бюджет на саму рекламу, от $600 в месяц (он идёт не мне, а Instagram и Google)",
+    "Есть бюджет на саму рекламу, от $600 в месяц (его ты платишь напрямую Instagram и Google)",
     "Есть кто-то, кто будет отвечать людям, которые напишут",
     "Можешь подождать 3-4 недели до первых результатов",
   ],
@@ -108,23 +106,22 @@ const ru = {
   WORK_CASES: [
     { name: "Онлайн-школа", cat: "Обучение, реклама", big: "−61%", h: "цена заявки", desc: "Цена заявки упала на 61% за месяц." },
     { name: "Интернет-магазин", cat: "E-commerce, реклама", big: "$1 500", h: "выручки за 5 дней", desc: "Две кампании, первые 5 дней после запуска." },
-    { name: "Скоро", cat: "Веб-разработка", big: null, h: "Первый сайт-проект", desc: "Новое направление: здесь появится первый опубликованный сайт. Возможно, твой.", soon: true },
   ],
   RESULTS: [
     {
       label: "Переписки, весь период", big: "4 617", unit: "переписок", sub: "по $0,57 за каждую, потрачено $2 626",
-      shots: [{ ...SHOTS.s4617, alt: "Скрин Meta Ads Manager, период «Максимум»: 4 617 начатых переписок, $0,57 за переписку, потрачено $2 626,17, охват 325 552, показы 1 098 477" }],
+      shots: [{ ...SHOTS.s4617, alt: "Скрин Meta Ads Manager за весь период: 4 617 начатых переписок, $0,57 за переписку, потрачено $2 626,17, охват 325 552, показы 1 098 477" }],
     },
     {
-      label: "Переписки", big: "$0,21", unit: "за переписку", sub: "165 переписок за $35",
+      label: "Переписки, весь период", big: "$0,21", unit: "за переписку", sub: "165 переписок за $35",
       shots: [{ ...SHOTS.s165, alt: "Скрин Meta Ads Manager: 165 начатых переписок, $0,21 за переписку, потрачено $35,06, охват 7 599, показы 10 852" }],
     },
     {
-      label: "Переписки", big: "$0,25", unit: "за переписку", sub: "52 переписки за $12,79",
+      label: "Переписки, весь период", big: "$0,25", unit: "за переписку", sub: "52 переписки за $12,79",
       shots: [{ ...SHOTS.s52, alt: "Скрин Meta Ads Manager: 52 начатые переписки, $0,25 за переписку, потрачено $12,79, охват 2 789, показы 3 694" }],
     },
     {
-      label: "Бюджет $10 в день", big: "75", unit: "переписок", sub: "по $0,67 за каждую, потрачено $50. Рекламу увидели 20 572 человека.",
+      label: "Весь период, бюджет $10 в день", big: "75", unit: "переписок", sub: "по $0,67 за каждую, потрачено $50. Рекламу увидели 20 572 человека.",
       shots: [{ ...SHOTS.s75, alt: "Скрин Meta Ads Manager: 75 начатых переписок, $0,67 за переписку, потрачено $50,12, дневной бюджет $10, охват 20 572, показы 29 456" }],
     },
     {
@@ -136,11 +133,11 @@ const ru = {
     },
   ],
   FAQS: [
-    { q: "Как происходит оплата?", a: "Переводом на карту или через Wise/Stripe, если ты за границей. Договоримся заранее, без скрытых комиссий." },
-    { q: "Сколько нужно на саму рекламу, помимо оплаты работы?", a: "Обычно от $600 в месяц. Эти деньги ты платишь не мне, а напрямую Instagram и Google за показы. Точную цифру скажу на созвоне." },
+    { q: "Как происходит оплата?", a: "Помесячно, переводом на карту или через Wise/Stripe, если ты за границей." },
+    { q: "Сколько нужно на саму рекламу, помимо оплаты работы?", a: "Обычно от $600 в месяц. Эти деньги ты платишь напрямую Instagram и Google за показы. Точную цифру скажу на созвоне." },
     { q: "Можно заказать только сайт, без рекламы?", a: "Да. Но если делаем и то и другое, сайт сразу проектируется под рекламу, и вместе выходит дешевле, чем по отдельности." },
     { q: "Сколько стоит сайт?", a: "Зависит от сложности: от простого лендинга до интернет-магазина с оплатой. Цену и сроки скажу после короткого созвона." },
-    { q: "Что если заявки есть, а продаж нет?", a: "Посмотрим вместе, что происходит после того, как человек написал. Иногда дело не в рекламе, и если так, скажу честно." },
+    { q: "Что если заявки есть, а продаж нет?", a: "Посмотрим вместе, что происходит после того, как человек написал. Иногда дело не в рекламе, и тогда я так и скажу." },
     { q: "А если через неделю не понравится?", a: "Просто разойдёмся, без штрафов и лишних вопросов." },
     { q: "Работаешь только с Казахстаном?", a: "Нет. Работаю удалённо с бизнесом из Казахстана (Алматы, Астана и другие города), Азербайджана и других стран СНГ. Всё общение в мессенджере и на созвонах." },
   ],
@@ -162,20 +159,20 @@ const kk = {
     coffee: { label: "Кофехана", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
-    { icon: IconNicheShop, label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
-    { icon: IconNicheClinic, label: "Клиникалар", desc: "қабылдауға жазылу" },
-    { icon: IconNicheEducation, label: "Онлайн-оқыту", desc: "курстар мен вебинарларға өтінімдер" },
-    { icon: IconNicheRealty, label: "Жылжымайтын мүлік", desc: "көруге өтінімдер мен қоңыраулар" },
-    { icon: IconNicheB2B, label: "B2B-қызметтер", desc: "сату бөліміне өтінімдер" },
-    { icon: IconNicheMassage, label: "Массаж салондары", desc: "сеанстарға жазылу" },
-    { icon: IconNicheFlowers, label: "Гүл дүкендері", desc: "гүл шоқтарына тапсырыстар" },
-    { icon: IconNicheCoffee, label: "Кофеханалар", desc: "жақын маңдағы қонақтар" },
+    { label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
+    { label: "Клиникалар", desc: "қабылдауға жазылу" },
+    { label: "Онлайн-оқыту", desc: "курстар мен вебинарларға өтінімдер" },
+    { label: "Жылжымайтын мүлік", desc: "көруге өтінімдер мен қоңыраулар" },
+    { label: "B2B-қызметтер", desc: "сату бөліміне өтінімдер" },
+    { label: "Массаж салондары", desc: "сеанстарға жазылу" },
+    { label: "Гүл дүкендері", desc: "гүл шоқтарына тапсырыстар" },
+    { label: "Кофеханалар", desc: "жақын маңдағы қонақтар" },
   ],
   SERVICES: [
     {
       title: "Таргеттелген жарнама", badge: "негізгі", badgeCls: "main", icon: "ads",
-      meta: "Instagram · Google · апта сайын есеп",
-      chips: ["Керек аудиторияға баптау", "Клиенттің сатып алуға дейінгі жолы", "Түсінікті апта сайынғы есептер", "Үнемі қадағалап, жақсартамын", "Сізді бұрын көргендерге көрсету"],
+      meta: "Instagram · Google · 7 күнде іске қосу",
+      chips: ["Керек аудиторияға баптау", "Клиенттің сатып алуға дейінгі жолы", "Үнемі қадағалап, жақсартамын", "Сізді бұрын көргендерге көрсету"],
     },
     {
       title: "Сайт жасау", badge: "қосымша", badgeCls: "side", icon: "webdev",
@@ -189,19 +186,19 @@ const kk = {
     },
     {
       title: "Аналитика және есептер", badge: null, badgeCls: "", icon: "analytics",
-      meta: "Күрделі сөздерсіз қарапайым цифрлар",
+      meta: "Әр науқан бойынша цифрлар",
       chips: ["Қанша адам жазды", "Әрқайсысы қанша тұрды", "Әрі қарай не істеу керегі туралы жоспар"],
     },
   ],
   PRINCIPLES: [
-    { icon: "strategy", title: "Бірінші аптада іске қосу", front: "Алғашқы хабарландырулар бастаудан кейін 7 күн ішінде шығады, ұзақ келісусіз.", back: "Дүйсенбіде қоңырау, жұмаға қарай алғашқы хабарландырулар қосылады. «Креативтерді үшінші апта келісіп жатырмыз» деген жоқ." },
-    { icon: "kpi", title: "Сөздің орнына цифрлар", front: "Апта сайын түсінікті есеп: қанша адам жазды және бұл қанша тұрды.", back: "Әр жұма сайын мессенджерге 5 жол. Мысалы: өтінімдер 34, баға $3,8, жаңа видеоны сынаймыз. Бәрі осы." },
-    { icon: "consultation", title: "Тиімсіз болса да адал", front: "Егер қазір жарнама бизнесіңізге көмектеспейтін болса, тікелей айтамын.", back: "Жарнама қазір өзін ақтамайтынын көрсем, мұны бірінші қоңырауда айтамын және алдымен нені түзету керектігін түсіндіремін." },
-    { icon: "transparency", title: "Тұзақ келісімшартсыз", front: "Кез келген уақытта кетуге болады. Мен қаламын, өйткені бұл жұмыс істейді, қол қойылғаны үшін емес.", back: "Ай сайынғы төлем. Ұнамаса, жай ғана жаңартпайсыз. Кабинет пен барлық баптаулар өзіңізде қалады." },
+    { title: "Бірінші аптада іске қосу", front: "Алғашқы хабарландырулар бастаудан кейін 7 күн ішінде шығады, ұзақ келісусіз.", back: "Дүйсенбіде қоңырау, жұмаға қарай алғашқы хабарландырулар қосылады. «Креативтерді үшінші апта келісіп жатырмыз» деген жоқ." },
+    { title: "Сөздің орнына цифрлар", front: "Тарифке қарай апта сайын немесе 2 аптада бір рет түсінікті есеп: қанша адам жазды және бұл қанша тұрды.", back: "Есеп мессенджерге келеді, 5 жол. Шартты мысал: өтінімдер 34, баға $3,8, жаңа видеоны сынаймыз." },
+    { title: "Тиімсіз болса да адал", front: "Егер қазір жарнама бизнесіңізге көмектеспейтін болса, тікелей айтамын.", back: "Жарнама қазір өзін ақтамайтынын көрсем, мұны бірінші қоңырауда айтамын және алдымен нені түзету керектігін түсіндіремін." },
+    { title: "Тұзақ келісімшартсыз", front: "Кез келген уақытта айыппұлсыз кетуге болады.", back: "Ай сайынғы төлем. Ұнамаса, жай ғана жаңартпайсыз. Кабинет пен барлық баптаулар өзіңізде қалады." },
   ],
   FIT_YES: [
     "Тауарыңыз немесе қызметіңіз бар, және оны кем дегенде бірнеше адам сатып алған",
-    "Жарнаманың өзіне бюджет бар, айына $600-ден (ол маған емес, Instagram мен Google-ге кетеді)",
+    "Жарнаманың өзіне бюджет бар, айына $600-ден (оны тікелей Instagram мен Google-ге төлейсіз)",
     "Жазған адамдарға жауап беретін біреу бар",
     "Алғашқы нәтижелерді 3-4 апта күте аласыз",
   ],
@@ -228,23 +225,22 @@ const kk = {
   WORK_CASES: [
     { name: "Онлайн-мектеп", cat: "Оқыту, жарнама", big: "−61%", h: "өтінім бағасы", desc: "Өтінім бағасы бір айда 61%-ға түсті." },
     { name: "Интернет-дүкен", cat: "E-commerce, жарнама", big: "$1 500", h: "5 күндегі түсім", desc: "Екі науқан, іске қосудан кейінгі алғашқы 5 күн." },
-    { name: "Жақында", cat: "Веб-әзірлеу", big: null, h: "Алғашқы сайт жобасы", desc: "Жаңа бағыт: мұнда алғашқы жарияланған сайт пайда болады. Мүмкін, сіздікі.", soon: true },
   ],
   RESULTS: [
     {
       label: "Хат алмасулар, бүкіл кезең", big: "4 617", unit: "хат алмасу", sub: "әрқайсысы $0,57, жұмсалғаны $2 626",
-      shots: [{ ...SHOTS.s4617, alt: "Meta Ads Manager скрині, «Максимум» кезеңі: 4 617 басталған хат алмасу, әрқайсысы $0,57, жұмсалғаны $2 626,17, қамту 325 552, көрсетілім 1 098 477" }],
+      shots: [{ ...SHOTS.s4617, alt: "Meta Ads Manager скрині, бүкіл кезең: 4 617 басталған хат алмасу, әрқайсысы $0,57, жұмсалғаны $2 626,17, қамту 325 552, көрсетілім 1 098 477" }],
     },
     {
-      label: "Хат алмасулар", big: "$0,21", unit: "бір хат алмасу", sub: "165 хат алмасу $35-ға",
+      label: "Хат алмасулар, бүкіл кезең", big: "$0,21", unit: "бір хат алмасу", sub: "165 хат алмасу $35-ға",
       shots: [{ ...SHOTS.s165, alt: "Meta Ads Manager скрині: 165 басталған хат алмасу, әрқайсысы $0,21, жұмсалғаны $35,06, қамту 7 599, көрсетілім 10 852" }],
     },
     {
-      label: "Хат алмасулар", big: "$0,25", unit: "бір хат алмасу", sub: "52 хат алмасу $12,79-ға",
+      label: "Хат алмасулар, бүкіл кезең", big: "$0,25", unit: "бір хат алмасу", sub: "52 хат алмасу $12,79-ға",
       shots: [{ ...SHOTS.s52, alt: "Meta Ads Manager скрині: 52 басталған хат алмасу, әрқайсысы $0,25, жұмсалғаны $12,79, қамту 2 789, көрсетілім 3 694" }],
     },
     {
-      label: "Күніне $10 бюджет", big: "75", unit: "хат алмасу", sub: "әрқайсысы $0,67, жұмсалғаны $50. Жарнаманы 20 572 адам көрді.",
+      label: "Бүкіл кезең, күніне $10 бюджет", big: "75", unit: "хат алмасу", sub: "әрқайсысы $0,67, жұмсалғаны $50. Жарнаманы 20 572 адам көрді.",
       shots: [{ ...SHOTS.s75, alt: "Meta Ads Manager скрині: 75 басталған хат алмасу, әрқайсысы $0,67, жұмсалғаны $50,12, күндік бюджет $10, қамту 20 572, көрсетілім 29 456" }],
     },
     {
@@ -256,11 +252,11 @@ const kk = {
     },
   ],
   FAQS: [
-    { q: "Төлем қалай жүзеге асады?", a: "Картаға аударыммен немесе шетелде болсаңыз Wise/Stripe арқылы. Алдын ала келісеміз, жасырын комиссиясыз." },
-    { q: "Жұмыс төлемінен бөлек жарнаманың өзіне қанша керек?", a: "Әдетте айына $600-ден бастап. Бұл ақшаны маған емес, тікелей Instagram мен Google-ге көрсетілім үшін төлейсіз. Нақты цифрды қоңырауда айтамын." },
+    { q: "Төлем қалай жүзеге асады?", a: "Ай сайын, картаға аударыммен немесе шетелде болсаңыз Wise/Stripe арқылы." },
+    { q: "Жұмыс төлемінен бөлек жарнаманың өзіне қанша керек?", a: "Әдетте айына $600-ден бастап. Бұл ақшаны тікелей Instagram мен Google-ге көрсетілім үшін төлейсіз. Нақты цифрды қоңырауда айтамын." },
     { q: "Тек сайтқа ғана, жарнамасыз тапсырыс беруге бола ма?", a: "Иә. Бірақ екеуін бірге жасасақ, сайт бірден жарнамаға лайықталып жобаланады және бөлек тапсырыс беруден арзанырақ шығады." },
     { q: "Сайт қанша тұрады?", a: "Күрделілігіне байланысты: қарапайым лендингтен төлемі бар интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын." },
-    { q: "Өтінімдер бар, ал сатылым жоқ болса ше?", a: "Адам жазғаннан кейін не болатынын бірге қараймыз. Кейде мәселе жарнамада емес, солай болса, адал айтамын." },
+    { q: "Өтінімдер бар, ал сатылым жоқ болса ше?", a: "Адам жазғаннан кейін не болатынын бірге қараймыз. Кейде мәселе жарнамада емес, солай болса, тура айтамын." },
     { q: "Ал бір аптадан кейін ұнамаса ше?", a: "Жай ғана тоқтатамыз, айыппұлсыз және артық сұрақсыз." },
     { q: "Тек Қазақстанмен жұмыс істейсіз бе?", a: "Жоқ. Қазақстан (Алматы, Астана және басқа қалалар), Әзербайжан және ТМД-ның басқа елдеріндегі бизнеспен қашықтан жұмыс істеймін. Барлық байланыс мессенджерде және қоңырауларда." },
   ],
@@ -281,20 +277,20 @@ const en = {
     coffee: { label: "Coffee shop", cpl: 1.7, roas: "180–250%" },
   },
   NICHES: [
-    { icon: IconNicheShop, label: "Online stores", desc: "orders from Instagram and your site" },
-    { icon: IconNicheClinic, label: "Clinics", desc: "appointment bookings" },
-    { icon: IconNicheEducation, label: "Online education", desc: "sign-ups for courses and webinars" },
-    { icon: IconNicheRealty, label: "Real estate", desc: "viewing requests and calls" },
-    { icon: IconNicheB2B, label: "B2B services", desc: "leads for your sales team" },
-    { icon: IconNicheMassage, label: "Massage salons", desc: "session bookings" },
-    { icon: IconNicheFlowers, label: "Flower shops", desc: "bouquet orders" },
-    { icon: IconNicheCoffee, label: "Coffee shops", desc: "guests from the neighborhood" },
+    { label: "Online stores", desc: "orders from Instagram and your site" },
+    { label: "Clinics", desc: "appointment bookings" },
+    { label: "Online education", desc: "sign-ups for courses and webinars" },
+    { label: "Real estate", desc: "viewing requests and calls" },
+    { label: "B2B services", desc: "leads for your sales team" },
+    { label: "Massage salons", desc: "session bookings" },
+    { label: "Flower shops", desc: "bouquet orders" },
+    { label: "Coffee shops", desc: "guests from the neighborhood" },
   ],
   SERVICES: [
     {
       title: "Targeted advertising", badge: "core", badgeCls: "main", icon: "ads",
-      meta: "Instagram · Google · weekly report",
-      chips: ["Targeting the right audience", "Customer journey to purchase", "Clear weekly reports", "Ongoing monitoring and optimization", "Retargeting people who already saw you"],
+      meta: "Instagram · Google · live in 7 days",
+      chips: ["Targeting the right audience", "Customer journey to purchase", "Ongoing monitoring and optimization", "Retargeting people who already saw you"],
     },
     {
       title: "Website development", badge: "add-on", badgeCls: "side", icon: "webdev",
@@ -308,19 +304,19 @@ const en = {
     },
     {
       title: "Analytics and reporting", badge: null, badgeCls: "", icon: "analytics",
-      meta: "Simple numbers, no jargon",
+      meta: "Numbers for every campaign",
       chips: ["How many people messaged", "Cost per lead", "A plan for what to do next"],
     },
   ],
   PRINCIPLES: [
-    { icon: "strategy", title: "Live in the first week", front: "The first ads go live within 7 days of kickoff, no lengthy approvals.", back: "A call on Monday, first ads running by Friday. No “we're still approving creatives in week three.”" },
-    { icon: "kpi", title: "Numbers, not words", front: "A clear report every week: how many people messaged and what it cost.", back: "Every Friday, 5 lines in a chat. For example: leads 34, cost $3.8, testing a new video. That's it." },
-    { icon: "consultation", title: "Honest, even when it costs me", front: "I'll tell you straight if advertising won't help your business right now.", back: "If I see that ads won't pay off right now, I say so on the first call and explain what to fix first." },
-    { icon: "transparency", title: "No lock-in contracts", front: "You can leave any time. I stay because it works, not because you signed something.", back: "Month-to-month billing. Didn't like it, just don't renew. The ad account and every setting stay yours." },
+    { title: "Live in the first week", front: "The first ads go live within 7 days of kickoff, no lengthy approvals.", back: "A call on Monday, first ads running by Friday. No “we're still approving creatives in week three.”" },
+    { title: "Numbers, not words", front: "A clear report every week or every 2 weeks, depending on the plan: how many people messaged and what it cost.", back: "The report arrives in a chat, 5 lines. Illustrative example: leads 34, cost $3.8, testing a new video." },
+    { title: "Honest, even when it costs me", front: "I'll tell you straight if advertising won't help your business right now.", back: "If I see that ads won't pay off right now, I say so on the first call and explain what to fix first." },
+    { title: "No lock-in contracts", front: "You can leave any time, with no penalties.", back: "Month-to-month billing. Didn't like it, just don't renew. The ad account and every setting stay yours." },
   ],
   FIT_YES: [
     "You already have a product or service, and at least a couple of people have bought it",
-    "There's a budget for the ads themselves, from $600 a month (it goes to Instagram and Google, not to me)",
+    "There's a budget for the ads themselves, from $600 a month (you pay it directly to Instagram and Google)",
     "There's someone who will respond to people who message you",
     "You can wait 3-4 weeks for the first results",
   ],
@@ -347,23 +343,22 @@ const en = {
   WORK_CASES: [
     { name: "Online school", cat: "Education, advertising", big: "−61%", h: "cost per lead", desc: "Cost per lead dropped 61% in a month." },
     { name: "Online store", cat: "E-commerce, advertising", big: "$1,500", h: "revenue in 5 days", desc: "Two campaigns, the first 5 days after launch." },
-    { name: "Coming soon", cat: "Web development", big: null, h: "First website project", desc: "A new direction: the first published site will appear here. Maybe it'll be yours.", soon: true },
   ],
   RESULTS: [
     {
       label: "Conversations, all time", big: "4,617", unit: "conversations", sub: "$0.57 each, $2,626 spent",
-      shots: [{ ...SHOTS.s4617, alt: "Meta Ads Manager screenshot, lifetime period: 4,617 conversations started, $0.57 per conversation, $2,626.17 spent, reach 325,552, impressions 1,098,477" }],
+      shots: [{ ...SHOTS.s4617, alt: "Meta Ads Manager screenshot, all time: 4,617 conversations started, $0.57 per conversation, $2,626.17 spent, reach 325,552, impressions 1,098,477" }],
     },
     {
-      label: "Conversations", big: "$0.21", unit: "per conversation", sub: "165 conversations for $35",
+      label: "Conversations, all time", big: "$0.21", unit: "per conversation", sub: "165 conversations for $35",
       shots: [{ ...SHOTS.s165, alt: "Meta Ads Manager screenshot: 165 conversations started, $0.21 per conversation, $35.06 spent, reach 7,599, impressions 10,852" }],
     },
     {
-      label: "Conversations", big: "$0.25", unit: "per conversation", sub: "52 conversations for $12.79",
+      label: "Conversations, all time", big: "$0.25", unit: "per conversation", sub: "52 conversations for $12.79",
       shots: [{ ...SHOTS.s52, alt: "Meta Ads Manager screenshot: 52 conversations started, $0.25 per conversation, $12.79 spent, reach 2,789, impressions 3,694" }],
     },
     {
-      label: "$10 a day budget", big: "75", unit: "conversations", sub: "$0.67 each, $50 spent. The ads reached 20,572 people.",
+      label: "All time, $10 a day budget", big: "75", unit: "conversations", sub: "$0.67 each, $50 spent. The ads reached 20,572 people.",
       shots: [{ ...SHOTS.s75, alt: "Meta Ads Manager screenshot: 75 conversations started, $0.67 per conversation, $50.12 spent, daily budget $10, reach 20,572, impressions 29,456" }],
     },
     {
@@ -375,11 +370,11 @@ const en = {
     },
   ],
   FAQS: [
-    { q: "How does payment work?", a: "By card transfer, or via Wise/Stripe if you're abroad. We agree on it upfront, no hidden fees." },
-    { q: "How much do the ads themselves cost, on top of your fee?", a: "Usually from $600 a month. You pay that directly to Instagram and Google for impressions, not to me. I'll give you an exact figure on a call." },
+    { q: "How does payment work?", a: "Monthly, by card transfer, or via Wise/Stripe if you're abroad." },
+    { q: "How much do the ads themselves cost, on top of your fee?", a: "Usually from $600 a month. You pay that directly to Instagram and Google for impressions. I'll give you an exact figure on a call." },
     { q: "Can I order just a website, without advertising?", a: "Yes. But if we do both, the site is designed for advertising from the start, and together it works out cheaper than separately." },
     { q: "How much does a website cost?", a: "Depends on complexity: from a simple landing page to an online store with payments. I'll give you a price and timeline after a short call." },
-    { q: "What if I get leads but no sales?", a: "We'll look together at what happens after someone messages you. Sometimes the issue isn't the ads, and if so, I'll tell you honestly." },
+    { q: "What if I get leads but no sales?", a: "We'll look together at what happens after someone messages you. Sometimes the issue isn't the ads, and if so, I'll say so." },
     { q: "What if I don't like it after a week?", a: "We simply part ways, no penalties and no awkward questions." },
     { q: "Do you only work with Kazakhstan?", a: "No. I work remotely with businesses in Kazakhstan (Almaty, Astana and other cities), Azerbaijan and other CIS countries. All communication happens in messengers and on calls." },
   ],

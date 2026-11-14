@@ -15,15 +15,15 @@ import { asset } from "./assets.js";
 import { useTween } from "./hooks.jsx";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconNicheAsk, IconSun, IconMoon, FlagRU, FlagKZ, FlagGB,
+  IconChevronDown, IconExpand, IconSun, IconMoon, FlagRU, FlagKZ, FlagGB,
 } from "./icons.jsx";
-import { ScrambleText, CountMetric, SecLabel, Heading, TargetGame, ShotViewer, SocialIcon } from "./widgets.jsx";
-import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ, GAME } from "./config.js";
+import { SecLabel, Heading, ShotViewer, SocialIcon } from "./widgets.jsx";
+import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ } from "./config.js";
 import { CONTENT } from "./data.jsx";
 import { UI, LANGS, useLang } from "./i18n.jsx";
 import { LANG_PATHS } from "./seo.js";
 import {
-  useScrollProgress, useScrolledPast, useClockStatus, useMounted, useVelocityMarquee,
+  useScrollProgress, useScrolledPast, useClockStatus, useVelocityMarquee,
   magnetHandlers, scrollToId, scrollToTop, useTheme, setTheme,
 } from "./interactions.jsx";
 
@@ -66,14 +66,13 @@ function SpotsBar() {
   );
 }
 
-/* шапка секции: лейбл, заголовок с плашкой и подпись справа */
-function SecHead({ s }) {
+/* шапка секции: заголовок и, если есть, подпись справа. Подписи капсом
+   над заголовком больше нет (повторяла меню), мазок маркера (mark) только
+   там, где он задан: первый экран, скрины, тарифы, контакт */
+function SecHead({ s, mark }) {
   return (
     <div className="sec-head">
-      <div>
-        <SecLabel>{s.label}</SecLabel>
-        <Heading pre={s.pre} mark={s.mark} />
-      </div>
+      <Heading pre={s.pre} mark={mark === undefined ? s.mark : mark} />
       {s.sub && <p className="sec-sub">{s.sub}</p>}
     </div>
   );
@@ -300,21 +299,16 @@ function Header({ t, lang, setLang }) {
   );
 }
 
-/* ПЕРВЫЙ ЭКРАН: бенто как на обложках Reels */
+/* ПЕРВЫЙ ЭКРАН: бенто как на обложках Reels. Приветствия с бегущими
+   буквами, ряда галочек под плитками и счёта цифр больше нет (ноябрь
+   2026, разбор «чтобы сайт не выглядел сделанным ИИ»): цифры сразу на месте */
 function Hero({ t, D }) {
-  /* Приветствие по времени суток посетителя. В готовом HTML (собран
-     заранее) всегда «Добрый день», в браузере после загрузки
-     подставляется приветствие по времени посетителя. */
-  const mounted = useMounted();
   const status = useStatus();
-  const hour = mounted ? new Date().getHours() : 12;
-  const greeting = hour >= 5 && hour < 12 ? t.hero.greetingMorning : hour < 18 ? t.hero.greetingDay : t.hero.greetingEvening;
   const featured = D.RESULTS[0];
   return (
     <section className="hero" id="top">
       <div className="wrap">
         <div className="hero-bar">
-          <SecLabel className="hero-greet"><ScrambleText text={greeting} /></SecLabel>
           <span className={`status ${status.cls}`}><i aria-hidden="true" />{status.online === false ? t.hero.statusOffline : t.hero.statusOnline}</span>
         </div>
         <div className="hero-grid">
@@ -339,17 +333,14 @@ function Hero({ t, D }) {
             <span className="more-link">{t.hero.proofLink}<IconArrowDown className="more-ic" /></span>
           </a>
           <div className="tile hero-stat stat-a">
-            <CountMetric value="240+" className="stat-num" />
+            <span className="stat-num">240+</span>
             <span className="stat-cap">{t.hero.statA}</span>
           </div>
           <div className="tile hero-stat stat-b">
-            <CountMetric value="310%" className="stat-num" />
+            <span className="stat-num">310%</span>
             <span className="stat-cap">{t.hero.statB}</span>
           </div>
         </div>
-        <ul className="hero-facts">
-          {t.hero.facts.map((f) => <li key={f}><IconCheck className="fact-ic" />{f}</li>)}
-        </ul>
       </div>
     </section>
   );
@@ -392,7 +383,8 @@ function Services({ t, D }) {
   );
 }
 
-/* С КЕМ РАБОТАЮ: сетка ниш 3×3, девятая плитка ведёт в WhatsApp */
+/* С КЕМ РАБОТАЮ: сетка ниш 3×3 без иконок (иконки в квадратиках были
+   на каждой плитке и читались как шаблон), девятая плитка ведёт в WhatsApp */
 function Niches({ t, D }) {
   return (
     <section className="section" id="niches">
@@ -401,7 +393,6 @@ function Niches({ t, D }) {
         <ul className="niche-grid">
           {D.NICHES.map((n) => (
             <li className="tile niche" key={n.label}>
-              <span className="niche-ic" aria-hidden="true"><n.icon /></span>
               <span className="niche-txt">
                 <span className="niche-name">{n.label}</span>
                 <span className="niche-desc">{n.desc}</span>
@@ -410,7 +401,6 @@ function Niches({ t, D }) {
           ))}
           <li className="niche-cta-item">
             <a className="tile niche niche-cta" href={CONTACTS.whatsapp} {...ext}>
-              <span className="niche-ic" aria-hidden="true"><IconNicheAsk /></span>
               <span className="niche-txt">
                 <span className="niche-name">{t.niches.ctaTitle}</span>
                 <span className="niche-desc">{t.niches.ctaText}</span>
@@ -424,14 +414,16 @@ function Niches({ t, D }) {
   );
 }
 
-/* КЕЙСЫ: две равные карточки с цифрами; «скоро» отдельной полосой под ними */
+/* КЕЙСЫ: две равные карточки с цифрами. Полосу «Скоро: первый сайт-проект»
+   убрали: пустой слот говорил «примеров сайтов нет». Первый сайт добавим
+   настоящим кейсом */
 function Work({ t, D }) {
   return (
     <section className="section" id="work">
       <div className="wrap">
         <SecHead s={t.work} />
         <div className="case-grid">
-          {D.WORK_CASES.filter((c) => !c.soon).map((c) => (
+          {D.WORK_CASES.map((c) => (
             <article className="tile case" key={c.name}>
               <div className="case-top">
                 <SecLabel className="lbl-sm">{c.name}</SecLabel>
@@ -443,25 +435,14 @@ function Work({ t, D }) {
             </article>
           ))}
         </div>
-        {D.WORK_CASES.filter((c) => c.soon).map((c) => (
-          <article className="tile case-soon" key={c.name}>
-            <div className="case-soon-txt">
-              <div className="case-top">
-                <SecLabel className="lbl-sm">{c.name}</SecLabel>
-                <span className="case-cat">{c.cat}</span>
-              </div>
-              <h3 className="case-h">{c.h}</h3>
-              <p className="case-desc">{c.desc}</p>
-            </div>
-            <a className="btn btn-ghost" href={CONTACTS.whatsapp} {...ext}>{t.work.soonCta}<IconArrowRight className="btn-ic" /></a>
-          </article>
-        ))}
       </div>
     </section>
   );
 }
 
-/* ЦИФРЫ ИЗ КАБИНЕТА: настоящие скрины Meta Ads Manager, клик открывает крупно */
+/* ЦИФРЫ ИЗ КАБИНЕТА: настоящие скрины Meta Ads Manager, клик открывает крупно.
+   Первый скрин (4 617 переписок) стоит на первом экране, здесь его нет,
+   чтобы не повторять: в сетке остальные (D.RESULTS с индекса 1) */
 function Results({ t, D }) {
   const [zoom, setZoom] = useState(null); /* индекс скрина в D.RESULTS, открытого крупно */
   return (
@@ -469,8 +450,8 @@ function Results({ t, D }) {
       <div className="wrap">
         <SecHead s={t.results} />
         <div className="res-grid">
-          {D.RESULTS.map((r, i) => (
-            <article className={`tile res ${i === 0 ? "res-feature" : ""}`} key={i}>
+          {D.RESULTS.map((r, i) => i === 0 ? null : (
+            <article className="tile res" key={i}>
               <div className="res-info">
                 <SecLabel className="lbl-sm">{r.label}</SecLabel>
                 <div className="num-row">
@@ -481,7 +462,7 @@ function Results({ t, D }) {
               </div>
               <button type="button" className="res-shot" onClick={() => setZoom(i)}>
                 {r.shots.map((s) => (
-                  <img key={s.src} src={s.src} width={s.w} height={s.h} alt={s.alt} loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+                  <img key={s.src} src={s.src} width={s.w} height={s.h} alt={s.alt} loading="lazy" decoding="async" />
                 ))}
                 <span className="sr-only">{t.results.zoom}</span>
                 <span className="res-zoom" aria-hidden="true"><IconExpand /></span>
@@ -501,33 +482,36 @@ function Results({ t, D }) {
   );
 }
 
-/* ПРИНЦИПЫ */
+/* ПРИНЦИПЫ: простой список с тонкими линиями, без карточек и иконок.
+   Слева принцип, справа что он значит и как это выглядит на деле.
+   Последняя строка: чего не обещаю */
 function Principles({ t, D }) {
   return (
     <section className="section" id="how">
       <div className="wrap">
         <SecHead s={t.principles} />
-        <div className="pr-grid">
+        <ul className="pr-list">
           {D.PRINCIPLES.map((p) => (
-            <article className="tile pr" key={p.title}>
-              <span className="pr-ic" aria-hidden="true"><span className="prem-ic" style={{ "--ic": `url(${asset(`img/icons/premium/${p.icon}.svg`)})` }} /></span>
+            <li className="pr" key={p.title}>
               <h3 className="pr-title">{p.title}</h3>
-              <p className="pr-front">{p.front}</p>
-              <div className="pr-back">
-                <SecLabel className="lbl-sm">{t.principles.practice}</SecLabel>
-                <p>{p.back}</p>
+              <div className="pr-body">
+                <p className="pr-front">{p.front}</p>
+                <p className="pr-back">{p.back}</p>
               </div>
-            </article>
+            </li>
           ))}
-        </div>
-        <p className="tile tile-dashed not-promise"><b>{t.principles.notPromiseLabel}:</b> {t.principles.notPromiseText}</p>
+          <li className="pr pr-not">
+            <h3 className="pr-title">{t.principles.notPromiseLabel}</h3>
+            <div className="pr-body"><p className="pr-front">{t.principles.notPromiseText}</p></div>
+          </li>
+        </ul>
       </div>
     </section>
   );
 }
 
-/* КОМУ ПОДХОДИТ: пункты обеих карточек строка в строку (CSS subgrid),
-   число строк = длина большего списка */
+/* КОМУ ПОДХОДИТ: два списка без карточек, пункты строка в строку
+   (CSS subgrid), число строк = длина большего списка */
 function Fit({ t, D }) {
   const rows = Math.max(D.FIT_YES.length, D.FIT_NO.length);
   return (
@@ -535,11 +519,11 @@ function Fit({ t, D }) {
       <div className="wrap">
         <SecHead s={t.fit} />
         <div className="fit-grid" style={{ "--fit-rows": rows, "--fit-span": rows + 1 }}>
-          <div className="tile fit fit-yes">
+          <div className="fit fit-yes">
             <h3 className="fit-title"><span className="fit-badge" aria-hidden="true"><IconCheck /></span>{t.fit.yes}</h3>
             <ul>{D.FIT_YES.map((txt) => <li key={txt}><IconCheck className="fit-ic" />{txt}</li>)}</ul>
           </div>
-          <div className="tile fit fit-no">
+          <div className="fit fit-no">
             <h3 className="fit-title"><span className="fit-badge" aria-hidden="true"><IconCross /></span>{t.fit.no}</h3>
             <ul>{D.FIT_NO.map((txt) => <li key={txt}><IconCross className="fit-ic" />{txt}</li>)}</ul>
           </div>
@@ -555,7 +539,7 @@ function Pricing({ t, D }) {
   return (
     <section className="section" id="pricing">
       <div className="wrap">
-        <SecHead s={t.pricing} />
+        <SecHead s={t.pricing} mark={t.pricing.mark(D.PLANS[0].price)} />
         <div className="price-grid">
           {D.PLANS.map((p, i) => (
             <article className={`tile price ${p.popular ? "pop" : ""}`} key={p.name}>
@@ -631,7 +615,8 @@ function Calculator({ t, D, lang }) {
 }
 
 /* ВОПРОСЫ. Компьютер: заголовок и кнопка слева (едут вместе со списком),
-   вопросы справа. Телефон: заголовок, вопросы, потом кнопка. */
+   вопросы справа. Телефон: заголовок, вопросы, потом кнопка.
+   Вопросы простым списком с линиями, без карточек */
 function Faq({ t, D }) {
   const [openFaq, setOpenFaq] = useState(0);
   return (
@@ -639,8 +624,7 @@ function Faq({ t, D }) {
       <div className="wrap faq-layout">
         <div className="faq-side">
           <div className="faq-head">
-            <SecLabel>{t.faq.label}</SecLabel>
-            <Heading pre={t.faq.pre} mark={t.faq.mark} className="hd-faq" />
+            <Heading pre={t.faq.pre} className="hd-faq" />
           </div>
           <div className="faq-more">
             <p>{t.faq.more}</p>
@@ -651,7 +635,7 @@ function Faq({ t, D }) {
           {D.FAQS.map((f, i) => {
             const open = openFaq === i;
             return (
-              <div className={`tile faq ${open ? "open" : ""}`} key={f.q}>
+              <div className={`faq ${open ? "open" : ""}`} key={f.q}>
                 <button type="button" className="faq-q" onClick={() => setOpenFaq(open ? -1 : i)} aria-expanded={open} aria-controls={`faq-${i}`}>
                   <span>{f.q}</span>
                   <IconPlus className="faq-ic" />
@@ -700,7 +684,6 @@ function Contact({ t, D }) {
   return (
     <section className="section" id="contact">
       <div className="wrap">
-        <SecLabel>{t.contact.label}</SecLabel>
         <Heading pre={t.contact.pre} mark={t.contact.mark} className="hd-contact" />
         <div className="contact-grid">
           <div className="contact-left">
@@ -708,6 +691,8 @@ function Contact({ t, D }) {
             <div className="tile contact-fast">
               <SecLabel className="lbl-sm">{t.contact.fastLabel}</SecLabel>
               <p>{t.contact.fastText}</p>
+              {/* бесплатный разбор кабинета: раньше этот бонус был призом мини-игры */}
+              <p className="contact-offer">{t.contact.offer}</p>
               <div className="contact-btns">
                 <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" />WhatsApp</a>
                 <a className="btn btn-ghost" href={CONTACTS.telegram} {...ext}><SocialIcon name="telegram" />Telegram</a>
@@ -794,7 +779,6 @@ function Footer({ t }) {
     <footer className="footer">
       <div className="wrap">
         <div className="footer-top">
-          <Heading as="p" pre={t.footer.pre} mark={t.footer.mark} className="hd-footer" />
           <nav className="f-col" aria-label={t.footer.linksLabel}>
             <SecLabel className="lbl-sm">{t.footer.linksLabel}</SecLabel>
             <ul>
@@ -827,7 +811,6 @@ function Footer({ t }) {
         </a>
         <div className="footer-base">
           <span>{t.footer.copyright}</span>
-          <span>{t.footer.services}</span>
         </div>
       </div>
     </footer>
@@ -836,6 +819,8 @@ function Footer({ t }) {
 
 /* Плавающий WhatsApp (компьютер), нижняя панель (телефон) и кнопка «Наверх»
    над ними: появляются после первого экрана; скролл перерисовывает только их.
+   В нижней панели только кнопка WhatsApp: счётчик мест, который висел там
+   всё время, читался как продажный трюк, места показаны один раз в «Контакте».
    «Наверх» две: на компьютере над боковой кнопкой, на телефоне внутри
    нижней панели (сидит над ней, какой бы высоты панель ни была). */
 function FloatingCta({ t }) {
@@ -853,8 +838,7 @@ function FloatingCta({ t }) {
       </a>
       <div className={`m-cta ${show ? "show" : ""}`} aria-hidden={!show}>
         {up("m-up")}
-        <span className="spots"><SpotsBar />{t.mcta.spots(SPOTS_LEFT, SPOTS_TOTAL)}</span>
-        <a className="btn btn-y btn-sm" href={CONTACTS.whatsapp} {...ext} tabIndex={show ? 0 : -1}><SocialIcon name="whatsapp" />{t.mcta.cta}</a>
+        <a className="btn btn-y btn-sm" href={CONTACTS.whatsapp} {...ext} tabIndex={show ? 0 : -1}><SocialIcon name="whatsapp" />{t.common.whatsapp}</a>
       </div>
     </>
   );
@@ -879,15 +863,6 @@ export default function App({ initialLang = "ru" }) {
             <Tape items={D.TAPE_WHAT} className="tape-y" />
           </div>
         </Part>
-        {/* СТЕЙТМЕНТ */}
-        <Part>
-          <section className="statement">
-            <div className="wrap">
-              <Heading pre={t.statement.pre} mark={t.statement.mark} className="hd-statement" />
-              <p className="statement-sub">{t.statement.sub}</p>
-            </div>
-          </section>
-        </Part>
         <Part><Services t={t} D={D} /></Part>
         <Part><Niches t={t} D={D} /></Part>
         <Part><Work t={t} D={D} /></Part>
@@ -897,8 +872,6 @@ export default function App({ initialLang = "ru" }) {
         <Part><Pricing t={t} D={D} /></Part>
         <Part><Calculator t={t} D={D} lang={lang} /></Part>
         <Part><Faq t={t} D={D} /></Part>
-        {/* МИНИ-ИГРА */}
-        <Part><TargetGame strings={t.game} promoWord={GAME.promoWord[lang] || GAME.promoWord.ru} need={GAME.hitsToWin} /></Part>
         <Part><Contact t={t} D={D} /></Part>
       </main>
 

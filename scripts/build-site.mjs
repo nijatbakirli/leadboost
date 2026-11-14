@@ -190,7 +190,7 @@ writeFileSync(`${OUT}/404.html`, `<!doctype html>
     main{max-width:640px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left,0px))}
     .lbl{font:700 14px/1.3 'JetBrains Mono',monospace;letter-spacing:.06em;color:#5C6570;margin:0 0 18px}
     h1{font:700 clamp(40px,9vw,72px)/1.2 Oswald,'Arial Narrow',sans-serif;text-transform:uppercase;color:#0F1216;margin:0 0 18px}
-    h1 span{background:#F0E60D;color:#0F1216;padding:0 .13em}
+    h1{--ink:#0F1216;--y-ink:#0F1216}
     a{display:inline-block;margin-top:10px;background:#0F1216;color:#fff;text-decoration:none;font:700 18px/1 Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;padding:16px 22px;border-radius:14px}
     a:hover{background:#F0E60D;color:#0F1216}
     a:focus-visible{outline:3px solid #0F1216;outline-offset:3px}
@@ -198,8 +198,8 @@ writeFileSync(`${OUT}/404.html`, `<!doctype html>
 </head>
 <body>
   <main>
-    <p class="lbl">// 404</p>
-    <h1>Такой страницы <span>нет</span></h1>
+    <p class="lbl">404</p>
+    <h1>Такой страницы <span class="hl hl-a show">нет</span></h1>
     <p>Возможно, ссылка устарела. Всё про рекламу и сайты TARGET PRO на главной.</p>
     <a href="/">На главную</a>
   </main>
