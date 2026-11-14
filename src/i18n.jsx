@@ -63,14 +63,14 @@ export function useLang(initialLang = "ru") {
 
 export const UI = {
   ru: {
-    nav: { services: "Услуги", niches: "С кем работаю", work: "Кейсы", results: "Цифры", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню", theme: "Тёмная тема" },
+    nav: { services: "Услуги", niches: "С кем работаю", results: "Кейсы", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню", theme: "Тёмная тема" },
     common: { whatsapp: "Написать в WhatsApp", telegram: "Написать в Telegram", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
       statusOnline: "На связи", statusOffline: "Отвечу утром",
       h1: ["Таргет в Instagram", "и Facebook", "для бизнеса"], h1Mark: "в Казахстане и СНГ",
       lead: "Ещё веду рекламу в TikTok, Threads и Google и делаю сайты, которые выдерживают её трафик. Работаю сам, без менеджеров и передачи по цепочке.",
       ctaPrimary: "Написать в WhatsApp", ctaSecondary: "Оставить заявку",
-      proofLabel: "Из моего кабинета Meta", proofLink: "Другие скрины",
+      proofLabel: "Из моего кабинета Meta", proofLink: "Как это сделано",
       statA: "кампаний запущено", statB: "средний ROAS клиентов",
     },
     services: { pre: "Что я делаю" },
@@ -79,10 +79,10 @@ export const UI = {
       sub: "У каждой ниши своя цель: где-то нужна запись, где-то заказ или звонок. Под эту цель и настраиваю рекламу.",
       ctaTitle: "Твоей ниши нет?", ctaText: "Напиши, скажу, возьмусь или нет.",
     },
-    work: { pre: "Кампании с цифрами" },
     results: {
-      pre: "Скрины из моего", mark: "кабинета Meta",
-      sub: "Цифры как есть, креативы клиентов размыты.",
+      pre: "Кейсы из моего", mark: "кабинета Meta",
+      sub: "Шесть бизнесов в пяти городах. Цифры со скринов как есть, названия брендов скрыты по договорённости с клиентами.",
+      before: "Что было", did: "Что сделал", more: "Ещё результаты", showShots: "Скрины",
       note: "Цена переписки зависит от ниши, оффера и бюджета, поэтому одинаковых цифр не обещаю.",
       zoom: "Открыть скрин крупно", close: "Закрыть", source: "Скрин из Meta Ads Manager",
     },
@@ -134,14 +134,14 @@ export const UI = {
   },
 
   kk: {
-    nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", work: "Кейстер", results: "Цифрлар", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір", theme: "Қараңғы тақырып" },
+    nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", results: "Кейстер", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір", theme: "Қараңғы тақырып" },
     common: { whatsapp: "WhatsApp-қа жазу", telegram: "Telegram-ға жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
     hero: {
       statusOnline: "Байланыстамын", statusOffline: "Таңертең жауап беремін",
       h1: ["Instagram мен", "Facebook-та", "Қазақстан мен ТМД"], h1Mark: "бизнесіне таргет",
       lead: "TikTok, Threads және Google-да да жарнама жүргіземін, оның трафигін көтере алатын сайттар жасаймын. Бәрін өзім істеймін, менеджерлерсіз және тізбек арқылы берусіз.",
       ctaPrimary: "WhatsApp-қа жазу", ctaSecondary: "Өтінім қалдыру",
-      proofLabel: "Meta кабинетімнен", proofLink: "Басқа скриндер",
+      proofLabel: "Meta кабинетімнен", proofLink: "Бұл қалай жасалды",
       statA: "іске қосылған науқан", statB: "клиенттердің орташа ROAS",
     },
     services: { pre: "Не істеймін" },
@@ -150,10 +150,10 @@ export const UI = {
       sub: "Әр саланың өз мақсаты бар: бірінде жазылу керек, бірінде тапсырыс не қоңырау. Жарнаманы осы мақсатқа баптаймын.",
       ctaTitle: "Салаңыз жоқ па?", ctaText: "Жазыңыз, қолға аламын ба, айтамын.",
     },
-    work: { pre: "Цифрлары бар науқандар" },
     results: {
-      pre: "Meta кабинетімнен", mark: "скриндер",
-      sub: "Цифрлар өзгертілмеген, клиенттердің креативтері бұлдыратылған.",
+      pre: "Meta кабинетімнен", mark: "кейстер",
+      sub: "Бес қаладағы алты бизнес. Скриндердегі цифрлар өзгертілмеген, брендтердің атаулары клиенттермен келісім бойынша жасырылған.",
+      before: "Не болды", did: "Не істедім", more: "Тағы нәтижелер", showShots: "Скриндер",
       note: "Хат алмасудың бағасы салаға, офферге және бюджетке байланысты, сондықтан дәл осындай цифрларды уәде етпеймін.",
       zoom: "Скринді үлкейту", close: "Жабу", source: "Meta Ads Manager скрині",
     },
@@ -205,14 +205,14 @@ export const UI = {
   },
 
   en: {
-    nav: { services: "Services", niches: "Who I work with", work: "Cases", results: "Numbers", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu", theme: "Dark theme" },
+    nav: { services: "Services", niches: "Who I work with", results: "Cases", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu", theme: "Dark theme" },
     common: { whatsapp: "Message on WhatsApp", telegram: "Message on Telegram", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
       statusOnline: "Online", statusOffline: "Will reply in the morning",
       h1: ["Instagram and", "Facebook ads for", "businesses in"], h1Mark: "Kazakhstan & the CIS",
       lead: "I also run ads on TikTok, Threads and Google, and build websites that can handle the traffic. I do the work myself, with no managers and no hand-offs.",
       ctaPrimary: "Message on WhatsApp", ctaSecondary: "Send a request",
-      proofLabel: "From my Meta ad account", proofLink: "More screenshots",
+      proofLabel: "From my Meta ad account", proofLink: "How it was done",
       statA: "campaigns launched", statB: "avg. client ROAS",
     },
     services: { pre: "What I do" },
@@ -221,10 +221,10 @@ export const UI = {
       sub: "Every niche has its own goal: bookings for some, orders or calls for others. That's the goal I set the ads up for.",
       ctaTitle: "Not on the list?", ctaText: "Message me and I'll tell you if I can take it on.",
     },
-    work: { pre: "Campaigns with numbers" },
     results: {
-      pre: "Screenshots from my", mark: "Meta ad account",
-      sub: "Numbers untouched, client creatives blurred.",
+      pre: "Cases from my", mark: "Meta ad account",
+      sub: "Six businesses in five cities. Numbers from the screenshots as they are; brand names hidden by agreement with clients.",
+      before: "Before", did: "What I did", more: "More results", showShots: "Screenshots",
       note: "Cost per conversation depends on the niche, the offer and the budget, so I don't promise the same numbers.",
       zoom: "Open the screenshot", close: "Close", source: "Meta Ads Manager screenshot",
     },

@@ -185,7 +185,7 @@ function LangMenu({ t, lang, setLang, onOpen }) {
 }
 
 /* разделы в мобильном меню (id секций на странице, подписи в UI.nav) */
-const MENU_IDS = ["services", "niches", "work", "results", "pricing", "faq", "contact"];
+const MENU_IDS = ["services", "niches", "results", "pricing", "faq", "contact"];
 
 /* МОБИЛЬНОЕ МЕНЮ (до 760px): панель под шапкой со всеми разделами и кнопками
    WhatsApp и Instagram. Стоит вне <nav>: у навбара есть transform и
@@ -270,7 +270,6 @@ function Header({ t, lang, setLang }) {
         </a>
         <ul className="nav-links">
           <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
-          <li><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
           <li><a href="#results" onClick={scrollToId("results")}>{t.nav.results}</a></li>
           <li><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
           <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
@@ -302,7 +301,7 @@ function Header({ t, lang, setLang }) {
    2026, разбор «чтобы сайт не выглядел сделанным ИИ»): цифры сразу на месте */
 function Hero({ t, D }) {
   const status = useStatus();
-  const featured = D.RESULTS[0];
+  const featured = D.PROOF;
   return (
     <section className="hero" id="top">
       <div className="wrap">
@@ -327,7 +326,7 @@ function Hero({ t, D }) {
               <span className="num-unit">{featured.unit}</span>
             </div>
             <p className="num-sub">{featured.sub}</p>
-            <img className="proof-shot" src={featured.shots[0].src} width={featured.shots[0].w} height={featured.shots[0].h} alt="" />
+            <img className="proof-shot" src={featured.shot.src} width={featured.shot.w} height={featured.shot.h} alt="" />
             <span className="more-link">{t.hero.proofLink}<IconArrowDown className="more-ic" /></span>
           </a>
           <div className="tile hero-stat stat-a">
@@ -412,66 +411,66 @@ function Niches({ t, D }) {
   );
 }
 
-/* КЕЙСЫ: две равные карточки с цифрами. Полосу «Скоро: первый сайт-проект»
-   убрали: пустой слот говорил «примеров сайтов нет». Первый сайт добавим
-   настоящим кейсом */
-function Work({ t, D }) {
-  return (
-    <section className="section" id="work">
-      <div className="wrap">
-        <SecHead s={t.work} />
-        <div className="case-grid">
-          {D.WORK_CASES.map((c) => (
-            <article className="tile case" key={c.name}>
-              <div className="case-top">
-                <SecLabel className="lbl-sm">{c.name}</SecLabel>
-                <span className="case-cat">{c.cat}</span>
-              </div>
-              <div className="case-big">{c.big}</div>
-              <h3 className="case-h">{c.h}</h3>
-              <p className="case-desc">{c.desc}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ЦИФРЫ ИЗ КАБИНЕТА: настоящие скрины Meta Ads Manager, клик открывает крупно.
-   Первый скрин (4 617 переписок) стоит на первом экране, здесь его нет,
-   чтобы не повторять: в сетке остальные (D.RESULTS с индекса 1) */
+/* КЕЙСЫ ИЗ КАБИНЕТА (ноябрь 2026: кейсы и скрины в одном разделе).
+   Шесть кейсов из отчётов владельца: ниша, город, срок, цифра, скрин,
+   что было до и три шага. Ниже «Ещё результаты»: два кейса без скринов и
+   трафик (скрины по кнопке). Клик по скрину открывает его крупно */
 function Results({ t, D }) {
-  const [zoom, setZoom] = useState(null); /* индекс скрина в D.RESULTS, открытого крупно */
+  const [zoom, setZoom] = useState(null); /* индекс в [...CASES, ...MORE], открытый крупно */
+  const items = [...D.CASES, ...D.MORE];
   return (
     <section className="section" id="results">
       <div className="wrap">
         <SecHead s={t.results} />
-        <div className="res-grid">
-          {D.RESULTS.map((r, i) => i === 0 ? null : (
-            <article className="tile res" key={i}>
-              <div className="res-info">
-                <SecLabel className="lbl-sm">{r.label}</SecLabel>
-                <div className="num-row">
-                  <span className="big-y">{r.big}</span>
-                  <span className="num-unit">{r.unit}</span>
-                </div>
-                <p className="num-sub">{r.sub}</p>
+        <div className="cs-grid">
+          {D.CASES.map((c, i) => (
+            <article className="tile cs" key={c.niche}>
+              <SecLabel className="lbl-sm">{c.place} · {c.period}</SecLabel>
+              <h3 className="cs-name">{c.niche}</h3>
+              <div className="num-row">
+                <span className="big-y">{c.big}</span>
+                <span className="num-unit">{c.unit}</span>
               </div>
+              <p className="num-sub">{c.sub}</p>
               <button type="button" className="res-shot" onClick={() => setZoom(i)}>
-                {r.shots.map((s) => (
+                {c.shots.map((s) => (
                   <img key={s.src} src={s.src} width={s.w} height={s.h} alt={s.alt} loading="lazy" decoding="async" />
                 ))}
                 <span className="sr-only">{t.results.zoom}</span>
                 <span className="res-zoom" aria-hidden="true"><IconExpand /></span>
               </button>
+              <div className="cs-story">
+                <p className="cs-before"><b>{t.results.before}.</b> {c.before}</p>
+                <p className="cs-did">{t.results.did}</p>
+                <ol className="cs-steps">
+                  {c.steps.map((st) => <li key={st}>{st}</li>)}
+                </ol>
+              </div>
+            </article>
+          ))}
+        </div>
+        <h3 className="more-title">{t.results.more}</h3>
+        <div className="more-grid">
+          {D.MORE.map((m, j) => (
+            <article className="tile more" key={m.label}>
+              <SecLabel className="lbl-sm">{m.label}</SecLabel>
+              <div className="num-row">
+                <span className="big-y">{m.big}</span>
+                <span className="num-unit">{m.unit}</span>
+              </div>
+              <p className="num-sub">{m.sub}</p>
+              {m.shots && (
+                <button type="button" className="btn btn-ghost btn-sm more-shots" onClick={() => setZoom(D.CASES.length + j)}>
+                  <IconExpand className="btn-ic" />{t.results.showShots}
+                </button>
+              )}
             </article>
           ))}
         </div>
         <p className="res-note">{t.results.note}</p>
       </div>
       <ShotViewer
-        item={zoom === null ? null : D.RESULTS[zoom]}
+        item={zoom === null ? null : items[zoom]}
         onClose={() => setZoom(null)}
         closeLabel={t.results.close}
         sourceLabel={t.results.source}
@@ -738,7 +737,6 @@ function Footer({ t }) {
             <SecLabel className="lbl-sm">{t.footer.linksLabel}</SecLabel>
             <ul>
               <li><a href="#services" onClick={scrollToId("services")}>{t.nav.services}</a></li>
-              <li><a href="#work" onClick={scrollToId("work")}>{t.nav.work}</a></li>
               <li><a href="#results" onClick={scrollToId("results")}>{t.nav.results}</a></li>
               <li><a href="#pricing" onClick={scrollToId("pricing")}>{t.nav.pricing}</a></li>
               <li><a href="#contact" onClick={scrollToId("contact")}>{t.nav.contact}</a></li>
@@ -820,7 +818,6 @@ export default function App({ initialLang = "ru" }) {
         </Part>
         <Part><Services t={t} D={D} /></Part>
         <Part><Niches t={t} D={D} /></Part>
-        <Part><Work t={t} D={D} /></Part>
         <Part><Results t={t} D={D} /></Part>
         <Part><Principles t={t} D={D} /></Part>
         <Part><Fit t={t} D={D} /></Part>

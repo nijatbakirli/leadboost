@@ -649,29 +649,48 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
   .niche-name { font-size: 17px; }
 }
 
-/* ---------- кейсы: две равные карточки ---------- */
-.case-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.case { display: flex; flex-direction: column; padding: 34px 40px 36px; }
-.case-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px 16px; }
-.case-top .lbl { margin: 0; }
-.case-cat {
-  font-family: var(--f-mono); font-weight: 700; text-transform: uppercase; font-size: 12.5px; line-height: 1; letter-spacing: .07em;
-  color: var(--muted); border: 2px solid var(--line-2); border-radius: 999px; padding: 7px 11px; white-space: nowrap;
+/* ---------- кейсы из кабинета: шесть кейсов со скринами ----------
+   Карточка: город и срок, ниша, цифра, скрин, что было и три шага.
+   Ниже «Ещё результаты» мелкими плитками */
+.cs-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.cs { display: flex; flex-direction: column; padding: 32px 36px 34px; }
+.cs .lbl { margin-bottom: 10px; }
+.cs-name { margin: 0 0 22px; font-family: var(--f-body); font-weight: 600; font-size: 20px; line-height: 1.35; color: var(--ink); }
+.cs .res-shot { margin-top: 22px; }
+.cs-story { margin-top: 24px; padding-top: 22px; border-top: 2px solid var(--line); }
+.cs-before { margin: 0; font-size: 16px; line-height: 1.6; color: var(--body); }
+.cs-before b { color: var(--ink); font-weight: 600; }
+.cs-did { margin: 16px 0 10px; font-size: 16px; font-weight: 600; color: var(--ink); }
+.cs-steps { list-style: none; margin: 0; padding: 0; counter-reset: cs; }
+.cs-steps li { counter-increment: cs; position: relative; padding-left: 36px; font-size: 16px; line-height: 1.55; color: var(--body); }
+.cs-steps li + li { margin-top: 10px; }
+.cs-steps li::before {
+  content: counter(cs); position: absolute; left: 0; top: 1px; width: 24px; height: 24px; border-radius: 7px;
+  background: var(--tile-2); color: var(--ink); font-family: var(--f-mono); font-weight: 700; font-size: 13px; line-height: 24px; text-align: center;
 }
-.case-big { margin-top: 36px; font-family: var(--f-display); font-weight: 700; color: var(--accent); font-size: clamp(72px, 8vw, 116px); line-height: 0.95; letter-spacing: -0.01em; }
-.case-h { margin: 12px 0 0; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: clamp(22px, 2.1vw, 28px); line-height: 1.15; }
-.case-desc { margin: 10px 0 0; color: var(--muted); font-size: 16px; line-height: 1.5; }
-@media (max-width: 900px) { .case-grid { grid-template-columns: 1fr; gap: 14px; } }
-@media (max-width: 720px) {
-  .case { padding: 22px; }
-  .case-big { margin-top: 26px; }
+.more-title { margin: 56px 0 18px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: clamp(24px, 2.4vw, 32px); line-height: 1.1; }
+.more-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.more { display: flex; flex-direction: column; padding: 26px 28px 28px; }
+.more .big-y { font-size: clamp(44px, 3.8vw, 58px); }
+.more .num-sub { margin-bottom: 18px; }
+.more-shots { margin-top: auto; align-self: flex-start; }
+/* две карточки в ряд: ниша, цифра, скрин и «Что было» соседних карточек на
+   одном уровне (subgrid, 6 строк на карточку); без subgrid просто столбик */
+@media (min-width: 861px) {
+  @supports (grid-template-rows: subgrid) {
+    .cs { display: grid; grid-template-rows: subgrid; grid-row: span 6; row-gap: 0; align-content: start; }
+  }
 }
+@media (max-width: 980px) { .more-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 860px) {
+  .cs-grid, .more-grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .more-title { margin-top: 40px; }
+}
+@media (max-width: 720px) { .cs, .more { padding: 22px; } }
 
-/* ---------- цифры из кабинета ---------- */
-.res-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.res { display: flex; flex-direction: column; gap: 24px; }
+/* скрин в карточке: клик открывает крупно */
 .res-shot {
-  position: relative; display: flex; flex-direction: column; gap: 10px; margin-top: auto;
+  position: relative; display: flex; flex-direction: column; gap: 10px;
   padding: 0; border: 0; background: none; border-radius: 14px; cursor: zoom-in; text-align: left;
 }
 .res-shot img {
@@ -688,7 +707,6 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
 .res-shot:hover .res-zoom, .res-shot:focus-visible .res-zoom { opacity: 1; }
 @media (hover: none) { .res-zoom { opacity: 1; } }
 .res-note { margin: 22px 0 0; max-width: 760px; font-size: 15px; line-height: 1.55; color: var(--dim); }
-@media (max-width: 860px) { .res-grid { grid-template-columns: 1fr; gap: 14px; } }
 
 /* просмотр скрина крупно */
 /* margin: auto возвращает центрирование, которое снимает общий сброс *{margin:0} в index.html */
@@ -933,7 +951,7 @@ select.input option { color: var(--ink-2); background: var(--tile); }
 @media (max-width: 760px) { .m-cta { display: flex; } }
 
 
-#top, #services, #niches, #work, #results, #how, #fit, #pricing, #faq, #contact { scroll-margin-top: 90px; }
+#top, #services, #niches, #results, #how, #fit, #pricing, #faq, #contact { scroll-margin-top: 90px; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {

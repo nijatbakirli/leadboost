@@ -6,7 +6,7 @@
    при добавлении элемента добавляйте его во все три.
 
    Правило контента: только реальные цифры. Клиника ×4.1 и цитаты
-   клиентов убраны (не были реальными). Скрины в RESULTS настоящие,
+   клиентов убраны (не были реальными). Скрины в PROOF, CASES и MORE настоящие,
    из Meta Ads Manager: цифры не правились, креативы клиентов размыты.
    ============================================================ */
 /* крупные иконки услуг лежат файлами в img/icons/premium/*.svg
@@ -24,6 +24,9 @@ const SHOTS = {
   s75: { src: asset("img/results/meta-75-conversations.webp"), w: 764, h: 336 },
   engagement: { src: asset("img/results/meta-campaign-engagement.webp"), w: 764, h: 235 },
   traffic: { src: asset("img/results/meta-campaign-traffic.webp"), w: 764, h: 214 },
+  /* ноябрь 2026: карточка кампании «15 07» (превью креатива размыто) и лиды с сайта */
+  s55: { src: asset("img/results/meta-campaign-55.webp"), w: 764, h: 235 },
+  s22: { src: asset("img/results/meta-22-site-leads.webp"), w: 764, h: 348 },
 };
 
 /* ============================== RU ============================== */
@@ -104,33 +107,85 @@ const ru = {
       features: ["Всё из тарифа «Оптимальный»", "До 3 каналов", "Картинки и видео тоже делаю я", "Весь путь клиента, от рекламы до покупки", "Связь 7 дней в неделю, отвечаю в приоритете"],
     },
   ],
-  WORK_CASES: [
-    { name: "Онлайн-школа", cat: "Обучение, реклама", big: "−61%", h: "цена заявки", desc: "Цена заявки упала на 61% за месяц." },
-    { name: "Интернет-магазин", cat: "E-commerce, реклама", big: "$1 500", h: "выручки за 5 дней", desc: "Две кампании, первые 5 дней после запуска." },
-  ],
-  RESULTS: [
+  /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
+  PROOF: { big: "4 617", unit: "переписок", sub: "по $0,57 за каждую, $2 626 за 45 дней", shot: { ...SHOTS.s4617, alt: "Скрин Meta Ads Manager за весь период: 4 617 начатых переписок, $0,57 за переписку, потрачено $2 626,17, охват 325 552, показы 1 098 477" } },
+  /* кейсы со скринами: ниша, город, срок, что было до, что сделал. Тексты из
+     отчётов владельца по каждому скрину (ноябрь 2026), бренды скрыты по NDA */
+  CASES: [
     {
-      label: "Переписки, весь период", big: "4 617", unit: "переписок", sub: "по $0,57 за каждую, потрачено $2 626",
+      niche: "Интернет-магазин домашнего текстиля с доставкой по всему Узбекистану", place: "Ташкент", period: "45 дней",
+      big: "$0,57", unit: "за переписку", sub: "4 617 переписок, потрачено $2 626",
+      before: "Когда дневной бюджет поднимали выше $15, цена заявки росла до $1,50 и выше, а объявления выгорали за неделю. Масштабировать рекламу на всю страну не получалось.",
+      steps: [
+        "Одна кампания с общим бюджетом на всю страну, без искусственного сужения аудитории.",
+        "Шесть видео: распаковка комплектов, ткань крупным планом, отзывы. Первые 3 секунды обновлял каждые 10-14 дней.",
+        "В чате настроил вопросы про комплект и город доставки, чтобы магазин успевал отвечать на 100+ переписок в день.",
+      ],
       shots: [{ ...SHOTS.s4617, alt: "Скрин Meta Ads Manager за весь период: 4 617 начатых переписок, $0,57 за переписку, потрачено $2 626,17, охват 325 552, показы 1 098 477" }],
     },
     {
-      label: "Переписки, весь период", big: "$0,21", unit: "за переписку", sub: "165 переписок за $35",
+      niche: "Магазин женской одежды и обуви", place: "Баку", period: "5 дней",
+      big: "$0,21", unit: "за переписку", sub: "165 переписок за $35",
+      before: "В рекламе стояли студийные фото с ценами в описании. Переписка стоила от $0,95 до $1,20, люди в примерочные приходили неровно.",
+      steps: [
+        "Вместо студийных фото живые видео примерок в шоуруме, размер и цену уточняют в чате.",
+        "Широкая аудитория: женщины 20-45 лет, без узких интересов.",
+        "Лучшее объявление поднял до $7 в день, цена переписки упала с $0,25 до $0,21.",
+      ],
       shots: [{ ...SHOTS.s165, alt: "Скрин Meta Ads Manager: 165 начатых переписок, $0,21 за переписку, потрачено $35,06, охват 7 599, показы 10 852" }],
     },
     {
-      label: "Переписки, весь период", big: "$0,25", unit: "за переписку", sub: "52 переписки за $12,79",
+      niche: "Доставка готовой еды: суши и пицца", place: "Алматы", period: "2 дня",
+      big: "$0,25", unit: "за переписку", sub: "52 переписки за $12,79",
+      before: "Посты продвигали кнопкой «Продвигать» без ограничений по району. Переписка стоила от $1,10 до $1,40, и до 45% заявок приходило из районов, куда быстрая доставка не едет.",
+      steps: [
+        "Показ только в радиусе 3 км от кухни.",
+        "Предложение: вечерний сет со скидкой 20% на первый заказ, вертикальные видео.",
+        "В чате три кнопки: меню сетов, условия доставки, купон на скидку.",
+      ],
       shots: [{ ...SHOTS.s52, alt: "Скрин Meta Ads Manager: 52 начатые переписки, $0,25 за переписку, потрачено $12,79, охват 2 789, показы 3 694" }],
     },
     {
-      label: "Весь период, бюджет $10 в день", big: "75", unit: "переписок", sub: "по $0,67 за каждую, потрачено $50. Рекламу увидели 20 572 человека.",
+      niche: "Павильон сезонной одежды, опт и розница", place: "Бишкек", period: "5 дней",
+      big: "$0,69", unit: "за переписку", sub: "55 переписок за $37,74",
+      before: "Покупатели приходили только с рынка и из старой базы в мессенджерах. Новых клиентов из рекламы не было.",
+      steps: [
+        "Видео: проход по ряду до павильона и новая партия товара вживую.",
+        "Кампания на переписки, широкая аудитория без узких интересов.",
+        "Автоответ со схемой, как найти точку, и каталогом.",
+      ],
+      shots: [{ ...SHOTS.s55, alt: "Скрин кампании «Вовлеченность» в Meta Ads Manager: 55 начатых переписок, $0,69 за переписку, затраты $37,74" }],
+    },
+    {
+      niche: "Студия аппаратной косметологии и эпиляции", place: "Астана", period: "5 дней",
+      big: "$0,67", unit: "за переписку", sub: "75 переписок за $50, по $10 в день",
+      before: "В рекламе были стоковые картинки и сложные описания процедур. Заявка стоила от $2,50 до $3,20, и до 60% обращений не доходили до записи: администратор отвечал долго.",
+      steps: [
+        "Предложение на первый визит: три зоны по фиксированной цене.",
+        "Картинки со списком выгод и живые видео кабинета.",
+        "Ровно $10 в день и скрипт для администратора: запись за 3 сообщения.",
+      ],
       shots: [{ ...SHOTS.s75, alt: "Скрин Meta Ads Manager: 75 начатых переписок, $0,67 за переписку, потрачено $50,12, дневной бюджет $10, охват 20 572, показы 29 456" }],
     },
     {
-      label: "Трафик в Instagram", big: "$0,05", unit: "за визит в профиль", sub: "6,7 тыс. посещений профиля за $361. Рядом вторая кампания: 189 переписок по $1,74.",
-      shots: [
-        { ...SHOTS.traffic, alt: "Скрин кампании «Трафик» в Meta Ads Manager: 6,7 тыс. посещений профиля Instagram, $0,05 за посещение, затраты $361,48" },
-        { ...SHOTS.engagement, alt: "Скрин кампании «Вовлеченность» в Meta Ads Manager: 189 начатых переписок, $1,74 за переписку, затраты $329,11" },
+      niche: "Корпусная мебель и кухни на заказ", place: "Баку", period: "3 дня",
+      big: "$0,65", unit: "за заявку с сайта", sub: "22 заявки с телефоном за $14,35",
+      before: "Реклама вела в переписку, и 80% диалогов заканчивались вопросом «сколько стоит метр?» без номера телефона.",
+      steps: [
+        "Реклама ведёт на сайт-квиз: расчёт стоимости кухни или шкафа за минуту и 3D-проект.",
+        "Заявка засчитывается только после отправки формы с телефоном, так реклама учится на настоящих заказчиках.",
+        "В объявлениях готовые кухни в интерьерах и цены в трёх комплектациях.",
       ],
+      shots: [{ ...SHOTS.s22, alt: "Скрин Meta Ads Manager: 22 лида с сайта, $0,65 за лид, потрачено $14,35, охват 1 320, показы 2 280" }],
+    },
+  ],
+  /* ещё результаты: два кейса без скринов (подтверждены владельцем) и трафик */
+  MORE: [
+    { label: "Онлайн-школа", big: "−61%", unit: "цена заявки", sub: "Цена заявки упала на 61% за месяц." },
+    { label: "Интернет-магазин", big: "$1 500", unit: "выручки за 5 дней", sub: "Две кампании, первые 5 дней после запуска." },
+    {
+      label: "Трафик в Instagram", big: "$0,05", unit: "за визит в профиль", sub: "6,7 тыс. посещений профиля за $361. Рядом вторая кампания: 189 переписок по $1,74.",
+      shots: [{ ...SHOTS.traffic, alt: "Скрин кампании «Трафик» в Meta Ads Manager: 6,7 тыс. посещений профиля Instagram, $0,05 за посещение, затраты $361,48" }, { ...SHOTS.engagement, alt: "Скрин кампании «Вовлеченность» в Meta Ads Manager: 189 начатых переписок, $1,74 за переписку, затраты $329,11" }],
     },
   ],
   FAQS: [
@@ -224,33 +279,85 @@ const kk = {
       features: ["«Оптималды» тарифінің бәрі", "3 арнаға дейін", "Суреттер мен видеоны да мен жасаймын", "Клиенттің толық жолы, жарнамадан сатып алуға дейін", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
     },
   ],
-  WORK_CASES: [
-    { name: "Онлайн-мектеп", cat: "Оқыту, жарнама", big: "−61%", h: "өтінім бағасы", desc: "Өтінім бағасы бір айда 61%-ға түсті." },
-    { name: "Интернет-дүкен", cat: "E-commerce, жарнама", big: "$1 500", h: "5 күндегі түсім", desc: "Екі науқан, іске қосудан кейінгі алғашқы 5 күн." },
-  ],
-  RESULTS: [
+  /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
+  PROOF: { big: "4 617", unit: "хат алмасу", sub: "әрқайсысы $0,57, 45 күнде $2 626", shot: { ...SHOTS.s4617, alt: "Meta Ads Manager скрині, бүкіл кезең: 4 617 басталған хат алмасу, әрқайсысы $0,57, жұмсалғаны $2 626,17, қамту 325 552, көрсетілім 1 098 477" } },
+  /* кейсы со скринами: ниша, город, срок, что было до, что сделал. Тексты из
+     отчётов владельца по каждому скрину (ноябрь 2026), бренды скрыты по NDA */
+  CASES: [
     {
-      label: "Хат алмасулар, бүкіл кезең", big: "4 617", unit: "хат алмасу", sub: "әрқайсысы $0,57, жұмсалғаны $2 626",
+      niche: "Бүкіл Өзбекстанға жеткізетін үй тоқыма бұйымдарының интернет-дүкені", place: "Ташкент", period: "45 күн",
+      big: "$0,57", unit: "бір хат алмасу", sub: "4 617 хат алмасу, жұмсалғаны $2 626",
+      before: "Күндік бюджетті $15-тан асырғанда өтінім бағасы $1,50-ге дейін және одан да жоғары өсті, ал жарнамалар бір аптада тозды. Жарнаманы бүкіл елге кеңейту мүмкін болмады.",
+      steps: [
+        "Бүкіл елге ортақ бюджеті бар бір науқан, аудиторияны жасанды тарылтусыз.",
+        "Алты видео: жиынтықтарды ашу, матаны жақыннан көрсету, пікірлер. Алғашқы 3 секундты әр 10-14 күн сайын жаңарттым.",
+        "Дүкен күніне 100+ хат алмасуға үлгеруі үшін чатта жиынтық пен жеткізу қаласы туралы сұрақтарды баптадым.",
+      ],
       shots: [{ ...SHOTS.s4617, alt: "Meta Ads Manager скрині, бүкіл кезең: 4 617 басталған хат алмасу, әрқайсысы $0,57, жұмсалғаны $2 626,17, қамту 325 552, көрсетілім 1 098 477" }],
     },
     {
-      label: "Хат алмасулар, бүкіл кезең", big: "$0,21", unit: "бір хат алмасу", sub: "165 хат алмасу $35-ға",
+      niche: "Әйелдер киімі мен аяқ киім дүкені", place: "Баку", period: "5 күн",
+      big: "$0,21", unit: "бір хат алмасу", sub: "165 хат алмасу $35-ға",
+      before: "Жарнамада сипаттамасында бағалары бар студиялық фотолар тұрды. Хат алмасу $0,95-тен $1,20-ға дейін тұрды, киім өлшейтін бөлмеге адамдар тұрақсыз келді.",
+      steps: [
+        "Студиялық фотолардың орнына шоурумда киімді өлшеп көрудің тірі видеолары, өлшем мен бағаны чатта нақтылайды.",
+        "Кең аудитория: 20-45 жастағы әйелдер, тар қызығушылықтарсыз.",
+        "Ең жақсы жарнаманы күніне $7-ға дейін көтердім, хат алмасу бағасы $0,25-тен $0,21-ге түсті.",
+      ],
       shots: [{ ...SHOTS.s165, alt: "Meta Ads Manager скрині: 165 басталған хат алмасу, әрқайсысы $0,21, жұмсалғаны $35,06, қамту 7 599, көрсетілім 10 852" }],
     },
     {
-      label: "Хат алмасулар, бүкіл кезең", big: "$0,25", unit: "бір хат алмасу", sub: "52 хат алмасу $12,79-ға",
+      niche: "Дайын тамақ жеткізу: суши мен пицца", place: "Алматы", period: "2 күн",
+      big: "$0,25", unit: "бір хат алмасу", sub: "52 хат алмасу $12,79-ға",
+      before: "Посттарды аудан шектеуінсіз «Жарнамалау» батырмасымен жылжытты. Хат алмасу $1,10-нан $1,40-қа дейін тұрды, өтінімдердің 45%-ына дейіні жылдам жеткізу бармайтын аудандардан келді.",
+      steps: [
+        "Тек асханадан 3 км радиуста көрсету.",
+        "Ұсыныс: алғашқы тапсырысқа 20% жеңілдігі бар кешкі сет, тік видеолар.",
+        "Чатта үш батырма: сеттер мәзірі, жеткізу шарттары, жеңілдік купоны.",
+      ],
       shots: [{ ...SHOTS.s52, alt: "Meta Ads Manager скрині: 52 басталған хат алмасу, әрқайсысы $0,25, жұмсалғаны $12,79, қамту 2 789, көрсетілім 3 694" }],
     },
     {
-      label: "Бүкіл кезең, күніне $10 бюджет", big: "75", unit: "хат алмасу", sub: "әрқайсысы $0,67, жұмсалғаны $50. Жарнаманы 20 572 адам көрді.",
+      niche: "Маусымдық киім павильоны, көтерме және бөлшек сауда", place: "Бішкек", period: "5 күн",
+      big: "$0,69", unit: "бір хат алмасу", sub: "55 хат алмасу $37,74-ке",
+      before: "Сатып алушылар тек базардан және мессенджерлердегі ескі базадан келді. Жарнамадан жаңа клиенттер болмады.",
+      steps: [
+        "Видео: қатар бойымен павильонға дейін жүру және жаңа партия тауарды тікелей көрсету.",
+        "Хат алмасуға арналған науқан, тар қызығушылықтарсыз кең аудитория.",
+        "Нүктені қалай табу сызбасы мен каталогы бар автожауап.",
+      ],
+      shots: [{ ...SHOTS.s55, alt: "Meta Ads Manager-дегі «Тартылу» науқанының скрині: 55 басталған хат алмасу, бір хат алмасу $0,69, шығын $37,74" }],
+    },
+    {
+      niche: "Аппараттық косметология және эпиляция студиясы", place: "Астана", period: "5 күн",
+      big: "$0,67", unit: "бір хат алмасу", sub: "75 хат алмасу $50-ға, күніне $10",
+      before: "Жарнамада стоктық суреттер мен процедуралардың күрделі сипаттамалары болды. Өтінім $2,50-ден $3,20-ға дейін тұрды, ал әкімші ұзақ жауап бергендіктен өтініштердің 60%-ына дейіні жазылуға жетпеді.",
+      steps: [
+        "Алғашқы келуге ұсыныс: белгіленген бағамен үш аймақ.",
+        "Артықшылықтар тізімі бар суреттер және кабинеттің тірі видеолары.",
+        "Күніне дәл $10 және әкімшіге скрипт: 3 хабарламада жазылу.",
+      ],
       shots: [{ ...SHOTS.s75, alt: "Meta Ads Manager скрині: 75 басталған хат алмасу, әрқайсысы $0,67, жұмсалғаны $50,12, күндік бюджет $10, қамту 20 572, көрсетілім 29 456" }],
     },
     {
-      label: "Instagram-ға трафик", big: "$0,05", unit: "профильге бір кіру", sub: "6,7 мың профильге кіру $361-ға. Жанында екінші науқан: 189 хат алмасу, әрқайсысы $1,74.",
-      shots: [
-        { ...SHOTS.traffic, alt: "Meta Ads Manager-дегі «Трафик» науқанының скрині: Instagram профиліне 6,7 мың кіру, әрқайсысы $0,05, шығын $361,48" },
-        { ...SHOTS.engagement, alt: "Meta Ads Manager-дегі «Вовлеченность» науқанының скрині: 189 басталған хат алмасу, әрқайсысы $1,74, шығын $329,11" },
+      niche: "Корпустық жиһаз бен тапсырыспен жасалатын ас үйлер", place: "Баку", period: "3 күн",
+      big: "$0,65", unit: "сайттан бір өтінім", sub: "телефоны бар 22 өтінім $14,35-ке",
+      before: "Жарнама хат алмасуға апарды, диалогтардың 80%-ы телефон нөмірінсіз «метрі қанша тұрады?» деген сұрақпен аяқталды.",
+      steps: [
+        "Жарнама квиз-сайтқа апарады: ас үйдің немесе шкафтың бағасын бір минутта есептеу және 3D-жоба.",
+        "Өтінім телефоны бар форма жіберілгеннен кейін ғана есептеледі, осылайша жарнама нақты тапсырыс берушілерден үйренеді.",
+        "Жарнамаларда интерьердегі дайын ас үйлер және үш жиынтықтағы бағалар.",
       ],
+      shots: [{ ...SHOTS.s22, alt: "Meta Ads Manager скрині: сайттан 22 лид, бір лид $0,65, жұмсалғаны $14,35, қамту 1 320, көрсетілім 2 280" }],
+    },
+  ],
+  /* ещё результаты: два кейса без скринов (подтверждены владельцем) и трафик */
+  MORE: [
+    { label: "Онлайн-мектеп", big: "−61%", unit: "өтінім бағасы", sub: "Өтінім бағасы бір айда 61%-ға түсті." },
+    { label: "Интернет-дүкен", big: "$1 500", unit: "5 күндегі түсім", sub: "Екі науқан, іске қосудан кейінгі алғашқы 5 күн." },
+    {
+      label: "Instagram-ға трафик", big: "$0,05", unit: "профильге бір кіру", sub: "6,7 мың профильге кіру $361-ға. Жанында екінші науқан: 189 хат алмасу, әрқайсысы $1,74.",
+      shots: [{ ...SHOTS.traffic, alt: "Meta Ads Manager-дегі «Трафик» науқанының скрині: Instagram профиліне 6,7 мың кіру, әрқайсысы $0,05, шығын $361,48" }, { ...SHOTS.engagement, alt: "Meta Ads Manager-дегі «Вовлеченность» науқанының скрині: 189 басталған хат алмасу, әрқайсысы $1,74, шығын $329,11" }],
     },
   ],
   FAQS: [
@@ -343,33 +450,85 @@ const en = {
       features: ["Everything in Optimal", "Up to 3 channels", "I also produce the images and video", "The full customer journey, from ad to purchase", "Support 7 days a week, priority replies"],
     },
   ],
-  WORK_CASES: [
-    { name: "Online school", cat: "Education, advertising", big: "−61%", h: "cost per lead", desc: "Cost per lead dropped 61% in a month." },
-    { name: "Online store", cat: "E-commerce, advertising", big: "$1,500", h: "revenue in 5 days", desc: "Two campaigns, the first 5 days after launch." },
-  ],
-  RESULTS: [
+  /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
+  PROOF: { big: "4,617", unit: "conversations", sub: "$0.57 each, $2,626 over 45 days", shot: { ...SHOTS.s4617, alt: "Meta Ads Manager screenshot, all time: 4,617 conversations started, $0.57 per conversation, $2,626.17 spent, reach 325,552, impressions 1,098,477" } },
+  /* кейсы со скринами: ниша, город, срок, что было до, что сделал. Тексты из
+     отчётов владельца по каждому скрину (ноябрь 2026), бренды скрыты по NDA */
+  CASES: [
     {
-      label: "Conversations, all time", big: "4,617", unit: "conversations", sub: "$0.57 each, $2,626 spent",
+      niche: "Online store for home textiles, shipping across Uzbekistan", place: "Tashkent", period: "45 days",
+      big: "$0.57", unit: "per conversation", sub: "4,617 conversations, $2,626 spent",
+      before: "Whenever the daily budget went above $15, the cost per lead jumped to $1.50 or more, and ads burned out within a week. Scaling to the whole country wasn't working.",
+      steps: [
+        "One campaign with a shared budget for the whole country, without artificially narrowing the audience.",
+        "Six videos: unboxing the sets, close-ups of the fabric, reviews. I refreshed the first 3 seconds every 10-14 days.",
+        "Set up questions in the chat about the set and the delivery city, so the store could keep up with 100+ conversations a day.",
+      ],
       shots: [{ ...SHOTS.s4617, alt: "Meta Ads Manager screenshot, all time: 4,617 conversations started, $0.57 per conversation, $2,626.17 spent, reach 325,552, impressions 1,098,477" }],
     },
     {
-      label: "Conversations, all time", big: "$0.21", unit: "per conversation", sub: "165 conversations for $35",
+      niche: "Women's clothing and shoe store", place: "Baku", period: "5 days",
+      big: "$0.21", unit: "per conversation", sub: "165 conversations for $35",
+      before: "The ads used studio photos with prices in the caption. A conversation cost $0.95 to $1.20, and fitting-room traffic was uneven.",
+      steps: [
+        "Live try-on videos in the showroom instead of studio photos; size and price are clarified in the chat.",
+        "Broad audience: women aged 20-45, no narrow interests.",
+        "Scaled the best ad to $7 a day; the cost per conversation dropped from $0.25 to $0.21.",
+      ],
       shots: [{ ...SHOTS.s165, alt: "Meta Ads Manager screenshot: 165 conversations started, $0.21 per conversation, $35.06 spent, reach 7,599, impressions 10,852" }],
     },
     {
-      label: "Conversations, all time", big: "$0.25", unit: "per conversation", sub: "52 conversations for $12.79",
+      niche: "Food delivery: sushi and pizza", place: "Almaty", period: "2 days",
+      big: "$0.25", unit: "per conversation", sub: "52 conversations for $12.79",
+      before: "Posts were promoted with the “Boost” button without any area limits. A conversation cost $1.10 to $1.40, and up to 45% of requests came from areas that fast delivery doesn't reach.",
+      steps: [
+        "Ads shown only within 3 km of the kitchen.",
+        "Offer: an evening set with 20% off the first order, vertical videos.",
+        "Three buttons in the chat: set menu, delivery terms, discount coupon.",
+      ],
       shots: [{ ...SHOTS.s52, alt: "Meta Ads Manager screenshot: 52 conversations started, $0.25 per conversation, $12.79 spent, reach 2,789, impressions 3,694" }],
     },
     {
-      label: "All time, $10 a day budget", big: "75", unit: "conversations", sub: "$0.67 each, $50 spent. The ads reached 20,572 people.",
+      niche: "Seasonal clothing stall, wholesale and retail", place: "Bishkek", period: "5 days",
+      big: "$0.69", unit: "per conversation", sub: "55 conversations for $37.74",
+      before: "Buyers came only from foot traffic at the market and an old contact list in messengers. The ads brought in no new customers.",
+      steps: [
+        "Video: a walk down the row to the stall and the new stock shown live.",
+        "A campaign optimized for conversations, broad audience without narrow interests.",
+        "An auto-reply with a map of how to find the stall and a catalog.",
+      ],
+      shots: [{ ...SHOTS.s55, alt: "Screenshot of an Engagement campaign in Meta Ads Manager: 55 conversations started, $0.69 per conversation, $37.74 spent" }],
+    },
+    {
+      niche: "Hardware cosmetology and hair removal studio", place: "Astana", period: "5 days",
+      big: "$0.67", unit: "per conversation", sub: "75 conversations for $50, at $10 a day",
+      before: "The ads used stock images and complicated procedure descriptions. A lead cost $2.50 to $3.20, and up to 60% of inquiries never turned into bookings because the admin replied slowly.",
+      steps: [
+        "A first-visit offer: three areas at a fixed price.",
+        "Images listing the benefits and live videos of the treatment room.",
+        "A steady $10 a day and a script for the admin: a booking in 3 messages.",
+      ],
       shots: [{ ...SHOTS.s75, alt: "Meta Ads Manager screenshot: 75 conversations started, $0.67 per conversation, $50.12 spent, daily budget $10, reach 20,572, impressions 29,456" }],
     },
     {
-      label: "Instagram traffic", big: "$0.05", unit: "per profile visit", sub: "6.7k profile visits for $361. Next to it, a second campaign: 189 conversations at $1.74.",
-      shots: [
-        { ...SHOTS.traffic, alt: "Meta Ads Manager screenshot of a Traffic campaign: 6.7k Instagram profile visits, $0.05 per visit, $361.48 spent" },
-        { ...SHOTS.engagement, alt: "Meta Ads Manager screenshot of an Engagement campaign: 189 conversations started, $1.74 per conversation, $329.11 spent" },
+      niche: "Custom cabinet furniture and kitchens", place: "Baku", period: "3 days",
+      big: "$0.65", unit: "per website lead", sub: "22 leads with a phone number for $14.35",
+      before: "Ads led to chats, and 80% of conversations ended with “how much per meter?” and no phone number.",
+      steps: [
+        "The ads lead to a quiz website: a kitchen or wardrobe price estimate in a minute and a 3D design.",
+        "A lead only counts once the form with a phone number is sent, so the ads learn from real buyers.",
+        "The ads show finished kitchens in real interiors and prices in three packages.",
       ],
+      shots: [{ ...SHOTS.s22, alt: "Meta Ads Manager screenshot: 22 website leads, $0.65 per lead, $14.35 spent, reach 1,320, impressions 2,280" }],
+    },
+  ],
+  /* ещё результаты: два кейса без скринов (подтверждены владельцем) и трафик */
+  MORE: [
+    { label: "Online school", big: "−61%", unit: "cost per lead", sub: "Cost per lead dropped 61% in a month." },
+    { label: "Online store", big: "$1,500", unit: "revenue in 5 days", sub: "Two campaigns, the first 5 days after launch." },
+    {
+      label: "Instagram traffic", big: "$0.05", unit: "per profile visit", sub: "6.7k profile visits for $361. Next to it, a second campaign: 189 conversations at $1.74.",
+      shots: [{ ...SHOTS.traffic, alt: "Meta Ads Manager screenshot of a Traffic campaign: 6.7k Instagram profile visits, $0.05 per visit, $361.48 spent" }, { ...SHOTS.engagement, alt: "Meta Ads Manager screenshot of an Engagement campaign: 189 conversations started, $1.74 per conversation, $329.11 spent" }],
     },
   ],
   FAQS: [
