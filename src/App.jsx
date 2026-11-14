@@ -577,12 +577,19 @@ function Calculator({ t, D, lang }) {
   const [roiBudget, setRoiBudget] = useState(1000);
   const [roiNiche, setRoiNiche] = useState("ecommerce");
   const nicheInfo = D.NICHE_DATA[roiNiche];
+  /* сколько напишут и сколько из них купят: примерные цифры ниши
+     (NICHE_NUM в data.jsx). ROAS раньше был готовой строкой без расчёта:
+     без цены товара его честно не посчитать */
   const estLeads = Math.max(1, Math.round(roiBudget / nicheInfo.cpl));
+  const estClients = Math.max(1, Math.round(estLeads * nicheInfo.conv));
   const animatedCpl = useTween(nicheInfo.cpl, 500, 1);
   const animatedLeads = useTween(estLeads, 500, 0);
+  const animatedClients = useTween(estClients, 500, 0);
   const dec = (n) => (lang === "en" ? String(n) : String(n).replace(".", ","));
   /* подписи под ползунком: $300 и $6 000 (разделитель тысяч по языку) */
   const money = (n) => "$" + (lang === "en" ? n.toLocaleString("en-US") : String(n).replace(/\B(?=(\d{3})+$)/g, NBSP));
+  /* целые числа с разделителем тысяч: 1 250 / 1,250 */
+  const int = (n) => (lang === "en" ? n.toLocaleString("en-US") : String(n).replace(/\B(?=(\d{3})+$)/g, NBSP));
   return (
     <section className="section" id="calculator">
       <div className="wrap">
@@ -604,8 +611,8 @@ function Calculator({ t, D, lang }) {
           </div>
           <div className="roi-results" aria-live="polite">
             <div className="roi-out"><span className="k">{t.calculator.out1}</span><span className="v">~${dec(animatedCpl)}</span></div>
-            <div className="roi-out"><span className="k">{t.calculator.out2}</span><span className="v">~{animatedLeads}</span></div>
-            <div className="roi-out"><span className="k">{t.calculator.out3}</span><span className="v">{nicheInfo.roas}</span></div>
+            <div className="roi-out"><span className="k">{t.calculator.out2}</span><span className="v">~{int(animatedLeads)}</span></div>
+            <div className="roi-out"><span className="k">{t.calculator.out3}</span><span className="v">~{int(animatedClients)}</span></div>
             <p className="roi-note">{t.calculator.note}</p>
           </div>
         </div>
@@ -700,7 +707,7 @@ function Contact({ t, D }) {
               </div>
             </div>
             <div className="contact-note">
-              <p>{t.contact.note(SPOTS_LEFT, SPOTS_TOTAL)}</p>
+              <p>{t.contact.note(SPOTS_LEFT)}</p>
               <SpotsBar />
             </div>
           </div>

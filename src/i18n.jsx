@@ -68,7 +68,7 @@ export const UI = {
     hero: {
       statusOnline: "На связи", statusOffline: "Отвечу утром",
       h1: ["Таргет в Instagram", "и Facebook", "для бизнеса"], h1Mark: "в Казахстане и СНГ",
-      lead: "Настраиваю рекламу и делаю сайты, которые выдерживают её трафик. Работаю сам, без менеджеров и передачи по цепочке.",
+      lead: "Ещё веду рекламу в TikTok, Threads и Google и делаю сайты, которые выдерживают её трафик. Работаю сам, без менеджеров и передачи по цепочке.",
       ctaPrimary: "Написать в WhatsApp", ctaSecondary: "Оставить заявку",
       proofLabel: "Из моего кабинета Meta", proofLink: "Другие скрины",
       statA: "кампаний запущено", statB: "средний ROAS клиентов",
@@ -93,7 +93,7 @@ export const UI = {
     },
     fit: {
       pre: "Кому подходит",
-      sub: "Беру 3-4 проекта в месяц, поэтому до старта проверяю, готов ли бизнес к рекламе.",
+      sub: "Беру 3, максимум 4 проекта в месяц, смотря по нише. Поэтому до старта проверяю, готов ли бизнес к рекламе.",
       yes: "Подходит, если", no: "Пока рано, если",
     },
     pricing: {
@@ -110,8 +110,8 @@ export const UI = {
       nicheLabel: "Ниша", budgetLabel: "Бюджет на рекламу в месяц, $",
       out1: "Сколько будет стоить один человек, который напишет",
       out2: "Сколько таких людей будет в месяц",
-      out3: "Насколько окупится реклама (ROAS)",
-      note: "Примерный расчёт по средним цифрам ниши. Точные значения зависят от цены товара и сезона, скажу на созвоне.",
+      out3: "Сколько из них станут клиентами",
+      note: "Условный пример: средняя цена переписки в нише и доля тех, кто покупает после переписки. На деле зависит от цены, сезона и того, как быстро ты отвечаешь. Точнее скажу на созвоне.",
     },
     faq: { pre: "Частые вопросы", more: "Не нашёл свой вопрос? Напиши, отвечу сам.", moreBtn: "Спросить в WhatsApp" },
     contact: {
@@ -119,7 +119,9 @@ export const UI = {
       intro: "Расскажи, чем занимаешься и что сейчас с рекламой. Отвечу по делу.",
       fastLabel: "Быстрее всего", fastText: "Пиши в WhatsApp, Telegram или в директ Instagram.",
       offer: "Уже есть реклама? Пришли скрин своего рекламного кабинета, бесплатно скажу, что бы поправил.",
-      note: (left, total) => `Сейчас свободно ${left} из ${total} мест на месяц. Если мест нет, скажу, когда освободится.`,
+      note: (left) => left > 0
+        ? `Сейчас на этот месяц свободно ${left} ${left % 10 === 1 && left % 100 !== 11 ? "место" : left % 10 >= 2 && left % 10 <= 4 && (left % 100 < 12 || left % 100 > 14) ? "места" : "мест"}. Если мест не останется, скажу, когда освободится.`
+        : "На этот месяц мест нет. Напиши, скажу, когда освободится.",
       formTitle: "Или оставь заявку",
       form: {
         nameLabel: "Имя", namePh: "Как тебя зовут",
@@ -146,7 +148,7 @@ export const UI = {
     hero: {
       statusOnline: "Байланыстамын", statusOffline: "Таңертең жауап беремін",
       h1: ["Instagram мен", "Facebook-та", "Қазақстан мен ТМД"], h1Mark: "бизнесіне таргет",
-      lead: "Жарнаманы баптаймын және оның трафигін көтере алатын сайттар жасаймын. Бәрін өзім істеймін, менеджерлерсіз және тізбек арқылы берусіз.",
+      lead: "TikTok, Threads және Google-да да жарнама жүргіземін, оның трафигін көтере алатын сайттар жасаймын. Бәрін өзім істеймін, менеджерлерсіз және тізбек арқылы берусіз.",
       ctaPrimary: "WhatsApp-қа жазу", ctaSecondary: "Өтінім қалдыру",
       proofLabel: "Meta кабинетімнен", proofLink: "Басқа скриндер",
       statA: "іске қосылған науқан", statB: "клиенттердің орташа ROAS",
@@ -171,7 +173,7 @@ export const UI = {
     },
     fit: {
       pre: "Кімге жарайды",
-      sub: "Айына 3-4 жоба аламын, сондықтан бастамас бұрын бизнестің жарнамаға дайын екенін тексеремін.",
+      sub: "Айына 3, ең көбі 4 жоба аламын, салаға байланысты. Сондықтан бастамас бұрын бизнестің жарнамаға дайын екенін тексеремін.",
       yes: "Жарайды, егер", no: "Әзірге ерте, егер",
     },
     pricing: {
@@ -188,8 +190,8 @@ export const UI = {
       nicheLabel: "Сала", budgetLabel: "Айына жарнама бюджеті, $",
       out1: "Жазатын бір адам қанша тұрады",
       out2: "Айына осындай адамдар саны",
-      out3: "Жарнама қаншалықты өтеледі (ROAS)",
-      note: "Сала бойынша орташа цифрлармен болжамды есеп. Нақты мәндер тауар бағасы мен маусымға байланысты, қоңырауда айтамын.",
+      out3: "Олардың қаншасы клиент болады",
+      note: "Шартты мысал: саладағы хат алмасудың орташа бағасы және жазғаннан кейін сатып алатындардың үлесі. Іс жүзінде баға мен маусымға және қаншалықты тез жауап беретініңізге байланысты. Нақтырақ қоңырауда айтамын.",
     },
     faq: { pre: "Жиі қойылатын сұрақтар", more: "Сұрағыңызды таппадыңыз ба? Жазыңыз, өзім жауап беремін.", moreBtn: "WhatsApp-та сұрау" },
     contact: {
@@ -197,7 +199,9 @@ export const UI = {
       intro: "Немен айналысатыныңызды және жарнамаңыз қазір қандай екенін айтыңыз. Нақты жауап беремін.",
       fastLabel: "Ең жылдамы", fastText: "WhatsApp-қа, Telegram-ға немесе Instagram директке жазыңыз.",
       offer: "Жарнамаңыз бар ма? Жарнама кабинетіңіздің скринін жіберіңіз, нені түзетер едім, тегін айтамын.",
-      note: (left, total) => `Қазір айына ${total} орынның ${left} бос. Орын болмаса, қашан босайтынын айтамын.`,
+      note: (left) => left > 0
+        ? `Қазір осы айға ${left} орын бос. Орын қалмаса, қашан босайтынын айтамын.`
+        : "Осы айға орын жоқ. Жазыңыз, қашан босайтынын айтамын.",
       formTitle: "Немесе өтінім қалдырыңыз",
       form: {
         nameLabel: "Аты", namePh: "Атыңыз кім",
@@ -224,7 +228,7 @@ export const UI = {
     hero: {
       statusOnline: "Online", statusOffline: "Will reply in the morning",
       h1: ["Instagram and", "Facebook ads for", "businesses in"], h1Mark: "Kazakhstan & the CIS",
-      lead: "I set up the ads and build websites that can handle the traffic. I do the work myself, with no managers and no hand-offs.",
+      lead: "I also run ads on TikTok, Threads and Google, and build websites that can handle the traffic. I do the work myself, with no managers and no hand-offs.",
       ctaPrimary: "Message on WhatsApp", ctaSecondary: "Send a request",
       proofLabel: "From my Meta ad account", proofLink: "More screenshots",
       statA: "campaigns launched", statB: "avg. client ROAS",
@@ -249,7 +253,7 @@ export const UI = {
     },
     fit: {
       pre: "Who this fits",
-      sub: "I take on 3-4 projects a month, so before we start I check whether the business is ready for ads.",
+      sub: "I take on 3, at most 4 projects a month, depending on the niche. So before we start I check whether the business is ready for ads.",
       yes: "A good fit if", no: "Too early if",
     },
     pricing: {
@@ -266,8 +270,8 @@ export const UI = {
       nicheLabel: "Niche", budgetLabel: "Monthly ad budget, $",
       out1: "Cost per person who messages you",
       out2: "How many such people per month",
-      out3: "Expected return on ad spend (ROAS)",
-      note: "A rough estimate based on niche averages. Exact numbers depend on product price and season, I'll tell you on a call.",
+      out3: "How many may become customers",
+      note: "An illustrative example: the average cost of a conversation in the niche and the share of people who buy after messaging. In practice it depends on price, season and how fast you reply. I'll be more precise on a call.",
     },
     faq: { pre: "Common questions", more: "Didn't find your question? Message me, I reply myself.", moreBtn: "Ask on WhatsApp" },
     contact: {
@@ -275,7 +279,9 @@ export const UI = {
       intro: "Tell me what you do and where your ads stand now. I'll reply with specifics.",
       fastLabel: "Fastest", fastText: "Message me on WhatsApp, Telegram or Instagram DM.",
       offer: "Already running ads? Send a screenshot of your ad account and I'll tell you what I'd fix, free.",
-      note: (left, total) => `Right now ${left} of ${total} slots are open this month. If none are left, I'll tell you when one frees up.`,
+      note: (left) => left > 0
+        ? `Right now ${left} slot${left === 1 ? " is" : "s are"} open this month. If none are left, I'll tell you when one frees up.`
+        : "No slots left this month. Message me and I'll tell you when one frees up.",
       formTitle: "Or send a request",
       form: {
         nameLabel: "Name", namePh: "What's your name",

@@ -26,17 +26,36 @@ const SHOTS = {
   traffic: { src: asset("img/results/meta-campaign-traffic.webp"), w: 764, h: 214 },
 };
 
+/* Калькулятор: примерные цифры по нишам (общие для всех языков).
+   cpl: сколько в среднем стоит одна переписка (человек написал), $;
+   conv: какая доля написавших становится клиентами.
+   Это условный пример, не замер: владелец попросил поставить примерные
+   цифры (ноябрь 2026). Ориентиры: его скрины из кабинета Meta ($0,21-0,67
+   за переписку в недорогих нишах, $1,74 в дорогой) и обычные цены в
+   Казахстане, где переписка в недвижимости и B2B в разы дороже, чем в
+   магазине. Когда у владельца будут свои средние по нишам, заменить. */
+const NICHE_NUM = {
+  ecommerce: { cpl: 0.8, conv: 0.1 },
+  clinic: { cpl: 2.5, conv: 0.15 },
+  education: { cpl: 1.5, conv: 0.05 },
+  realestate: { cpl: 5, conv: 0.01 },
+  b2b: { cpl: 5, conv: 0.04 },
+  massage: { cpl: 1.2, conv: 0.15 },
+  flower: { cpl: 0.8, conv: 0.12 },
+  coffee: { cpl: 1, conv: 0.2 },
+};
+
 /* ============================== RU ============================== */
 const ru = {
   NICHE_DATA: {
-    ecommerce: { label: "Интернет-магазин", cpl: 4.2, roas: "310–420%" },
-    clinic: { label: "Клиника / медицина", cpl: 9.1, roas: "260–340%" },
-    education: { label: "Онлайн-обучение", cpl: 5.9, roas: "290–380%" },
-    realestate: { label: "Недвижимость", cpl: 12.4, roas: "220–300%" },
-    b2b: { label: "B2B-услуги", cpl: 9.9, roas: "240–330%" },
-    massage: { label: "Массажный салон", cpl: 3.4, roas: "250–330%" },
-    flower: { label: "Цветочный магазин", cpl: 2.3, roas: "200–280%" },
-    coffee: { label: "Кофешоп", cpl: 1.7, roas: "180–250%" },
+    ecommerce: { label: "Интернет-магазин", ...NICHE_NUM.ecommerce },
+    clinic: { label: "Клиника / медицина", ...NICHE_NUM.clinic },
+    education: { label: "Онлайн-обучение", ...NICHE_NUM.education },
+    realestate: { label: "Недвижимость", ...NICHE_NUM.realestate },
+    b2b: { label: "B2B-услуги", ...NICHE_NUM.b2b },
+    massage: { label: "Массажный салон", ...NICHE_NUM.massage },
+    flower: { label: "Цветочный магазин", ...NICHE_NUM.flower },
+    coffee: { label: "Кофешоп", ...NICHE_NUM.coffee },
   },
   /* блок «С кем работаю»: ниша и что реклама в ней приводит (без иконок) */
   NICHES: [
@@ -52,7 +71,7 @@ const ru = {
   SERVICES: [
     {
       title: "Таргетированная реклама", badge: "основное", badgeCls: "main", icon: "ads",
-      meta: "Instagram · Google · запуск за 7 дней",
+      meta: "Instagram · Facebook · Threads · TikTok · Google",
       chips: ["Настройка на нужную аудиторию", "Путь клиента до покупки", "Слежу и улучшаю постоянно", "Показ тем, кто уже тебя видел"],
     },
     {
@@ -79,7 +98,7 @@ const ru = {
   ],
   FIT_YES: [
     "Есть товар или услуга, и хотя бы пара человек их уже купили",
-    "Есть бюджет на саму рекламу, от $600 в месяц (его ты платишь напрямую Instagram и Google)",
+    "Есть бюджет на саму рекламу, от $600 в месяц (его ты платишь напрямую площадкам: Meta, TikTok, Google)",
     "Есть кто-то, кто будет отвечать людям, которые напишут",
     "Можешь подождать 3-4 недели до первых результатов",
   ],
@@ -134,7 +153,8 @@ const ru = {
   ],
   FAQS: [
     { q: "Как происходит оплата?", a: "Помесячно, переводом на карту или через Wise/Stripe, если ты за границей." },
-    { q: "Сколько нужно на саму рекламу, помимо оплаты работы?", a: "Обычно от $600 в месяц. Эти деньги ты платишь напрямую Instagram и Google за показы. Точную цифру скажу на созвоне." },
+    { q: "Сколько нужно на саму рекламу, помимо оплаты работы?", a: "Обычно от $600 в месяц. Эти деньги ты платишь напрямую площадкам (Meta, TikTok, Google) за показы. Точную цифру скажу на созвоне." },
+    { q: "На каких площадках ведёшь рекламу?", a: "Instagram, Facebook и Threads (это один рекламный кабинет Meta), TikTok и Google. С какой площадки начать, решаем по нише и бюджету." },
     { q: "Можно заказать только сайт, без рекламы?", a: "Да. Но если делаем и то и другое, сайт сразу проектируется под рекламу, и вместе выходит дешевле, чем по отдельности." },
     { q: "Сколько стоит сайт?", a: "Зависит от сложности: от простого лендинга до интернет-магазина с оплатой. Цену и сроки скажу после короткого созвона." },
     { q: "Что если заявки есть, а продаж нет?", a: "Посмотрим вместе, что происходит после того, как человек написал. Иногда дело не в рекламе, и тогда я так и скажу." },
@@ -149,14 +169,14 @@ const ru = {
 /* ============================== KK ============================== */
 const kk = {
   NICHE_DATA: {
-    ecommerce: { label: "Интернет-дүкен", cpl: 4.2, roas: "310–420%" },
-    clinic: { label: "Клиника / медицина", cpl: 9.1, roas: "260–340%" },
-    education: { label: "Онлайн-оқыту", cpl: 5.9, roas: "290–380%" },
-    realestate: { label: "Жылжымайтын мүлік", cpl: 12.4, roas: "220–300%" },
-    b2b: { label: "B2B-қызметтер", cpl: 9.9, roas: "240–330%" },
-    massage: { label: "Массаж салоны", cpl: 3.4, roas: "250–330%" },
-    flower: { label: "Гүл дүкені", cpl: 2.3, roas: "200–280%" },
-    coffee: { label: "Кофехана", cpl: 1.7, roas: "180–250%" },
+    ecommerce: { label: "Интернет-дүкен", ...NICHE_NUM.ecommerce },
+    clinic: { label: "Клиника / медицина", ...NICHE_NUM.clinic },
+    education: { label: "Онлайн-оқыту", ...NICHE_NUM.education },
+    realestate: { label: "Жылжымайтын мүлік", ...NICHE_NUM.realestate },
+    b2b: { label: "B2B-қызметтер", ...NICHE_NUM.b2b },
+    massage: { label: "Массаж салоны", ...NICHE_NUM.massage },
+    flower: { label: "Гүл дүкені", ...NICHE_NUM.flower },
+    coffee: { label: "Кофехана", ...NICHE_NUM.coffee },
   },
   NICHES: [
     { label: "Интернет-дүкендер", desc: "Instagram мен сайттан тапсырыстар" },
@@ -171,7 +191,7 @@ const kk = {
   SERVICES: [
     {
       title: "Таргеттелген жарнама", badge: "негізгі", badgeCls: "main", icon: "ads",
-      meta: "Instagram · Google · 7 күнде іске қосу",
+      meta: "Instagram · Facebook · Threads · TikTok · Google",
       chips: ["Керек аудиторияға баптау", "Клиенттің сатып алуға дейінгі жолы", "Үнемі қадағалап, жақсартамын", "Сізді бұрын көргендерге көрсету"],
     },
     {
@@ -198,7 +218,7 @@ const kk = {
   ],
   FIT_YES: [
     "Тауарыңыз немесе қызметіңіз бар, және оны кем дегенде бірнеше адам сатып алған",
-    "Жарнаманың өзіне бюджет бар, айына $600-ден (оны тікелей Instagram мен Google-ге төлейсіз)",
+    "Жарнаманың өзіне бюджет бар, айына $600-ден (оны тікелей алаңдарға төлейсіз: Meta, TikTok, Google)",
     "Жазған адамдарға жауап беретін біреу бар",
     "Алғашқы нәтижелерді 3-4 апта күте аласыз",
   ],
@@ -253,7 +273,8 @@ const kk = {
   ],
   FAQS: [
     { q: "Төлем қалай жүзеге асады?", a: "Ай сайын, картаға аударыммен немесе шетелде болсаңыз Wise/Stripe арқылы." },
-    { q: "Жұмыс төлемінен бөлек жарнаманың өзіне қанша керек?", a: "Әдетте айына $600-ден бастап. Бұл ақшаны тікелей Instagram мен Google-ге көрсетілім үшін төлейсіз. Нақты цифрды қоңырауда айтамын." },
+    { q: "Жұмыс төлемінен бөлек жарнаманың өзіне қанша керек?", a: "Әдетте айына $600-ден бастап. Бұл ақшаны көрсетілім үшін тікелей алаңдарға (Meta, TikTok, Google) төлейсіз. Нақты цифрды қоңырауда айтамын." },
+    { q: "Қай алаңдарда жарнама жүргізесіз?", a: "Instagram, Facebook және Threads (бұл бір Meta жарнама кабинеті), TikTok және Google. Қай алаңнан бастау керектігін сала мен бюджетке қарай шешеміз." },
     { q: "Тек сайтқа ғана, жарнамасыз тапсырыс беруге бола ма?", a: "Иә. Бірақ екеуін бірге жасасақ, сайт бірден жарнамаға лайықталып жобаланады және бөлек тапсырыс беруден арзанырақ шығады." },
     { q: "Сайт қанша тұрады?", a: "Күрделілігіне байланысты: қарапайым лендингтен төлемі бар интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын." },
     { q: "Өтінімдер бар, ал сатылым жоқ болса ше?", a: "Адам жазғаннан кейін не болатынын бірге қараймыз. Кейде мәселе жарнамада емес, солай болса, тура айтамын." },
@@ -267,14 +288,14 @@ const kk = {
 /* ============================== EN ============================== */
 const en = {
   NICHE_DATA: {
-    ecommerce: { label: "Online store", cpl: 4.2, roas: "310–420%" },
-    clinic: { label: "Clinic / medical", cpl: 9.1, roas: "260–340%" },
-    education: { label: "Online education", cpl: 5.9, roas: "290–380%" },
-    realestate: { label: "Real estate", cpl: 12.4, roas: "220–300%" },
-    b2b: { label: "B2B services", cpl: 9.9, roas: "240–330%" },
-    massage: { label: "Massage salon", cpl: 3.4, roas: "250–330%" },
-    flower: { label: "Flower shop", cpl: 2.3, roas: "200–280%" },
-    coffee: { label: "Coffee shop", cpl: 1.7, roas: "180–250%" },
+    ecommerce: { label: "Online store", ...NICHE_NUM.ecommerce },
+    clinic: { label: "Clinic / medical", ...NICHE_NUM.clinic },
+    education: { label: "Online education", ...NICHE_NUM.education },
+    realestate: { label: "Real estate", ...NICHE_NUM.realestate },
+    b2b: { label: "B2B services", ...NICHE_NUM.b2b },
+    massage: { label: "Massage salon", ...NICHE_NUM.massage },
+    flower: { label: "Flower shop", ...NICHE_NUM.flower },
+    coffee: { label: "Coffee shop", ...NICHE_NUM.coffee },
   },
   NICHES: [
     { label: "Online stores", desc: "orders from Instagram and your site" },
@@ -289,7 +310,7 @@ const en = {
   SERVICES: [
     {
       title: "Targeted advertising", badge: "core", badgeCls: "main", icon: "ads",
-      meta: "Instagram · Google · live in 7 days",
+      meta: "Instagram · Facebook · Threads · TikTok · Google",
       chips: ["Targeting the right audience", "Customer journey to purchase", "Ongoing monitoring and optimization", "Retargeting people who already saw you"],
     },
     {
@@ -316,7 +337,7 @@ const en = {
   ],
   FIT_YES: [
     "You already have a product or service, and at least a couple of people have bought it",
-    "There's a budget for the ads themselves, from $600 a month (you pay it directly to Instagram and Google)",
+    "There's a budget for the ads themselves, from $600 a month (you pay it directly to the platforms: Meta, TikTok, Google)",
     "There's someone who will respond to people who message you",
     "You can wait 3-4 weeks for the first results",
   ],
@@ -371,7 +392,8 @@ const en = {
   ],
   FAQS: [
     { q: "How does payment work?", a: "Monthly, by card transfer, or via Wise/Stripe if you're abroad." },
-    { q: "How much do the ads themselves cost, on top of your fee?", a: "Usually from $600 a month. You pay that directly to Instagram and Google for impressions. I'll give you an exact figure on a call." },
+    { q: "How much do the ads themselves cost, on top of your fee?", a: "Usually from $600 a month. You pay that directly to the platforms (Meta, TikTok, Google) for impressions. I'll give you an exact figure on a call." },
+    { q: "Which platforms do you run ads on?", a: "Instagram, Facebook and Threads (all in one Meta ad account), TikTok and Google. We pick where to start based on the niche and the budget." },
     { q: "Can I order just a website, without advertising?", a: "Yes. But if we do both, the site is designed for advertising from the start, and together it works out cheaper than separately." },
     { q: "How much does a website cost?", a: "Depends on complexity: from a simple landing page to an online store with payments. I'll give you a price and timeline after a short call." },
     { q: "What if I get leads but no sales?", a: "We'll look together at what happens after someone messages you. Sometimes the issue isn't the ads, and if so, I'll say so." },
