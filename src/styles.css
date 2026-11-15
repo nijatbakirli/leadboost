@@ -720,6 +720,19 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
 .shot-dialog-cap { margin: 14px 2px 0; font-size: 16px; line-height: 1.5; color: var(--muted); }
 .shot-dialog-cap b { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--accent); font-size: 20px; margin-right: 6px; }
 
+/* ---------- что будет после заявки: четыре шага строкой, без карточек ---------- */
+.as-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 32px; }
+.as { border-top: 2px solid var(--line); padding-top: 22px; }
+.as-num { display: block; margin-bottom: 14px; font-family: var(--f-mono); font-weight: 700; font-size: 14px; letter-spacing: .06em; color: var(--muted); }
+.as-title { margin: 0 0 10px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: clamp(20px, 1.9vw, 24px); line-height: 1.2; }
+.as-text { margin: 0; font-size: 16px; line-height: 1.6; color: var(--body); }
+/* номер, заголовок и текст соседних шагов на одном уровне */
+@supports (grid-template-rows: subgrid) {
+  .as { display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 0; align-content: start; }
+}
+@media (max-width: 980px) { .as-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; } }
+@media (max-width: 620px) { .as-list { grid-template-columns: minmax(0, 1fr); gap: 28px; } }
+
 /* ---------- принципы: список с тонкими линиями, без карточек ----------
    Слева принцип, справа что он значит и как выглядит на деле (тусклее) */
 .pr-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--line); }
@@ -951,7 +964,7 @@ select.input option { color: var(--ink-2); background: var(--tile); }
 @media (max-width: 760px) { .m-cta { display: flex; } }
 
 
-#top, #services, #niches, #results, #how, #fit, #pricing, #faq, #contact { scroll-margin-top: 90px; }
+#top, #services, #niches, #results, #how, #fit, #pricing, #after, #faq, #contact { scroll-margin-top: 90px; }
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {

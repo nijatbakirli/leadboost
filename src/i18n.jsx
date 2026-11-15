@@ -104,6 +104,7 @@ export const UI = {
       webNoteText: "От простого лендинга до интернет-магазина. Цену и сроки скажу после короткого созвона.",
       webNoteBtn: "Обсудить сайт",
     },
+    after: { pre: "Что будет после заявки" },
     faq: { pre: "Частые вопросы", more: "Не нашёл свой вопрос? Напиши, отвечу сам.", moreBtn: "Спросить в WhatsApp" },
     contact: {
       pre: "Напиши, отвечу сам", mark: "в течение дня",
@@ -175,6 +176,7 @@ export const UI = {
       webNoteText: "Қарапайым лендингтен интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын.",
       webNoteBtn: "Сайтты талқылау",
     },
+    after: { pre: "Өтінімнен кейін не болады" },
     faq: { pre: "Жиі қойылатын сұрақтар", more: "Сұрағыңызды таппадыңыз ба? Жазыңыз, өзім жауап беремін.", moreBtn: "WhatsApp-та сұрау" },
     contact: {
       pre: "Жазыңыз, бір күн ішінде", mark: "өзім жауап беремін",
@@ -246,6 +248,7 @@ export const UI = {
       webNoteText: "From a simple landing page to a full online store. Price and timeline after a short call.",
       webNoteBtn: "Discuss a website",
     },
+    after: { pre: "What happens after you get in touch" },
     faq: { pre: "Common questions", more: "Didn't find your question? Message me, I reply myself.", moreBtn: "Ask on WhatsApp" },
     contact: {
       pre: "Message me, I'll reply myself", mark: "within a day",

@@ -188,6 +188,14 @@ const ru = {
       shots: [{ ...SHOTS.traffic, alt: "Скрин кампании «Трафик» в Meta Ads Manager: 6,7 тыс. посещений профиля Instagram, $0,05 за посещение, затраты $361,48" }, { ...SHOTS.engagement, alt: "Скрин кампании «Вовлеченность» в Meta Ads Manager: 189 начатых переписок, $1,74 за переписку, затраты $329,11" }],
     },
   ],
+  /* что будет после заявки: 4 шага (пункт 29 разбора, ноябрь 2026; по методике
+     таргетолога и фактам сайта: ответ в течение дня, запуск за 7 дней, отчёт по тарифу) */
+  AFTER_STEPS: [
+    { title: "Отвечаю в течение дня", text: "Пишешь в WhatsApp, Telegram или оставляешь заявку. Отвечаю сам и договариваемся о созвоне в удобное время." },
+    { title: "Созвон 20-30 минут", text: "Разбираем, что ты продаёшь, кто покупает и кто отвечает людям после заявки. Считаем, сколько можно платить за заявку, чтобы реклама окупалась. Если сейчас не окупится, скажу сразу." },
+    { title: "План и доступ", text: "Присылаю план первого месяца. Ты выбираешь тариф и добавляешь меня в свой рекламный кабинет: он остаётся твоим, бюджет на рекламу списывается с твоей карты." },
+    { title: "Запуск и отчёты", text: "Первые объявления выходят в течение 7 дней. Первые 3 дня ничего не трогаю, реклама учится. Дальше убираю слабое, усиливаю сильное и присылаю отчёт каждую неделю или раз в 2 недели, по тарифу." },
+  ],
   FAQS: [
     { q: "Как происходит оплата?", a: "Помесячно, переводом на карту или через Wise/Stripe, если ты за границей." },
     { q: "Сколько нужно на саму рекламу, помимо оплаты работы?", a: "Обычно от $600 в месяц. Эти деньги ты платишь напрямую площадкам (Meta, TikTok, Google) за показы. Точную цифру скажу на созвоне." },
@@ -360,6 +368,14 @@ const kk = {
       shots: [{ ...SHOTS.traffic, alt: "Meta Ads Manager-дегі «Трафик» науқанының скрині: Instagram профиліне 6,7 мың кіру, әрқайсысы $0,05, шығын $361,48" }, { ...SHOTS.engagement, alt: "Meta Ads Manager-дегі «Вовлеченность» науқанының скрині: 189 басталған хат алмасу, әрқайсысы $1,74, шығын $329,11" }],
     },
   ],
+  /* что будет после заявки: 4 шага (пункт 29 разбора, ноябрь 2026; по методике
+     таргетолога и фактам сайта: ответ в течение дня, запуск за 7 дней, отчёт по тарифу) */
+  AFTER_STEPS: [
+    { title: "Бір күн ішінде жауап беремін", text: "WhatsApp-қа, Telegram-ға жазасыз немесе өтінім қалдырасыз. Өзім жауап беремін және ыңғайлы уақытқа қоңырау белгілейміз." },
+    { title: "20-30 минуттық қоңырау", text: "Не сататыныңызды, кім сатып алатынын және өтінімнен кейін адамдарға кім жауап беретінін талдаймыз. Жарнама өтелуі үшін бір өтінімге қанша төлеуге болатынын есептейміз. Қазір өтелмейтін болса, бірден айтамын." },
+    { title: "Жоспар және қолжетімділік", text: "Бірінші айдың жоспарын жіберемін. Сіз тарифті таңдап, мені өз жарнама кабинетіңізге қосасыз: ол сіздікі болып қалады, жарнама бюджеті сіздің картаңыздан алынады." },
+    { title: "Іске қосу және есептер", text: "Алғашқы жарнамалар 7 күн ішінде шығады. Алғашқы 3 күн ештеңе өзгертпеймін, жарнама үйренеді. Содан кейін әлсізін алып тастап, күштісін күшейтемін және тарифке қарай апта сайын немесе 2 аптада бір рет есеп жіберемін." },
+  ],
   FAQS: [
     { q: "Төлем қалай жүзеге асады?", a: "Ай сайын, картаға аударыммен немесе шетелде болсаңыз Wise/Stripe арқылы." },
     { q: "Жұмыс төлемінен бөлек жарнаманың өзіне қанша керек?", a: "Әдетте айына $600-ден бастап. Бұл ақшаны көрсетілім үшін тікелей алаңдарға (Meta, TikTok, Google) төлейсіз. Нақты цифрды қоңырауда айтамын." },
@@ -530,6 +546,14 @@ const en = {
       label: "Instagram traffic", big: "$0.05", unit: "per profile visit", sub: "6.7k profile visits for $361. Next to it, a second campaign: 189 conversations at $1.74.",
       shots: [{ ...SHOTS.traffic, alt: "Meta Ads Manager screenshot of a Traffic campaign: 6.7k Instagram profile visits, $0.05 per visit, $361.48 spent" }, { ...SHOTS.engagement, alt: "Meta Ads Manager screenshot of an Engagement campaign: 189 conversations started, $1.74 per conversation, $329.11 spent" }],
     },
+  ],
+  /* что будет после заявки: 4 шага (пункт 29 разбора, ноябрь 2026; по методике
+     таргетолога и фактам сайта: ответ в течение дня, запуск за 7 дней, отчёт по тарифу) */
+  AFTER_STEPS: [
+    { title: "I reply within a day", text: "Message me on WhatsApp or Telegram, or send a request. I reply myself and we set up a call at a time that suits you." },
+    { title: "A 20-30 minute call", text: "We go over what you sell, who buys it and who answers people after they get in touch. We work out how much you can pay per lead for the ads to pay off. If they won't pay off right now, I'll tell you straight away." },
+    { title: "Plan and access", text: "I send a plan for the first month. You choose a tier and add me to your ad account: it stays yours, and the ad budget is charged to your card." },
+    { title: "Launch and reports", text: "The first ads go live within 7 days. For the first 3 days I change nothing while the ads learn. Then I cut what's weak, scale what works, and send a report every week or every 2 weeks, depending on the tier." },
   ],
   FAQS: [
     { q: "How does payment work?", a: "Monthly, by card transfer, or via Wise/Stripe if you're abroad." },

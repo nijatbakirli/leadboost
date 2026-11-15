@@ -568,6 +568,28 @@ function Pricing({ t, D }) {
   );
 }
 
+/* ЧТО БУДЕТ ПОСЛЕ ЗАЯВКИ: четыре шага строкой (ноябрь 2026, пункт 29 разбора:
+   человек пишет смелее, когда знает, что будет дальше). Без карточек,
+   номера моно, линии сверху как в «Как я работаю» */
+function AfterSteps({ t, D }) {
+  return (
+    <section className="section" id="after">
+      <div className="wrap">
+        <SecHead s={t.after} />
+        <ol className="as-list">
+          {D.AFTER_STEPS.map((st, i) => (
+            <li className="as" key={st.title}>
+              <span className="as-num" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <h3 className="as-title">{st.title}</h3>
+              <p className="as-text">{st.text}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
 /* ВОПРОСЫ. Компьютер: заголовок и кнопка слева (едут вместе со списком),
    вопросы справа. Телефон: заголовок, вопросы, потом кнопка.
    Вопросы простым списком с линиями, без карточек */
@@ -822,6 +844,7 @@ export default function App({ initialLang = "ru" }) {
         <Part><Principles t={t} D={D} /></Part>
         <Part><Fit t={t} D={D} /></Part>
         <Part><Pricing t={t} D={D} /></Part>
+        <Part><AfterSteps t={t} D={D} /></Part>
         <Part><Faq t={t} D={D} /></Part>
         <Part><Contact t={t} D={D} /></Part>
       </main>
