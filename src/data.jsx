@@ -95,16 +95,16 @@ const ru = {
   ],
   PLANS: [
     {
-      name: "Базовый", price: "$170", sub: "Одна площадка (например, только Instagram)", popular: false,
-      features: ["Настрою или проверю рекламу на одной площадке", "До 2 новых объявлений в месяц", "Отчёт раз в 2 недели", "Связь в мессенджере"],
+      name: "Базовый", price: "$350", sub: "Одна площадка: Instagram и Facebook", popular: false,
+      features: ["Настрою рекламу с нуля или проверю текущую", "До 4 новых объявлений в месяц", "Отчёт раз в 2 недели", "Связь в мессенджере"],
     },
     {
-      name: "Оптимальный", price: "$290", sub: "Одна-две площадки, веду всё сам", popular: true,
-      features: ["Всё из тарифа «Базовый»", "До 2 каналов (Instagram + Google)", "Отчёт с цифрами каждую неделю", "Показ тем, кто уже тебя видел", "Созвон раз в неделю"],
+      name: "Оптимальный", price: "$550", sub: "Две площадки, например Meta и Google", popular: true,
+      features: ["Всё из тарифа «Базовый»", "Отчёт с цифрами каждую неделю", "Показ тем, кто уже тебя видел", "Созвон раз в неделю"],
     },
     {
-      name: "Премиум", price: "$490", sub: "До трёх площадок, плюс картинки и видео", popular: false,
-      features: ["Всё из тарифа «Оптимальный»", "До 3 каналов", "Картинки и видео тоже делаю я", "Весь путь клиента, от рекламы до покупки", "Связь 7 дней в неделю, отвечаю в приоритете"],
+      name: "Премиум", price: "$850", sub: "До трёх площадок, плюс картинки и видео", popular: false,
+      features: ["Всё из тарифа «Оптимальный»", "Картинки и видео тоже делаю я", "Передаю продажи из твоей CRM в Meta (CAPI), чтобы реклама искала покупателей", "Связь 7 дней в неделю, отвечаю в приоритете"],
     },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
@@ -275,16 +275,16 @@ const kk = {
   ],
   PLANS: [
     {
-      name: "Негізгі", price: "$170", sub: "Бір алаң (мысалы, тек Instagram)", popular: false,
-      features: ["Бір алаңда жарнаманы баптаймын немесе тексеремін", "Айына 2-ге дейін жаңа хабарландыру", "2 аптада бір рет есеп", "Мессенджерде байланыс"],
+      name: "Негізгі", price: "$350", sub: "Бір алаң: Instagram және Facebook", popular: false,
+      features: ["Жарнаманы нөлден баптаймын немесе қазіргісін тексеремін", "Айына 4-ке дейін жаңа хабарландыру", "2 аптада бір рет есеп", "Мессенджерде байланыс"],
     },
     {
-      name: "Оптималды", price: "$290", sub: "Бір-екі алаң, бәрін өзім жүргіземін", popular: true,
-      features: ["«Негізгі» тарифінің бәрі", "2 арнаға дейін (Instagram + Google)", "Апта сайын цифрлары бар есеп", "Сізді бұрын көргендерге көрсету", "Аптасына бір рет қоңырау"],
+      name: "Оптималды", price: "$550", sub: "Екі алаң, мысалы Meta және Google", popular: true,
+      features: ["«Негізгі» тарифінің бәрі", "Апта сайын цифрлары бар есеп", "Сізді бұрын көргендерге көрсету", "Аптасына бір рет қоңырау"],
     },
     {
-      name: "Премиум", price: "$490", sub: "Үш алаңға дейін, плюс суреттер мен видео", popular: false,
-      features: ["«Оптималды» тарифінің бәрі", "3 арнаға дейін", "Суреттер мен видеоны да мен жасаймын", "Клиенттің толық жолы, жарнамадан сатып алуға дейін", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
+      name: "Премиум", price: "$850", sub: "Үш алаңға дейін, плюс суреттер мен видео", popular: false,
+      features: ["«Оптималды» тарифінің бәрі", "Суреттер мен видеоны да мен жасаймын", "Жарнама сатып алушыларды іздеуі үшін сатылымдарды CRM-іңізден Meta-ға беремін (CAPI)", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
     },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
@@ -454,16 +454,16 @@ const en = {
   ],
   PLANS: [
     {
-      name: "Basic", price: "$170", sub: "One platform (e.g. Instagram only)", popular: false,
-      features: ["Set up or audit ads on one platform", "Up to 2 new ads per month", "Report every 2 weeks", "Messenger support"],
+      name: "Basic", price: "$350", sub: "One platform: Instagram and Facebook", popular: false,
+      features: ["I set up ads from scratch or audit your current ones", "Up to 4 new ads per month", "Report every 2 weeks", "Messenger support"],
     },
     {
-      name: "Optimal", price: "$290", sub: "One or two platforms, fully managed by me", popular: true,
-      features: ["Everything in Basic", "Up to 2 channels (Instagram + Google)", "Weekly report with numbers", "Retargeting people who already saw you", "A call once a week"],
+      name: "Optimal", price: "$550", sub: "Two platforms, e.g. Meta and Google", popular: true,
+      features: ["Everything in Basic", "Weekly report with numbers", "Retargeting people who already saw you", "A call once a week"],
     },
     {
-      name: "Premium", price: "$490", sub: "Up to three platforms, plus images and video", popular: false,
-      features: ["Everything in Optimal", "Up to 3 channels", "I also produce the images and video", "The full customer journey, from ad to purchase", "Support 7 days a week, priority replies"],
+      name: "Premium", price: "$850", sub: "Up to three platforms, plus images and video", popular: false,
+      features: ["Everything in Optimal", "I also produce the images and video", "I send sales from your CRM to Meta (CAPI), so the ads look for buyers", "Support 7 days a week, priority replies"],
     },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
