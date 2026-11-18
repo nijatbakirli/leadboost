@@ -7,6 +7,10 @@
    Запуск: NODE_PATH=$(npm root -g) node scripts/brand-images.mjs <папка>
    (нужен Playwright с Chromium и Python с Pillow, как для og-images).
 
+   Обложки Facebook и WhatsApp (решение владельца 18.11.2026): главное
+   реклама в Meta (мазок на «в Instagram и Facebook»), TikTok и Google
+   дополнительно, без привязки к странам и городам.
+
    Правила те же, что на сайте с 18.11.2026 (решение владельца):
    светлая основа, бумага с сеткой 60px, плашка мазком маркера (те же
    картинки .hl-a/b/c из styles.css, тот же выбор варианта по тексту),
@@ -94,8 +98,9 @@ ${sig({ left: 88, right: 88, bottom: 76, size: 26, act: "Написать" })}`,
   /* обложка Facebook: всё важное в центральных 1110px (265..1375), левый низ под аватар */
   "TARGET_PRO_facebook_cover_1640x624.png": {
     w: 1640, h: 624,
-    html: `<div class="h" style="position:absolute;left:300px;top:174px;font-size:58px;line-height:70px">
-<div>Таргет в Instagram</div><div>и Facebook для бизнеса</div><div class="hm">${mark("в Казахстане и СНГ")}</div></div>
+    html: `<div class="h" style="position:absolute;left:300px;top:206px;font-size:54px;line-height:66px">
+<div>Таргетированная реклама</div><div class="hm">${mark("в Instagram и Facebook")}</div></div>
+<div class="body" style="position:absolute;left:300px;top:376px;font-size:22px;line-height:32px">Ещё Threads, TikTok и Google. Сайты под рекламу.</div>
 <div class="tile" style="position:absolute;left:1045px;top:176px;width:330px;height:276px;border-radius:22px;padding:30px 32px">
 <div class="lbl" style="font-size:14px;line-height:20px">Из моего кабинета Meta</div>
 <div class="h" style="font-size:96px;line-height:1;margin-top:18px">4 617</div>
@@ -107,9 +112,9 @@ ${sig({ left: 88, right: 88, bottom: 76, size: 26, act: "Написать" })}`,
   "TARGET_PRO_whatsapp_cover_1920x1080.png": {
     w: 1920, h: 1080,
     html: `<div style="position:absolute;left:240px;top:150px">${logo(56)}</div>
-<div class="h" style="position:absolute;left:240px;top:262px;font-size:104px;line-height:124px">
-<div>Таргет в Instagram и Facebook</div><div>для бизнеса</div><div class="hm">${mark("в Казахстане и СНГ")}</div></div>
-<div class="body" style="position:absolute;left:240px;top:676px;font-size:36px;line-height:50px">Ещё TikTok, Threads и Google. Сайты под рекламу.</div>`,
+<div class="h" style="position:absolute;left:240px;top:292px;font-size:104px;line-height:124px">
+<div>Таргетированная реклама</div><div class="hm">${mark("в Instagram и Facebook")}</div></div>
+<div class="body" style="position:absolute;left:240px;top:606px;font-size:36px;line-height:50px">Ещё Threads, TikTok и Google. Сайты под рекламу.</div>`,
   },
   /* обложка Reels 9:16: всё важное в центре 3:4 (y 240..1680), подпись ниже видна только во вкладке Reels */
   "TARGET_PRO_reels_cover_1080x1920.png": {
@@ -142,8 +147,8 @@ ${sig({ left: 88, right: 88, bottom: 76, size: 26, act: "Написать" })}`,
  </div>
  <div class="tile t" style="grid-column:span 6;height:260px">
   <div class="lbl" style="font-size:16px;margin-bottom:16px">Заявки приходят</div>
-  <div class="note"><span class="ic"><i></i></span><span><div class="nt">Новая заявка</div><div class="ns">Кухня 3 м, Алматы</div></span></div>
-  <div class="note" style="margin-top:10px;opacity:.45"><span class="ic"><i></i></span><span><div class="nt">Новая заявка</div><div class="ns">Шкаф-купе, Астана</div></span></div>
+  <div class="note"><span class="ic"><i></i></span><span><div class="nt">Новая заявка</div><div class="ns">Кухня 3 м, нужен расчёт</div></span></div>
+  <div class="note" style="margin-top:10px;opacity:.45"><span class="ic"><i></i></span><span><div class="nt">Новая заявка</div><div class="ns">Шкаф-купе, когда замер?</div></span></div>
  </div>
  <div class="tile t" style="grid-column:span 6;height:260px">
   <div class="lbl" style="font-size:16px">За месяц</div>
