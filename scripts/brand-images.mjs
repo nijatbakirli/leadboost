@@ -7,6 +7,11 @@
    Запуск: NODE_PATH=$(npm root -g) node scripts/brand-images.mjs <папка>
    (нужен Playwright с Chromium и Python с Pillow, как для og-images).
 
+   С 20.11.2026 (владелец: «слишком банально и по-детски», стиль и шрифты
+   оставить, бенто-сетку и мазок на ключевых словах тоже) обложки и примеры
+   каруселей собраны бенто-сеткой из плиток, как первый экран сайта и обложка
+   Reels: заголовок, настоящий скрин из кабинета, 240+ кампаний, ROAS 310%.
+
    Обложки Facebook и WhatsApp (решение владельца 18.11.2026): главное
    реклама в Meta (мазок на «в Instagram и Facebook»), TikTok и Google
    дополнительно, без привязки к странам и городам.
@@ -71,50 +76,100 @@ body{--ink:#0F1216;--y-ink:#0F1216;position:relative;overflow:hidden;color:#0F12
 .rule{flex:1;border-left:3px solid #0F1216;border-right:3px solid #0F1216;position:relative}
 .rule:before{content:'';position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;background:#0F1216}
 .act{display:flex;align-items:center;gap:12px}
+.bx{position:absolute;padding:36px 40px;overflow:hidden}
+.bin{background:#F3F3EE;border-radius:18px}
+.dark{background:#0F1216;border-radius:28px}
+.shot{display:block;border-radius:14px}
+.li{display:flex;align-items:center;gap:18px;padding:16px 0;border-top:2px solid #E3E4DF;font-family:Inter;font-weight:600;font-size:28px;color:#0F1216}
 ${hlCss}`;
 
 const sig = ({ left, right, bottom, size, act, gap = 24, ruleH = 14, withArrow = false }) =>
   `<div class="sig" style="left:${left}px;right:${right}px;bottom:${bottom}px;font-size:${size}px;gap:${gap}px"><span>TARGET PRO</span><span class="rule" style="height:${ruleH}px"></span><span class="act">${act}${withArrow ? arrow(size * 0.8) : ""}</span></div>`;
 
+const SHOT = pathToFileURL(path.join(ROOT, "img/results/meta-4617-conversations.webp")).href;
+/* верх слайда карусели: логотип слева, номер слайда справа */
+const topbar = (n) => `<div style="position:absolute;left:60px;top:62px">${logo(34)}</div><div class="lbl" style="position:absolute;right:60px;top:64px;font-size:24px;line-height:34px;color:#0F1216">${n}</div>`;
+/* цифра и подпись в маленькой плитке */
+const stat = (big, cap, size) => `<div class="h" style="font-size:${size}px;line-height:1">${big}</div><div class="lbl" style="font-size:${Math.round(size * 0.27)}px;margin-top:10px">${cap}</div>`;
+/* мини-карточка «Бюджет уходит / Заявки 0», как на обложке Reels */
+const budgetCard = (w, pos) => `<div class="bin" style="position:absolute;${pos};width:${w}px;padding:20px 22px">
+ <div class="lbl" style="font-size:14px">Бюджет</div><div class="h" style="font-size:36px;line-height:1.1">Уходит</div>
+ <svg width="${w - 44}" height="40" viewBox="0 0 ${w - 44} 40" style="display:block;margin:8px 0 12px"><path d="M2 36L${(w - 44) * 0.25} 30 ${(w - 44) * 0.48} 22 ${(w - 44) * 0.7} 14 ${w - 46} 4" fill="none" stroke="#0F1216" stroke-width="3"/></svg>
+ <div class="lbl" style="font-size:14px">Заявки</div><div class="h" style="font-size:36px;line-height:1.1">0</div>
+ <svg width="${w - 44}" height="10" viewBox="0 0 ${w - 44} 10" style="display:block;margin-top:8px"><path d="M2 5H${w - 46}" stroke="#6B7480" stroke-width="3" stroke-dasharray="8 8"/></svg></div>`;
+
 const IMAGES = {
-  /* обложка карусели: хук на мазке */
+  /* обложка карусели: бенто, хук на мазке, мини-карточка и три причины */
   "TARGET_PRO_carousel_example_1.png": {
     w: 1080, h: 1350,
-    html: `<div class="lbl" style="position:absolute;left:88px;top:92px;font-size:24px">Почему пропали заявки</div>
-<div class="h" style="position:absolute;left:88px;top:430px;font-size:104px;line-height:124.8px">
-<div>Раньше писали</div><div>каждый день,</div><div class="hm">${mark("а теперь тишина")}</div></div>
-<div class="body" style="position:absolute;left:88px;top:892px;width:904px;font-size:38px;line-height:53.5px">Листай: 3 причины и что делать с каждой</div>
-${sig({ left: 88, right: 88, bottom: 76, size: 26, act: "Листай" })}`,
+    html: `${topbar("01 / 06")}
+<div class="tile bx" style="left:60px;top:140px;width:960px;height:700px">
+ <div class="lbl" style="font-size:22px">Почему пропали заявки</div>
+ ${budgetCard(300, "right:32px;top:32px")}
+ <div class="h" style="position:absolute;left:40px;bottom:40px;font-size:100px;line-height:120px">
+  <div>Раньше писали</div><div>каждый день,</div><div class="hm">${mark("а теперь тишина")}</div></div>
+</div>
+<div class="tile bx" style="left:60px;top:860px;width:580px;height:320px">
+ <div class="lbl" style="font-size:18px;margin-bottom:14px">Разберу 3 причины</div>
+ ${["Креатив выгорел", "Отвечают через час", "Реклама ведёт не туда"].map((t, i) => `<div class="li"><span class="lbl" style="font-size:18px;color:#0F1216">0${i + 1}</span>${t}</div>`).join("")}
+</div>
+<div class="bx dark" style="left:660px;top:860px;width:360px;height:320px">
+ <div style="display:flex;justify-content:flex-end">${arrowUp(34, "#FFFFFF")}</div>
+ <div class="h" style="font-size:64px;line-height:1;color:#FFFFFF;margin-top:96px;letter-spacing:.03em">Листай</div>
+ <div class="lbl" style="font-size:16px;color:#AEB7C3;margin-top:12px">И что делать с каждой</div>
+</div>
+${sig({ left: 60, right: 60, bottom: 72, size: 24, act: "Листай" })}`,
   },
-  /* слайд с цифрой из кабинета */
+  /* слайд с цифрой из кабинета: бенто, цифра, скрин отчёта, расход и срок */
   "TARGET_PRO_carousel_example_2.png": {
     w: 1080, h: 1350,
-    html: `<div class="lbl" style="position:absolute;left:88px;top:92px;font-size:24px">Из моего кабинета Meta</div>
-<div class="h" style="position:absolute;left:88px;top:300px;font-size:200px;line-height:1">4 617</div>
-<div class="h" style="position:absolute;left:88px;top:520px;font-size:72px;line-height:86px">Переписок ${mark("по $0,57")}</div>
-<div class="body" style="position:absolute;left:88px;top:660px;width:904px;font-size:38px;line-height:53.5px">Цифра из отчёта Meta Ads Manager. Скрин отчёта на следующем слайде.</div>
-${sig({ left: 88, right: 88, bottom: 76, size: 26, act: "Написать" })}`,
+    html: `${topbar("02 / 06")}
+<div class="tile bx" style="left:60px;top:140px;width:960px;height:400px">
+ <div class="lbl" style="font-size:22px">Из моего кабинета Meta</div>
+ <div class="h" style="font-size:190px;line-height:1;margin-top:26px">4 617</div>
+ <div class="h" style="font-size:60px;line-height:72px;margin-top:14px">Переписок ${mark("по $0,57")}</div>
+</div>
+<div class="tile bx" style="left:60px;top:560px;width:960px;height:480px">
+ <div class="lbl" style="font-size:18px;margin-bottom:18px">Скрин отчёта Meta Ads Manager · весь период</div>
+ <img class="shot" src="${SHOT}" style="width:880px">
+</div>
+<div class="tile bx" style="left:60px;top:1060px;width:470px;height:130px;padding:26px 32px">${stat("$2 626", "потрачено", 56)}</div>
+<div class="tile bx" style="left:550px;top:1060px;width:470px;height:130px;padding:26px 32px">${stat("45 дней", "срок", 56)}</div>
+${sig({ left: 60, right: 60, bottom: 72, size: 24, act: "Написать" })}`,
   },
-  /* обложка Facebook: всё важное в центральных 1110px (265..1375), левый низ под аватар */
+  /* обложка Facebook: бенто в центральных 1110px (265..1375), левый низ свободен под аватар */
   "TARGET_PRO_facebook_cover_1640x624.png": {
     w: 1640, h: 624,
-    html: `<div class="h" style="position:absolute;left:300px;top:206px;font-size:54px;line-height:66px">
-<div>Таргетированная реклама</div><div class="hm">${mark("в Instagram и Facebook")}</div></div>
-<div class="body" style="position:absolute;left:300px;top:376px;font-size:22px;line-height:32px">Ещё Threads, TikTok и Google. Сайты под рекламу.</div>
-<div class="tile" style="position:absolute;left:1045px;top:176px;width:330px;height:276px;border-radius:22px;padding:30px 32px">
-<div class="lbl" style="font-size:14px;line-height:20px">Из моего кабинета Meta</div>
-<div class="h" style="font-size:96px;line-height:1;margin-top:18px">4 617</div>
-<div class="h" style="font-size:28px;line-height:1;margin-top:10px">Переписок</div>
-<div class="body" style="font-size:19px;margin-top:14px">по $0,57 за каждую</div></div>
-<div style="position:absolute;right:265px;top:545px;font-family:JBM;font-weight:700;font-size:20px;letter-spacing:.04em">targetpro.studio</div>`,
+    html: `<div class="tile bx" style="left:265px;top:60px;width:640px;height:340px;padding:32px 36px">
+ <div style="display:flex;justify-content:space-between;align-items:center">${logo(26)}<span class="lbl" style="font-size:13px;color:#0F1216">targetpro.studio</span></div>
+ <div class="h" style="font-size:44px;line-height:54px;margin-top:44px"><div>Таргетированная реклама</div><div class="hm">${mark("в Instagram и Facebook")}</div></div>
+ <div class="body" style="font-size:18px;margin-top:20px">Ещё Threads, TikTok и Google. Сайты под рекламу.</div>
+</div>
+<div class="tile bx" style="left:525px;top:420px;width:180px;height:144px;padding:22px 24px">${stat("240+", "кампаний", 46)}</div>
+<div class="tile bx" style="left:725px;top:420px;width:180px;height:144px;padding:22px 24px">${stat("310%", "средний ROAS", 46)}</div>
+<div class="tile bx" style="left:925px;top:60px;width:450px;height:504px;padding:30px 32px;display:flex;flex-direction:column">
+ <div class="lbl" style="font-size:14px">Из моего кабинета Meta</div>
+ <div class="h" style="font-size:104px;line-height:1;margin-top:18px">4 617</div>
+ <div class="body" style="font-size:18px;margin-top:10px">переписок по $0,57 за 45 дней</div>
+ <img class="shot" src="${SHOT}" style="width:386px;margin-top:auto">
+</div>`,
   },
-  /* обложка WhatsApp Business 16:9: низ свободен под имя и кнопки профиля */
+  /* обложка WhatsApp Business 16:9: бенто в верхних 2/3, низ свободен под имя и кнопки профиля */
   "TARGET_PRO_whatsapp_cover_1920x1080.png": {
     w: 1920, h: 1080,
-    html: `<div style="position:absolute;left:240px;top:150px">${logo(56)}</div>
-<div class="h" style="position:absolute;left:240px;top:292px;font-size:104px;line-height:124px">
-<div>Таргетированная реклама</div><div class="hm">${mark("в Instagram и Facebook")}</div></div>
-<div class="body" style="position:absolute;left:240px;top:606px;font-size:36px;line-height:50px">Ещё Threads, TikTok и Google. Сайты под рекламу.</div>`,
+    html: `<div class="tile bx" style="left:160px;top:80px;width:960px;height:440px;padding:44px 48px">
+ <div style="display:flex;justify-content:space-between;align-items:center">${logo(44)}<span class="lbl" style="font-size:18px;color:#0F1216">targetpro.studio</span></div>
+ <div class="h" style="font-size:66px;line-height:80px;margin-top:58px"><div>Таргетированная реклама</div><div class="hm">${mark("в Instagram и Facebook")}</div></div>
+ <div class="body" style="font-size:26px;margin-top:26px">Ещё Threads, TikTok и Google. Сайты под рекламу.</div>
+</div>
+<div class="tile bx" style="left:160px;top:540px;width:470px;height:160px;padding:28px 36px">${stat("240+", "рекламных кампаний", 64)}</div>
+<div class="tile bx" style="left:650px;top:540px;width:470px;height:160px;padding:28px 36px">${stat("310%", "средний ROAS", 64)}</div>
+<div class="tile bx" style="left:1140px;top:80px;width:620px;height:620px;padding:40px 44px;display:flex;flex-direction:column">
+ <div class="lbl" style="font-size:18px">Из моего кабинета Meta</div>
+ <div class="h" style="font-size:150px;line-height:1;margin-top:24px">4 617</div>
+ <div class="body" style="font-size:24px;margin-top:12px">переписок по $0,57 за 45 дней</div>
+ <img class="shot" src="${SHOT}" style="width:532px;margin-top:auto">
+</div>`,
   },
   /* обложка Reels 9:16: всё важное в центре 3:4 (y 240..1680), подпись ниже видна только во вкладке Reels */
   "TARGET_PRO_reels_cover_1080x1920.png": {
