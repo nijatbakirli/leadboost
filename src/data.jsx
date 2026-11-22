@@ -114,10 +114,10 @@ const ru = {
     },
   ],
   PRICE_FACTORS: [
-    { title: "Площадки", text: "Только Meta или ещё TikTok и Google" },
-    { title: "Картинки и видео", text: "Есть свои или их нужно делать" },
-    { title: "Сайт и CRM", text: "Куда приходят заявки и где считаются продажи" },
-    { title: "Бюджет на рекламу", text: "Больше $7 000 в месяц: беру 12% от расхода" },
+    { title: "Количество площадок", text: "Meta, TikTok, Google" },
+    { title: "Производство креативов", text: "Готовые материалы или создание с нуля" },
+    { title: "Аналитика продаж", text: "Связка сайта и CRM с рекламным кабинетом" },
+    { title: "Рекламный бюджет", text: "Больше $7 000 в месяц: 12% от расхода" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4 617", unit: "переписок", sub: "по $0,57 за каждую, $2 626 за 45 дней", shot: { ...SHOTS.s4617, alt: "Скрин Meta Ads Manager за весь период: 4 617 начатых переписок, $0,57 за переписку, потрачено $2 626,17, охват 325 552, показы 1 098 477" } },
@@ -303,9 +303,9 @@ const kk = {
     },
   ],
   PRICE_FACTORS: [
-    { title: "Алаңдар", text: "Тек Meta ма, әлде TikTok пен Google да" },
-    { title: "Суреттер мен видео", text: "Өзіңізде бар ма, әлде жасау керек пе" },
-    { title: "Сайт және CRM", text: "Өтінімдер қайда түседі, сатылым қайда есептеледі" },
+    { title: "Алаңдар саны", text: "Meta, TikTok, Google" },
+    { title: "Креативтер", text: "Дайын материалдар немесе нөлден жасау" },
+    { title: "Сатылым аналитикасы", text: "Сайт пен CRM-ді жарнама кабинетімен байланыстыру" },
     { title: "Жарнама бюджеті", text: "Айына $7 000 мөлшерінен асса, шығынның 12 пайызы" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
@@ -491,10 +491,10 @@ const en = {
     },
   ],
   PRICE_FACTORS: [
-    { title: "Platforms", text: "Meta only, or TikTok and Google too" },
-    { title: "Images and video", text: "You have your own, or they need to be made" },
-    { title: "Website and CRM", text: "Where leads arrive and where sales are counted" },
-    { title: "Ad budget", text: "Over $7,000 a month: I charge 12% of spend" },
+    { title: "Number of platforms", text: "Meta, TikTok, Google" },
+    { title: "Creative production", text: "Your own materials or made from scratch" },
+    { title: "Sales analytics", text: "Connecting your website and CRM to the ad account" },
+    { title: "Ad budget", text: "Over $7,000 a month: 12% of spend" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4,617", unit: "conversations", sub: "$0.57 each, $2,626 over 45 days", shot: { ...SHOTS.s4617, alt: "Meta Ads Manager screenshot, all time: 4,617 conversations started, $0.57 per conversation, $2,626.17 spent, reach 325,552, impressions 1,098,477" } },
