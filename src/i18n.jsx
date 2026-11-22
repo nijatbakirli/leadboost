@@ -99,7 +99,7 @@ export const UI = {
     pricing: {
       pre: "Тарифы", mark: (from) => `от ${from} в месяц`,
       sub: "Цена за месяц работы, бюджет на рекламу отдельно. Если на рекламу уходит больше $7 000 в месяц, беру 12% от этой суммы.",
-      popularBadge: "Рекомендую", from: "от", perMonth: "в месяц", select: "Выбрать",
+      popularBadge: "Рекомендую", perMonth: "в месяц", select: "Выбрать",
       excl: "Не входит:",
       webNoteTitle: "Сайт идёт отдельно от тарифов на рекламу",
       webNoteText: "От простого лендинга до интернет-магазина. Цену и сроки скажу после короткого созвона.",
@@ -172,7 +172,7 @@ export const UI = {
     pricing: {
       pre: "Тарифтер", mark: (from) => `айына ${from}-ден`,
       sub: "Бір айлық жұмыстың бағасы, жарнама бюджеті бөлек. Жарнама бюджеті айына $7 000 мөлшерінен асса, жұмыс бағасы осы соманың 12 пайызы.",
-      popularBadge: "Ұсынамын", from: "кемінде", perMonth: "айына", select: "Таңдау",
+      popularBadge: "Ұсынамын", perMonth: "айына", select: "Таңдау",
       excl: "Кірмейді:",
       webNoteTitle: "Сайт жарнама тарифтерінен бөлек",
       webNoteText: "Қарапайым лендингтен интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын.",
@@ -245,7 +245,7 @@ export const UI = {
     pricing: {
       pre: "Plans", mark: (from) => `from ${from} a month`,
       sub: "The price of a month of my work; the ad budget is separate. If you spend more than $7,000 a month on ads, I charge 12% of that spend.",
-      popularBadge: "Recommended", from: "from", perMonth: "per month", select: "Choose",
+      popularBadge: "Recommended", perMonth: "per month", select: "Choose",
       excl: "Not included:",
       webNoteTitle: "A website is separate from ad plans",
       webNoteText: "From a simple landing page to a full online store. Price and timeline after a short call.",

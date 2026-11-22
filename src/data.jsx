@@ -113,7 +113,7 @@ const ru = {
     {
       name: "Премиум", price: "$850", popular: false,
       sub: "Хочешь видеть, какие заявки стали продажами.",
-      features: ["Всё из тарифа «Оптимальный», до трёх площадок", "Картинки и видео для рекламы делаю я", "Продажи из CRM передаю в Meta (CAPI), чтобы реклама училась на покупателях", "Связь 7 дней в неделю, отвечаю в приоритете"],
+      features: ["Всё из тарифа «Оптимальный», до трёх площадок", "Продажи из CRM передаю в Meta (CAPI), чтобы реклама училась на покупателях", "Связь 7 дней в неделю, отвечаю в приоритете"],
       excl: "бюджет на рекламу",
     },
   ],
@@ -299,7 +299,7 @@ const kk = {
     {
       name: "Премиум", price: "$850", popular: false,
       sub: "Қай өтінім сатылымға айналғанын көргіңіз келеді.",
-      features: ["«Оптималды» тарифінің бәрі, үш алаңға дейін", "Жарнамаға суреттер мен видеоны өзім жасаймын", "Жарнама сатып алушылардан үйренуі үшін CRM-дегі сатылымдарды Meta-ға беремін (CAPI)", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
+      features: ["«Оптималды» тарифінің бәрі, үш алаңға дейін", "Жарнама сатып алушылардан үйренуі үшін CRM-дегі сатылымдарды Meta-ға беремін (CAPI)", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
       excl: "жарнама бюджеті",
     },
   ],
@@ -484,7 +484,7 @@ const en = {
     {
       name: "Premium", price: "$850", popular: false,
       sub: "You want to see which leads turned into sales.",
-      features: ["Everything in Optimal, up to three platforms", "I make the images and videos for your ads", "Sales from your CRM sent to Meta (CAPI), so the ads learn from buyers", "Contact 7 days a week, priority replies"],
+      features: ["Everything in Optimal, up to three platforms", "Sales from your CRM sent to Meta (CAPI), so the ads learn from buyers", "Contact 7 days a week, priority replies"],
       excl: "ad budget",
     },
   ],

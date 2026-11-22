@@ -545,7 +545,6 @@ function Pricing({ t, D }) {
                 {p.popular && <span className="badge main">{t.pricing.popularBadge}</span>}
               </div>
               <div className="price-val">
-                <span className="price-per price-from">{t.pricing.from}</span>
                 <span className="price-num">{p.price}</span>
                 <span className="price-per">{t.pricing.perMonth}</span>
               </div>
@@ -650,7 +649,7 @@ function Contact({ t, D }) {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name, contact: form.contact, service: form.service, niche: nicheLabel, budget: form.budget,
-          plan: plan !== null ? `${RU.PLANS[plan].name} (от ${RU.PLANS[plan].price} в месяц)` : "не выбрал, нужен совет",
+          plan: plan !== null ? `${RU.PLANS[plan].name} (${RU.PLANS[plan].price} в месяц)` : "не выбрал, нужен совет",
         }),
       });
       if (!res.ok) throw new Error("send error");
@@ -691,7 +690,7 @@ function Contact({ t, D }) {
                   <span className="field-lbl">{t.contact.form.planLabel}</span>
                   <select className="input" name="plan" value={plan === null ? "" : String(plan)} onChange={(e) => planStore.set(e.target.value === "" ? null : Number(e.target.value))}>
                     <option value="">{t.contact.form.planChoose}</option>
-                    {D.PLANS.map((p, i) => <option key={p.name} value={i}>{p.name} · {t.pricing.from} {p.price} {t.pricing.perMonth}</option>)}
+                    {D.PLANS.map((p, i) => <option key={p.name} value={i}>{p.name} · {p.price} {t.pricing.perMonth}</option>)}
                   </select>
                 </label>
                 <div className="form-row">
