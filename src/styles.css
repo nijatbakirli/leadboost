@@ -781,18 +781,30 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
 .price.pop .price-num { color: var(--accent); }
 .price-per { font-family: var(--f-mono); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); }
 .price-sub { margin: 0 0 18px; color: var(--muted); font-size: 16px; line-height: 1.5; }
-.price-list { list-style: none; margin: 0 0 26px; padding: 0; flex-grow: 1; }
+.price-list { list-style: none; margin: 0 0 18px; padding: 0; flex-grow: 1; }
 .price-list li { display: flex; gap: 10px; padding: 10px 0; border-top: 2px solid var(--line); font-size: 16px; line-height: 1.45; color: var(--body); }
 .price-list li:first-child { border-top: 0; }
 .li-ic { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
-.web-note { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
+/* «не входит» под списком: честно сразу, без вопросов потом (22.11.2026) */
+.price-excl { margin: 0 0 22px; padding-top: 14px; border-top: 2px solid var(--line); color: var(--muted); font-size: 15px; line-height: 1.45; }
+.price-excl b { font-weight: 600; color: var(--ink); }
+/* «от чего зависит цена»: простой ряд с линиями сверху, без карточек */
+.pf { margin-top: 40px; }
+.pf-title { margin: 0 0 16px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 22px; line-height: 1.2; }
+.pf-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 20px; }
+.pf-list li { padding: 14px 0 0; border-top: 2px solid var(--line); }
+.pf-list strong { display: block; font-weight: 600; color: var(--ink); font-size: 16px; line-height: 1.4; }
+.pf-list span { display: block; margin-top: 4px; color: var(--muted); font-size: 15px; line-height: 1.45; }
+@media (max-width: 900px) { .pf-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 20px; } }
+@media (max-width: 520px) { .pf-list { grid-template-columns: 1fr; gap: 14px; } }
+.web-note { margin-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
 .web-note strong { display: block; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 22px; line-height: 1.2; }
 .web-note span { display: block; margin-top: 6px; color: var(--muted); font-size: 16px; }
 @media (max-width: 900px) { .price-grid { grid-template-columns: 1fr; gap: 14px; } }
 /* три тарифа в ряд: цена, подпись, список и кнопка на одном уровне во всех карточках */
 @media (min-width: 901px) {
   .price-grid { row-gap: 0; }
-  .price { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; }
+  .price { display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 0; }
 }
 
 /* ---------- поля ввода ---------- */

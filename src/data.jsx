@@ -93,19 +93,31 @@ const ru = {
     "Некому отвечать людям, которые напишут",
     "Клиенты нужны уже завтра, без времени на проверку",
   ],
+  /* тарифы в духе прайса ClickForge (решение владельца 22.11.2026): строка «для
+     кого», пункты про результат без счёта объявлений и созвонов, «не входит»,
+     цена «от». Что влияет на цену, в PRICE_FACTORS под карточками */
   PLANS: [
     {
-      name: "Базовый", price: "$350", sub: "Одна площадка: Instagram и Facebook", popular: false,
-      features: ["Настрою рекламу с нуля или проверю текущую", "До 4 новых объявлений в месяц", "Отчёт раз в 2 недели", "Связь в мессенджере"],
+      name: "Базовый", price: "$350", sub: "Нужен стабильный поток заявок из Instagram и Facebook", popular: false,
+      features: ["Настрою рекламу в Meta или приведу в порядок текущую", "Слежу за ценой заявки и меняю то, что не работает", "Отчёт с цифрами раз в 2\u00a0недели"],
+      excl: "бюджет на рекламу, картинки и видео для рекламы",
     },
     {
-      name: "Оптимальный", price: "$550", sub: "Две площадки, например Meta и Google", popular: true,
-      features: ["Всё из тарифа «Базовый»", "Отчёт с цифрами каждую неделю", "Показ тем, кто уже тебя видел", "Созвон раз в неделю"],
+      name: "Оптимальный", price: "$550", sub: "Нужно больше заявок, чем даёт одна площадка", popular: true,
+      features: ["Всё из тарифа «Базовый»", "Вторая площадка, например Google или TikTok", "Возвращаю тех, кто уже видел рекламу", "Отчёт каждую неделю и созвон"],
+      excl: "бюджет на рекламу, картинки и видео для рекламы",
     },
     {
-      name: "Премиум", price: "$850", sub: "До трёх площадок, плюс картинки и видео", popular: false,
-      features: ["Всё из тарифа «Оптимальный»", "Картинки и видео тоже делаю я", "Передаю продажи из твоей CRM в Meta (CAPI), чтобы реклама искала покупателей", "Связь 7 дней в неделю, отвечаю в приоритете"],
+      name: "Премиум", price: "$850", sub: "Нужно видеть, какие заявки стали продажами", popular: false,
+      features: ["Всё из тарифа «Оптимальный», до трёх площадок", "Картинки и видео для рекламы делаю я", "Связываю продажи из CRM с рекламой, чтобы она искала покупателей", "Отвечаю в приоритете, 7\u00a0дней в\u00a0неделю"],
+      excl: "бюджет на рекламу",
     },
+  ],
+  PRICE_FACTORS: [
+    { title: "Площадки", text: "Только Meta или ещё TikTok и Google" },
+    { title: "Картинки и видео", text: "Есть свои или их нужно делать" },
+    { title: "Сайт и CRM", text: "Куда приходят заявки и где считаются продажи" },
+    { title: "Бюджет на рекламу", text: "Больше $7 000 в месяц: беру 12% от расхода" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4 617", unit: "переписок", sub: "по $0,57 за каждую, $2 626 за 45 дней", shot: { ...SHOTS.s4617, alt: "Скрин Meta Ads Manager за весь период: 4 617 начатых переписок, $0,57 за переписку, потрачено $2 626,17, охват 325 552, показы 1 098 477" } },
@@ -275,17 +287,26 @@ const kk = {
   ],
   PLANS: [
     {
-      name: "Негізгі", price: "$350", sub: "Бір алаң: Instagram және Facebook", popular: false,
-      features: ["Жарнаманы нөлден баптаймын немесе қазіргісін тексеремін", "Айына 4-ке дейін жаңа хабарландыру", "2 аптада бір рет есеп", "Мессенджерде байланыс"],
+      name: "Негізгі", price: "$350", sub: "Instagram мен Facebook-тан тұрақты өтінімдер керек", popular: false,
+      features: ["Meta-да жарнаманы баптаймын немесе қазіргісін ретке келтіремін", "Өтінім бағасын бақылап, жұмыс істемейтінін ауыстырамын", "2\u00a0аптада бір рет цифрлары бар есеп"],
+      excl: "жарнама бюджеті, жарнамаға арналған суреттер мен видео",
     },
     {
-      name: "Оптималды", price: "$550", sub: "Екі алаң, мысалы Meta және Google", popular: true,
-      features: ["«Негізгі» тарифінің бәрі", "Апта сайын цифрлары бар есеп", "Сізді бұрын көргендерге көрсету", "Аптасына бір рет қоңырау"],
+      name: "Оптималды", price: "$550", sub: "Бір алаң беретіннен көбірек өтінім керек", popular: true,
+      features: ["«Негізгі» тарифінің бәрі", "Екінші алаң, мысалы Google немесе TikTok", "Жарнаманы бұрын көргендерді қайтарамын", "Апта сайын есеп және қоңырау"],
+      excl: "жарнама бюджеті, жарнамаға арналған суреттер мен видео",
     },
     {
-      name: "Премиум", price: "$850", sub: "Үш алаңға дейін, плюс суреттер мен видео", popular: false,
-      features: ["«Оптималды» тарифінің бәрі", "Суреттер мен видеоны да мен жасаймын", "Жарнама сатып алушыларды іздеуі үшін сатылымдарды CRM-іңізден Meta-ға беремін (CAPI)", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
+      name: "Премиум", price: "$850", sub: "Қай өтінім сатылымға айналғанын көру керек", popular: false,
+      features: ["«Оптималды» тарифінің бәрі, үш алаңға дейін", "Жарнамаға суреттер мен видеоны өзім жасаймын", "Жарнама сатып алушыларды іздеуі үшін CRM-дегі сатылымдарды жарнамамен байланыстырамын", "Аптаның 7\u00a0күні, басымдықпен жауап беремін"],
+      excl: "жарнама бюджеті",
     },
+  ],
+  PRICE_FACTORS: [
+    { title: "Алаңдар", text: "Тек Meta ма, әлде TikTok пен Google да" },
+    { title: "Суреттер мен видео", text: "Өзіңізде бар ма, әлде жасау керек пе" },
+    { title: "Сайт және CRM", text: "Өтінімдер қайда түседі, сатылым қайда есептеледі" },
+    { title: "Жарнама бюджеті", text: "Айына $7 000 мөлшерінен асса, шығынның 12 пайызы" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4 617", unit: "хат алмасу", sub: "әрқайсысы $0,57, 45 күнде $2 626", shot: { ...SHOTS.s4617, alt: "Meta Ads Manager скрині, бүкіл кезең: 4 617 басталған хат алмасу, әрқайсысы $0,57, жұмсалғаны $2 626,17, қамту 325 552, көрсетілім 1 098 477" } },
@@ -454,17 +475,26 @@ const en = {
   ],
   PLANS: [
     {
-      name: "Basic", price: "$350", sub: "One platform: Instagram and Facebook", popular: false,
-      features: ["I set up ads from scratch or audit your current ones", "Up to 4 new ads per month", "Report every 2 weeks", "Messenger support"],
+      name: "Basic", price: "$350", sub: "You need a steady flow of leads from Instagram and Facebook", popular: false,
+      features: ["I set up Meta ads from scratch or fix the ones you run", "I watch the cost per lead and change what isn't working", "A report with numbers every 2\u00a0weeks"],
+      excl: "ad budget, images and videos for ads",
     },
     {
-      name: "Optimal", price: "$550", sub: "Two platforms, e.g. Meta and Google", popular: true,
-      features: ["Everything in Basic", "Weekly report with numbers", "Retargeting people who already saw you", "A call once a week"],
+      name: "Optimal", price: "$550", sub: "You need more leads than one platform brings", popular: true,
+      features: ["Everything in Basic", "A second platform, such as Google or TikTok", "Bringing back people who already saw your ads", "A weekly report and call"],
+      excl: "ad budget, images and videos for ads",
     },
     {
-      name: "Premium", price: "$850", sub: "Up to three platforms, plus images and video", popular: false,
-      features: ["Everything in Optimal", "I also produce the images and video", "I send sales from your CRM to Meta (CAPI), so the ads look for buyers", "Support 7 days a week, priority replies"],
+      name: "Premium", price: "$850", sub: "You need to see which leads turned into sales", popular: false,
+      features: ["Everything in Optimal, up to three platforms", "I make the images and videos for your ads", "I connect sales from your CRM to your ads so they look for buyers", "Priority replies, 7\u00a0days a\u00a0week"],
+      excl: "ad budget",
     },
+  ],
+  PRICE_FACTORS: [
+    { title: "Platforms", text: "Meta only, or TikTok and Google too" },
+    { title: "Images and video", text: "You have your own, or they need to be made" },
+    { title: "Website and CRM", text: "Where leads arrive and where sales are counted" },
+    { title: "Ad budget", text: "Over $7,000 a month: I charge 12% of spend" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4,617", unit: "conversations", sub: "$0.57 each, $2,626 over 45 days", shot: { ...SHOTS.s4617, alt: "Meta Ads Manager screenshot, all time: 4,617 conversations started, $0.57 per conversation, $2,626.17 spent, reach 325,552, impressions 1,098,477" } },

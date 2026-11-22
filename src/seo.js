@@ -103,7 +103,7 @@ export function structuredData({ site, lang, content, contacts }) {
             description: p.sub,
             price,
             priceCurrency: "USD",
-            priceSpecification: { "@type": "UnitPriceSpecification", price, priceCurrency: "USD", unitText: "MONTH" },
+            priceSpecification: { "@type": "UnitPriceSpecification", price, minPrice: price, priceCurrency: "USD", unitText: "MONTH" },
           };
         }),
       },
