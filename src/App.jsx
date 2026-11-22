@@ -558,12 +558,6 @@ function Pricing({ t, D }) {
             </article>
           ))}
         </div>
-        <div className="pf">
-          <h3 className="pf-title">{t.pricing.factorsTitle}</h3>
-          <ul className="pf-list">
-            {D.PRICE_FACTORS.map((f) => <li key={f.title}><strong>{f.title}</strong><span>{f.text}</span></li>)}
-          </ul>
-        </div>
         <div className="tile web-note">
           <div>
             <strong>{t.pricing.webNoteTitle}</strong>

@@ -790,16 +790,7 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
 /* «не входит» под списком: честно сразу, без вопросов потом (22.11.2026) */
 .price-excl { margin: 0 0 22px; padding-top: 14px; border-top: 2px solid var(--line); color: var(--body); font-size: 16px; line-height: 1.5; }
 .price-excl b { font-weight: 600; color: var(--ink); }
-/* «от чего зависит цена»: простой ряд с линиями сверху, без карточек */
-.pf { margin-top: 40px; }
-.pf-title { margin: 0 0 16px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 22px; line-height: 1.2; }
-.pf-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 20px; }
-.pf-list li { padding: 14px 0 0; border-top: 2px solid var(--line); }
-.pf-list strong { display: block; font-weight: 600; color: var(--ink); font-size: 17px; line-height: 1.4; }
-.pf-list span { display: block; margin-top: 6px; color: var(--body); font-size: 16px; line-height: 1.5; }
-@media (max-width: 900px) { .pf-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 20px; } }
-@media (max-width: 520px) { .pf-list { grid-template-columns: 1fr; gap: 14px; } }
-.web-note { margin-top: 28px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
+.web-note { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
 .web-note strong { display: block; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 22px; line-height: 1.2; }
 .web-note span { display: block; margin-top: 6px; color: var(--muted); font-size: 16px; }
 @media (max-width: 900px) { .price-grid { grid-template-columns: 1fr; gap: 14px; } }

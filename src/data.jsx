@@ -95,7 +95,7 @@ const ru = {
   ],
   /* тарифы в духе прайса ClickForge (решение владельца 22.11.2026): строка «для
      кого», пункты про результат без счёта объявлений и созвонов, «не входит»,
-     цена «от». Что влияет на цену, в PRICE_FACTORS под карточками */
+     цена «от». Ряд «что влияет на цену» под карточками был и убран (22.11.2026) */
   PLANS: [
     {
       name: "Базовый", price: "$350", sub: "Нужен стабильный поток заявок из Instagram и Facebook", popular: false,
@@ -112,12 +112,6 @@ const ru = {
       features: ["Всё из тарифа «Оптимальный», до трёх площадок", "Картинки и видео для рекламы делаю я", "Связываю продажи из CRM с рекламой, чтобы она искала покупателей", "Отвечаю в приоритете, 7\u00a0дней в\u00a0неделю"],
       excl: "бюджет на рекламу",
     },
-  ],
-  PRICE_FACTORS: [
-    { title: "Количество площадок", text: "Meta, TikTok, Google" },
-    { title: "Производство креативов", text: "Готовые материалы или создание с нуля" },
-    { title: "Аналитика продаж", text: "Связка сайта и CRM с рекламным кабинетом" },
-    { title: "Рекламный бюджет", text: "Больше $7 000 в месяц: 12% от расхода" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4 617", unit: "переписок", sub: "по $0,57 за каждую, $2 626 за 45 дней", shot: { ...SHOTS.s4617, alt: "Скрин Meta Ads Manager за весь период: 4 617 начатых переписок, $0,57 за переписку, потрачено $2 626,17, охват 325 552, показы 1 098 477" } },
@@ -302,12 +296,6 @@ const kk = {
       excl: "жарнама бюджеті",
     },
   ],
-  PRICE_FACTORS: [
-    { title: "Алаңдар саны", text: "Meta, TikTok, Google" },
-    { title: "Креативтер", text: "Дайын материалдар немесе нөлден жасау" },
-    { title: "Сатылым аналитикасы", text: "Сайт пен CRM-ді жарнама кабинетімен байланыстыру" },
-    { title: "Жарнама бюджеті", text: "Айына $7 000 мөлшерінен асса, шығынның 12 пайызы" },
-  ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4 617", unit: "хат алмасу", sub: "әрқайсысы $0,57, 45 күнде $2 626", shot: { ...SHOTS.s4617, alt: "Meta Ads Manager скрині, бүкіл кезең: 4 617 басталған хат алмасу, әрқайсысы $0,57, жұмсалғаны $2 626,17, қамту 325 552, көрсетілім 1 098 477" } },
   /* кейсы со скринами: ниша, город, срок, что было до, что сделал. Тексты из
@@ -489,12 +477,6 @@ const en = {
       features: ["Everything in Optimal, up to three platforms", "I make the images and videos for your ads", "I connect sales from your CRM to your ads so they look for buyers", "Priority replies, 7\u00a0days a\u00a0week"],
       excl: "ad budget",
     },
-  ],
-  PRICE_FACTORS: [
-    { title: "Number of platforms", text: "Meta, TikTok, Google" },
-    { title: "Creative production", text: "Your own materials or made from scratch" },
-    { title: "Sales analytics", text: "Connecting your website and CRM to the ad account" },
-    { title: "Ad budget", text: "Over $7,000 a month: 12% of spend" },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
   PROOF: { big: "4,617", unit: "conversations", sub: "$0.57 each, $2,626 over 45 days", shot: { ...SHOTS.s4617, alt: "Meta Ads Manager screenshot, all time: 4,617 conversations started, $0.57 per conversation, $2,626.17 spent, reach 325,552, impressions 1,098,477" } },
