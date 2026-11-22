@@ -545,7 +545,7 @@ function Pricing({ t, D }) {
                 {p.popular && <span className="badge main">{t.pricing.popularBadge}</span>}
               </div>
               <div className="price-val">
-                <span className="price-per">{t.pricing.from}</span>
+                <span className="price-per price-from">{t.pricing.from}</span>
                 <span className="price-num">{p.price}</span>
                 <span className="price-per">{t.pricing.perMonth}</span>
               </div>
