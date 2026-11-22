@@ -1,35 +1,61 @@
 /* ============================================================
    МНОГОЯЗЫЧНОСТЬ
-   UI — весь текст интерфейса (не контент — тот в data.jsx),
-   сгруппирован по секциям сайта. useLang — состояние текущего
-   языка: всегда 'ru' у нового посетителя, дальше запоминается
-   в localStorage.
-   ============================================================ */
-import { useState, useEffect } from "react";
+   UI: весь текст интерфейса (не контент, тот в data.jsx),
+   сгруппирован по секциям сайта.
 
+   Язык определяется адресом страницы: / русский, /kk/ казахский,
+   /en/ английский (см. src/seo.js). У каждой версии свой готовый
+   HTML, поэтому поисковики индексируют все три. Переключатель
+   меняет язык без перезагрузки и адрес в строке браузера.
+
+   Заголовок секции: строка(и) `pre` цветом текста и, только на первом
+   экране, в скринах, тарифах и контакте, последняя строка `mark` на
+   жёлтом мазке маркера (ноябрь 2026: мазков было 13, выделение
+   перестало выделять). Подписей капсом над заголовками нет.
+   Русский: обращение на «ты», без длинных тире (—).
+   ============================================================ */
+import { useState, useEffect, startTransition } from "react";
+import { LANG_PATHS, SEO, langFromPath } from "./seo.js";
+import { IS_PREVIEW } from "./assets.js";
+
+/* label: короткое название на переключателе (рядом круглый флаг, см. FLAGS
+   в App.jsx), name: полное название для экранных читалок */
 export const LANGS = [
-  { code: "ru", label: "RU" },
-  { code: "kk", label: "KZ" },
-  { code: "en", label: "EN" },
+  { code: "ru", label: "RU", name: "Русский" },
+  { code: "kk", label: "KZ", name: "Қазақша" },
+  { code: "en", label: "EN", name: "English" },
 ];
 
-const LANG_KEY = "lb_lang";
-
-export function useLang() {
-  const [lang, setLangState] = useState("ru");
-
-  useEffect(() => {
-    const saved = localStorage.getItem(LANG_KEY);
-    if (saved && LANGS.some((l) => l.code === saved)) setLangState(saved);
-  }, []);
+export function useLang(initialLang = "ru") {
+  const [lang, setLangState] = useState(initialLang);
 
   useEffect(() => {
     document.documentElement.lang = lang;
+    document.title = SEO[lang].title;
   }, [lang]);
 
+  /* Смена языка перерисовывает всю страницу. startTransition: если часть
+     страницы ещё «оживает» (см. Part в App.jsx), React сначала доживит её,
+     а не выбросит готовый HTML с ошибкой в консоли. */
+  const switchTo = (code) => startTransition(() => setLangState(code));
+
+  /* кнопка «назад» в браузере возвращает и язык */
+  useEffect(() => {
+    const onPop = () => switchTo(langFromPath(window.location.pathname));
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
   const setLang = (code) => {
-    setLangState(code);
-    localStorage.setItem(LANG_KEY, code);
+    switchTo(code);
+    /* в превью адресов /kk/ и /en/ нет: там язык меняется без смены адреса */
+    if (IS_PREVIEW) return;
+    try {
+      const path = LANG_PATHS[code];
+      if (/^https?:$/.test(window.location.protocol) && window.location.pathname !== path) {
+        window.history.pushState({}, "", path + window.location.hash);
+      }
+    } catch { /* превью без нормального адреса: язык всё равно сменится */ }
   };
 
   return { lang, setLang };
@@ -37,167 +63,221 @@ export function useLang() {
 
 export const UI = {
   ru: {
-    nav: { studio: "Студия", services: "Услуги", work: "Работы", pricing: "Тарифы", contact: "Контакт" },
+    nav: { services: "Услуги", niches: "С кем работаю", results: "Кейсы", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню", theme: "Тёмная тема" },
+    common: { whatsapp: "Написать в WhatsApp", telegram: "Написать в Telegram", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
-      secLabel: "СТУДИЯ",
-      overline: "Независимая студия рекламы",
-      greetingMorning: "Доброе утро—", greetingDay: "Добрый день—", greetingEvening: "Добрый вечер—",
-      brand: "это LeadBoost",
-      leadPre: "Настраиваю трафик, который ", leadMark: "приводит клиентов",
-      leadPost: ", и делаю сайты, которые его выдерживают. Реклама, сайт и аналитика — в одних руках с первого дня.",
-      ctaPrimary: "Обсудить проект →", ctaSecondary: "Смотреть работы",
-      caseTag: "КЕЙС / 07", caseTitle: "Реклама с характером.",
-      chipA: "кампаний запущено", chipB: "средний ROAS клиентов",
-      facts: ["✓ Один специалист, без передачи по цепочке", "✓ Первая реклама — уже на первой неделе", "✓ Понятный отчёт вместо красивых слов"],
+      statusOnline: "На связи", statusOffline: "Отвечу утром",
+      h1: ["Таргет в Instagram", "и Facebook", "для бизнеса"], h1Mark: "в Казахстане и СНГ",
+      lead: "Ещё веду рекламу в TikTok, Threads и Google и делаю сайты, которые выдерживают её трафик. Работаю сам, без менеджеров и передачи по цепочке.",
+      ctaPrimary: "Написать в WhatsApp", ctaSecondary: "Оставить заявку",
+      proofLabel: "Из моего кабинета Meta", proofLink: "Как это сделано",
+      statA: "кампаний запущено", statB: "средний ROAS клиентов",
     },
-    statement: { pre: "Хорошая реклама делает больше, чем приводит клики. Она приводит людей,", mark: "готовых купить." },
-    services: { secLabel: "ЧТО ДЕЛАЮ", heading: "Услуги", sub: "Сфокусированная работа: от вопроса «откуда брать клиентов» — до работающей системы.", nichesLabel: "/ С КЕМ РАБОТАЮ" },
-    work: { secLabel: "ИЗБРАННЫЕ РАБОТЫ", heading: "Работы", sub: "Кампании с реальными цифрами. Сайты — новое направление, первые проекты уже в работе.", hint: "Листайте →", back: "Назад", next: "Вперёд" },
-    principles: { secLabel: "ПРИНЦИПЫ РАБОТЫ", practiceSuffix: " / НА ПРАКТИКЕ", notPromiseLabel: "Чего не обещаю:", notPromiseText: "точного числа продаж (это зависит и от того, как вы отвечаете клиентам) · клиентов «уже завтра» · результата без бюджета на саму рекламу · работы с продуктом, который ещё никто не покупал." },
-    fit: { secLabel: "ЧЕСТНЫЙ ОТСЕВ", headingPre: "Кому ", headingMark: "подходит", sub: "Беру 3-4 проекта в месяц — поэтому честно фильтрую на входе.", yes: "Подходит, если", no: "Пока рано, если" },
-    pricing: { secLabel: "ТАРИФЫ", headingPre: "Три ", headingMark: "варианта", sub: "Одна сумма в месяц. Без скрытых процентов и доплат.", popularBadge: "выбор большинства", select: "Выбрать", webNoteTitle: "Сайт — отдельно от тарифов на рекламу", webNoteText: "От простого лендинга до интернет-магазина. Цена и сроки — после короткого созвона.", webNoteBtn: "Обсудить сайт" },
-    calculator: { secLabel: "КАЛЬКУЛЯТОР", heading: "Посчитайте сами", sub: "Сколько клиентов примерно принесёт ваш рекламный бюджет.", nicheLabel: "Ниша", budgetLabel: "Бюджет на рекламу в месяц ($)", out1: "Сколько будет стоить один человек, который напишет", out2: "Сколько таких людей будет в месяц", out3: "На сколько окупится реклама", note: "Примерный расчёт по средним цифрам ниши. Точные значения зависят от цены товара и сезона — скажу на созвоне." },
-    notes: { secLabel: "ЦИФРЫ", heading: "Не обещания.", sub: "Наблюдения из реальных кампаний — то, что видно в отчётах, а не в презентациях." },
-    faq: { secLabel: "ВОПРОСЫ", headingPre: "Отвечаю ", headingMark: "просто" },
-    game: {
-      secLabel: "МИНИ-ИГРА",
-      title: "Проверьте мою меткость на себе",
-      subtitle: (need) => `Я попадаю в целевую аудиторию. А вы — попадёте в цель ${need} раз?`,
-      playBtn: "Играть · 20 секунд", hudLabel: "Попаданий:", targetAria: "Цель",
-      winTitle: "В яблочко! 🎯", winLine1: "Меткость — общая черта. Назовите кодовое слово при заявке:",
-      winLine2: "— и получите бесплатный мини-аудит текущей рекламы.",
+    services: { pre: "Что я делаю" },
+    niches: {
+      pre: "С кем работаю",
+      sub: "У каждой ниши своя цель: где-то нужна запись, где-то заказ или звонок. Под эту цель и настраиваю рекламу.",
+      ctaTitle: "Твоей ниши нет?", ctaText: "Напиши, скажу, возьмусь или нет.",
     },
+    results: {
+      pre: "Кейсы из моего", mark: "кабинета Meta",
+      sub: "Шесть бизнесов в пяти городах. Цифры со скринов как есть, названия брендов скрыты по договорённости с клиентами.",
+      before: "Что было", did: "Что сделал", more: "Ещё результаты", showShots: "Скрины",
+      note: "Цена переписки зависит от ниши, оффера и бюджета, поэтому одинаковых цифр не обещаю.",
+      zoom: "Открыть скрин крупно", close: "Закрыть", source: "Скрин из Meta Ads Manager",
+    },
+    principles: {
+      pre: "Как я работаю",
+      notPromiseLabel: "Чего не обещаю",
+      notPromiseText: "Точного числа продаж (оно зависит и от того, как ты отвечаешь клиентам), клиентов «уже завтра», результата без бюджета на саму рекламу и работы с продуктом, который ещё никто не покупал.",
+    },
+    fit: {
+      pre: "Кому подходит",
+      sub: "Беру 3, максимум 4 проекта в месяц, смотря по нише. Поэтому до старта проверяю, готов ли бизнес к рекламе.",
+      yes: "Подходит, если", no: "Пока рано, если",
+    },
+    pricing: {
+      pre: "Тарифы", mark: (from) => `от ${from} в месяц`,
+      sub: "Цена за месяц работы, бюджет на рекламу отдельно. Если на рекламу уходит больше $7 000 в месяц, беру 12% от этой суммы.",
+      popularBadge: "Рекомендую", from: "от", perMonth: "в месяц", select: "Выбрать",
+      excl: "Не входит:",
+      webNoteTitle: "Сайт идёт отдельно от тарифов на рекламу",
+      webNoteText: "От простого лендинга до интернет-магазина. Цену и сроки скажу после короткого созвона.",
+      webNoteBtn: "Обсудить сайт",
+    },
+    after: { pre: "Что будет после заявки" },
+    faq: { pre: "Частые вопросы", more: "Не нашёл свой вопрос? Напиши, отвечу сам.", moreBtn: "Спросить в WhatsApp" },
     contact: {
-      secLabel: "КОНТАКТ", heading: "Принесите задачу, которую не решить шаблоном.",
-      intro: "Расскажите, что меняется, что буксует и что должна дать следующая версия вашей рекламы или сайта. Отвечу с конкретикой — а не продающей рассылкой.",
-      note: (left, total) => `Отвечаю в течение дня. Сейчас свободно ${left} из ${total} мест на месяц — если не успели, честно скажу, когда освобожусь.`,
+      pre: "Напиши, отвечу сам", mark: "в течение дня",
+      intro: "Расскажи, чем занимаешься и что сейчас с рекламой. Отвечу по делу.",
+      fastLabel: "Быстрее всего", fastText: "Пиши в WhatsApp, Telegram или в директ Instagram.",
+      offer: "Уже есть реклама? Пришли скрин своего рекламного кабинета, бесплатно скажу, что бы поправил.",
+      note: (left) => left > 0
+        ? `Сейчас на этот месяц свободно ${left} ${left % 10 === 1 && left % 100 !== 11 ? "место" : left % 10 >= 2 && left % 10 <= 4 && (left % 100 < 12 || left % 100 > 14) ? "места" : "мест"}. Если мест не останется, скажу, когда освободится.`
+        : "На этот месяц мест нет. Напиши, скажу, когда освободится.",
+      formTitle: "Или оставь заявку",
       form: {
-        nameLabel: "Имя", namePh: "Как вас зовут",
+        nameLabel: "Имя", namePh: "Как тебя зовут",
         contactLabel: "Телефон или Telegram", contactPh: "+7… или @username",
-        serviceLabel: "Что интересует", serviceChoose: "Выберите", serviceAds: "Реклама", serviceSite: "Сайт", serviceBoth: "И реклама, и сайт",
-        nicheLabel: "Чем занимаетесь", nicheChoose: "Выберите нишу",
-        budgetLabel: "Бюджет на рекламу в месяц (если применимо)", budgetPh: "Например: $1 000",
+        serviceLabel: "Что интересует", serviceChoose: "Выбери", serviceAds: "Реклама", serviceSite: "Сайт", serviceBoth: "И реклама, и сайт", other: "Другое",
+        nicheLabel: "Чем занимаешься", nicheChoose: "Выбери нишу",
+        budgetLabel: "Бюджет на рекламу в месяц (если есть)", budgetPh: "Например: $1 000",
         submit: "Отправить заявку", sending: "Отправляю…",
-        errorText: "Не получилось отправить автоматически. Напишите напрямую:", errorLink: "на почту",
-        ok: "✓ Заявка принята — свяжусь с вами в течение дня.",
+        errorText: "Не получилось отправить автоматически. Напиши мне напрямую", errorLink: "в WhatsApp", errorOr: "или", errorLinkTg: "в Telegram",
+        ok: "Заявка у меня. Свяжусь в течение дня.",
+        planLabel: "Тариф", planChoose: "Пока не знаю, нужен совет",
       },
     },
     footer: {
-      tagline: "Ясность,", tagline2: "которая продаёт.",
-      quickLinks: "/ БЫСТРЫЕ ССЫЛКИ", status: "/ СТАТУС",
-      online: "на связи", offline: "отвечу утром",
-      copyright: "© 2026 LeadBoost", services: "Реклама · Сайты · Аналитика", toTop: "Наверх →",
+      linksLabel: "Ссылки", contactsLabel: "Связь", statusLabel: "Статус",
+      online: "на связи, отвечаю быстро", offline: "сейчас ночь, отвечу утром",
+      copyright: "© 2026 TARGET PRO", brandCta: "Написать",
     },
-    mcta: { spots: (left, total) => `${left} из ${total} свободно`, cta: "Заявка →" },
   },
 
   kk: {
-    nav: { studio: "Студия", services: "Қызметтер", work: "Жұмыстар", pricing: "Тарифтер", contact: "Байланыс" },
+    nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", results: "Кейстер", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір", theme: "Қараңғы тақырып" },
+    common: { whatsapp: "WhatsApp-қа жазу", telegram: "Telegram-ға жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
     hero: {
-      secLabel: "СТУДИЯ",
-      overline: "Тәуелсіз жарнама студиясы",
-      greetingMorning: "Қайырлы таң—", greetingDay: "Қайырлы күн—", greetingEvening: "Қайырлы кеш—",
-      brand: "бұл LeadBoost",
-      leadPre: "Клиенттерді ", leadMark: "әкелетін трафикті",
-      leadPost: " баптаймын, оны көтере алатын сайттар жасаймын. Жарнама, сайт және аналитика — бірінші күннен бір қолда.",
-      ctaPrimary: "Жобаны талқылау →", ctaSecondary: "Жұмыстарды көру",
-      caseTag: "КЕЙС / 07", caseTitle: "Мінезі бар жарнама.",
-      chipA: "кампания іске қосылды", chipB: "клиенттердің орташа ROAS",
-      facts: ["✓ Бір маман, тізбек арқылы берілмейді", "✓ Алғашқы жарнама — бірінші аптада-ақ", "✓ Әдемі сөздердің орнына түсінікті есеп"],
+      statusOnline: "Байланыстамын", statusOffline: "Таңертең жауап беремін",
+      h1: ["Instagram мен", "Facebook-та", "Қазақстан мен ТМД"], h1Mark: "бизнесіне таргет",
+      lead: "TikTok, Threads және Google-да да жарнама жүргіземін, оның трафигін көтере алатын сайттар жасаймын. Бәрін өзім істеймін, менеджерлерсіз және тізбек арқылы берусіз.",
+      ctaPrimary: "WhatsApp-қа жазу", ctaSecondary: "Өтінім қалдыру",
+      proofLabel: "Meta кабинетімнен", proofLink: "Бұл қалай жасалды",
+      statA: "іске қосылған науқан", statB: "клиенттердің орташа ROAS",
     },
-    statement: { pre: "Жақсы жарнама клик әкелуден көп нәрсе істейді. Ол сатып алуға,", mark: "дайын адамдарды әкеледі." },
-    services: { secLabel: "НЕ ІСТЕЙМІН", heading: "Қызметтер", sub: "Мақсатты жұмыс: «клиенттерді қайдан алу керек» деген сұрақтан — жұмыс істейтін жүйеге дейін.", nichesLabel: "/ КІМДЕРМЕН ЖҰМЫС ІСТЕЙМІН" },
-    work: { secLabel: "ТАҢДАУЛЫ ЖҰМЫСТАР", heading: "Жұмыстар", sub: "Нақты цифрлары бар науқандар. Сайттар — жаңа бағыт, алғашқы жобалар жұмыста.", hint: "Жылжытыңыз →", back: "Артқа", next: "Алға" },
-    principles: { secLabel: "ЖҰМЫС ҚАҒИДАЛАРЫ", practiceSuffix: " / ІС ЖҮЗІНДЕ", notPromiseLabel: "Нені уәде етпеймін:", notPromiseText: "нақты сатылым санын (бұл сіздің клиенттерге қалай жауап беретініңізге де байланысты) · «ертең-ақ» клиенттерді · жарнамаға бюджетсіз нәтижені · әлі ешкім сатып алмаған өніммен жұмысты." },
-    fit: { secLabel: "АДАЛ ІРІКТЕУ", headingPre: "Кімге ", headingMark: "жарайды", sub: "Айына 3-4 жоба аламын — сондықтан кіреберісте адал сүземін.", yes: "Жарайды, егер", no: "Әзірге ерте, егер" },
-    pricing: { secLabel: "ТАРИФТЕР", headingPre: "Үш ", headingMark: "нұсқа", sub: "Айына бір сома. Жасырын пайыздар мен қосымша төлемдерсіз.", popularBadge: "көбінің таңдауы", select: "Таңдау", webNoteTitle: "Сайт — жарнама тарифтерінен бөлек", webNoteText: "Қарапайым лендингтен интернет-дүкенге дейін. Баға мен мерзім — қысқа қоңыраудан кейін.", webNoteBtn: "Сайтты талқылау" },
-    calculator: { secLabel: "КАЛЬКУЛЯТОР", heading: "Өзіңіз есептеңіз", sub: "Жарнама бюджетіңіз шамамен қанша клиент әкеледі.", nicheLabel: "Сала", budgetLabel: "Айына жарнама бюджеті ($)", out1: "Жазатын бір адам қанша тұрады", out2: "Айына осындай адамдар саны қанша болады", out3: "Жарнама қаншаға өтеледі", note: "Сала бойынша орташа цифрлармен болжамды есеп. Нақты мәндер тауар бағасы мен маусымға байланысты — қоңырауда айтамын." },
-    notes: { secLabel: "ЦИФРЛАР", heading: "Уәделер емес.", sub: "Нақты науқандардан алынған бақылаулар — презентацияда емес, есепте көрінетіні." },
-    faq: { secLabel: "СҰРАҚТАР", headingPre: "Қарапайым ", headingMark: "жауап беремін" },
-    game: {
-      secLabel: "МИНИ-ОЙЫН",
-      title: "Менің дәлдігімді өзіңізде тексеріңіз",
-      subtitle: (need) => `Мен мақсатты аудиторияға дәл тиемін. Ал сіз — нысанаға ${need} рет тиесіз бе?`,
-      playBtn: "Ойнау · 20 секунд", hudLabel: "Тигендер:", targetAria: "Нысана",
-      winTitle: "Дәл тидіңіз! 🎯", winLine1: "Дәлдік — ортақ қасиет. Өтінім берген кезде кодтық сөзді айтыңыз:",
-      winLine2: "— және ағымдағы жарнамаға тегін мини-аудит алыңыз.",
+    services: { pre: "Не істеймін" },
+    niches: {
+      pre: "Кіммен жұмыс істеймін",
+      sub: "Әр саланың өз мақсаты бар: бірінде жазылу керек, бірінде тапсырыс не қоңырау. Жарнаманы осы мақсатқа баптаймын.",
+      ctaTitle: "Салаңыз жоқ па?", ctaText: "Жазыңыз, қолға аламын ба, айтамын.",
     },
+    results: {
+      pre: "Meta кабинетімнен", mark: "кейстер",
+      sub: "Бес қаладағы алты бизнес. Скриндердегі цифрлар өзгертілмеген, брендтердің атаулары клиенттермен келісім бойынша жасырылған.",
+      before: "Не болды", did: "Не істедім", more: "Тағы нәтижелер", showShots: "Скриндер",
+      note: "Хат алмасудың бағасы салаға, офферге және бюджетке байланысты, сондықтан дәл осындай цифрларды уәде етпеймін.",
+      zoom: "Скринді үлкейту", close: "Жабу", source: "Meta Ads Manager скрині",
+    },
+    principles: {
+      pre: "Қалай жұмыс істеймін",
+      notPromiseLabel: "Нені уәде етпеймін",
+      notPromiseText: "Нақты сатылым санын (бұл сіздің клиенттерге қалай жауап беретініңізге де байланысты), «ертең-ақ» клиенттерді, жарнамаға бюджетсіз нәтижені және әлі ешкім сатып алмаған өніммен жұмысты.",
+    },
+    fit: {
+      pre: "Кімге жарайды",
+      sub: "Айына 3, ең көбі 4 жоба аламын, салаға байланысты. Сондықтан бастамас бұрын бизнестің жарнамаға дайын екенін тексеремін.",
+      yes: "Жарайды, егер", no: "Әзірге ерте, егер",
+    },
+    pricing: {
+      pre: "Тарифтер", mark: (from) => `айына ${from}-ден`,
+      sub: "Бір айлық жұмыстың бағасы, жарнама бюджеті бөлек. Жарнама бюджеті айына $7 000 мөлшерінен асса, жұмыс бағасы осы соманың 12 пайызы.",
+      popularBadge: "Ұсынамын", from: "кемінде", perMonth: "айына", select: "Таңдау",
+      excl: "Кірмейді:",
+      webNoteTitle: "Сайт жарнама тарифтерінен бөлек",
+      webNoteText: "Қарапайым лендингтен интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын.",
+      webNoteBtn: "Сайтты талқылау",
+    },
+    after: { pre: "Өтінімнен кейін не болады" },
+    faq: { pre: "Жиі қойылатын сұрақтар", more: "Сұрағыңызды таппадыңыз ба? Жазыңыз, өзім жауап беремін.", moreBtn: "WhatsApp-та сұрау" },
     contact: {
-      secLabel: "БАЙЛАНЫС", heading: "Үлгімен шешілмейтін тапсырманы әкеліңіз.",
-      intro: "Не өзгеріп жатқанын, не тұрып қалғанын және жарнамаңыздың немесе сайтыңыздың келесі нұсқасы не беруі керектігін айтыңыз. Нақты жауап беремін — сатушы хатпен емес.",
-      note: (left, total) => `Бір күн ішінде жауап беремін. Қазір айына ${total} орынның ${left} бос — үлгермесеңіз, қашан босайтынымды адал айтамын.`,
+      pre: "Жазыңыз, бір күн ішінде", mark: "өзім жауап беремін",
+      intro: "Немен айналысатыныңызды және жарнамаңыз қазір қандай екенін айтыңыз. Нақты жауап беремін.",
+      fastLabel: "Ең жылдамы", fastText: "WhatsApp-қа, Telegram-ға немесе Instagram директке жазыңыз.",
+      offer: "Жарнамаңыз бар ма? Жарнама кабинетіңіздің скринін жіберіңіз, нені түзетер едім, тегін айтамын.",
+      note: (left) => left > 0
+        ? `Қазір осы айға ${left} орын бос. Орын қалмаса, қашан босайтынын айтамын.`
+        : "Осы айға орын жоқ. Жазыңыз, қашан босайтынын айтамын.",
+      formTitle: "Немесе өтінім қалдырыңыз",
       form: {
         nameLabel: "Аты", namePh: "Атыңыз кім",
         contactLabel: "Телефон немесе Telegram", contactPh: "+7… немесе @username",
-        serviceLabel: "Немен қызығасыз", serviceChoose: "Таңдаңыз", serviceAds: "Жарнама", serviceSite: "Сайт", serviceBoth: "Жарнама және сайт",
+        serviceLabel: "Немен қызығасыз", serviceChoose: "Таңдаңыз", serviceAds: "Жарнама", serviceSite: "Сайт", serviceBoth: "Жарнама және сайт", other: "Басқа",
         nicheLabel: "Немен айналысасыз", nicheChoose: "Саланы таңдаңыз",
-        budgetLabel: "Айына жарнама бюджеті (қолданылса)", budgetPh: "Мысалы: $1 000",
+        budgetLabel: "Айына жарнама бюджеті (бар болса)", budgetPh: "Мысалы: $1 000",
         submit: "Өтінім жіберу", sending: "Жіберілуде…",
-        errorText: "Автоматты жіберу шықпады. Тікелей жазыңыз:", errorLink: "поштаға",
-        ok: "✓ Өтінім қабылданды — бір күн ішінде хабарласамын.",
+        errorText: "Автоматты түрде жіберілмеді. Маған тікелей жазыңыз", errorLink: "WhatsApp-қа", errorOr: "немесе", errorLinkTg: "Telegram-ға",
+        ok: "Өтінім менде. Бір күн ішінде хабарласамын.",
+        planLabel: "Тариф", planChoose: "Әзірге білмеймін, кеңес керек",
       },
     },
     footer: {
-      tagline: "Сату", tagline2: "айқындығы.",
-      quickLinks: "/ ЖЫЛДАМ СІЛТЕМЕЛЕР", status: "/ МӘРТЕБЕ",
-      online: "байланыста", offline: "таңертең жауап беремін",
-      copyright: "© 2026 LeadBoost", services: "Жарнама · Сайттар · Аналитика", toTop: "Жоғарыға →",
+      linksLabel: "Сілтемелер", contactsLabel: "Байланыс", statusLabel: "Мәртебе",
+      online: "байланыстамын, тез жауап беремін", offline: "қазір түн, таңертең жауап беремін",
+      copyright: "© 2026 TARGET PRO", brandCta: "Жазу",
     },
-    mcta: { spots: (left, total) => `${total} орынның ${left} бос`, cta: "Өтінім →" },
   },
 
   en: {
-    nav: { studio: "Studio", services: "Services", work: "Work", pricing: "Pricing", contact: "Contact" },
+    nav: { services: "Services", niches: "Who I work with", results: "Cases", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu", theme: "Dark theme" },
+    common: { whatsapp: "Message on WhatsApp", telegram: "Message on Telegram", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
-      secLabel: "STUDIO",
-      overline: "Independent advertising studio",
-      greetingMorning: "Good morning—", greetingDay: "Good afternoon—", greetingEvening: "Good evening—",
-      brand: "this is LeadBoost",
-      leadPre: "I run traffic that ", leadMark: "brings in customers",
-      leadPost: ", and build sites that can handle it. Ads, website and analytics — in one pair of hands from day one.",
-      ctaPrimary: "Discuss a project →", ctaSecondary: "See the work",
-      caseTag: "CASE / 07", caseTitle: "Advertising with character.",
-      chipA: "campaigns launched", chipB: "avg. client ROAS",
-      facts: ["✓ One specialist, no hand-offs down a chain", "✓ First ads live within the first week", "✓ A clear report instead of pretty words"],
+      statusOnline: "Online", statusOffline: "Will reply in the morning",
+      h1: ["Instagram and", "Facebook ads for", "businesses in"], h1Mark: "Kazakhstan & the CIS",
+      lead: "I also run ads on TikTok, Threads and Google, and build websites that can handle the traffic. I do the work myself, with no managers and no hand-offs.",
+      ctaPrimary: "Message on WhatsApp", ctaSecondary: "Send a request",
+      proofLabel: "From my Meta ad account", proofLink: "How it was done",
+      statA: "campaigns launched", statB: "avg. client ROAS",
     },
-    statement: { pre: "Good advertising does more than get clicks. It brings people who are", mark: "ready to buy." },
-    services: { secLabel: "WHAT I DO", heading: "Services", sub: "Focused work: from \"where do I get customers\" to a system that runs itself.", nichesLabel: "/ WHO I WORK WITH" },
-    work: { secLabel: "SELECTED WORK", heading: "Work", sub: "Campaigns with real numbers. Websites are a new direction — first projects already underway.", hint: "Swipe →", back: "Back", next: "Next" },
-    principles: { secLabel: "HOW I WORK", practiceSuffix: " / IN PRACTICE", notPromiseLabel: "What I don't promise:", notPromiseText: "an exact sales number (that also depends on how you respond to leads) · customers \"by tomorrow\" · results without an ad budget · working with a product nobody has bought yet." },
-    fit: { secLabel: "HONEST FILTER", headingPre: "Who this ", headingMark: "fits", sub: "I take on 3-4 projects a month — so I filter honestly upfront.", yes: "A good fit if", no: "Too early if" },
-    pricing: { secLabel: "PRICING", headingPre: "Three ", headingMark: "options", sub: "One flat monthly fee. No hidden percentages or add-ons.", popularBadge: "most popular", select: "Choose", webNoteTitle: "A website is separate from ad plans", webNoteText: "From a simple landing page to a full online store. Price and timeline — after a short call.", webNoteBtn: "Discuss a website" },
-    calculator: { secLabel: "CALCULATOR", heading: "Do the math yourself", sub: "Roughly how many customers your ad budget will bring.", nicheLabel: "Niche", budgetLabel: "Monthly ad budget ($)", out1: "Cost per person who messages you", out2: "How many such people per month", out3: "Expected return on ad spend", note: "A rough estimate based on niche averages. Exact numbers depend on product price and season — I'll tell you on a call." },
-    notes: { secLabel: "NUMBERS", heading: "Not promises.", sub: "Observations from real campaigns — what shows up in reports, not in pitch decks." },
-    faq: { secLabel: "QUESTIONS", headingPre: "Straight ", headingMark: "answers" },
-    game: {
-      secLabel: "MINI-GAME",
-      title: "Test my aim yourself",
-      subtitle: (need) => `I hit the target audience. Can you hit the target ${need} times?`,
-      playBtn: "Play · 20 seconds", hudLabel: "Hits:", targetAria: "Target",
-      winTitle: "Bullseye! 🎯", winLine1: "Good aim is a shared trait. Mention this code word in your request:",
-      winLine2: "— and get a free mini-audit of your current ads.",
+    services: { pre: "What I do" },
+    niches: {
+      pre: "Who I work with",
+      sub: "Every niche has its own goal: bookings for some, orders or calls for others. That's the goal I set the ads up for.",
+      ctaTitle: "Not on the list?", ctaText: "Message me and I'll tell you if I can take it on.",
     },
+    results: {
+      pre: "Cases from my", mark: "Meta ad account",
+      sub: "Six businesses in five cities. Numbers from the screenshots as they are; brand names hidden by agreement with clients.",
+      before: "Before", did: "What I did", more: "More results", showShots: "Screenshots",
+      note: "Cost per conversation depends on the niche, the offer and the budget, so I don't promise the same numbers.",
+      zoom: "Open the screenshot", close: "Close", source: "Meta Ads Manager screenshot",
+    },
+    principles: {
+      pre: "How I work",
+      notPromiseLabel: "What I don't promise",
+      notPromiseText: "An exact number of sales (that also depends on how you respond to leads), customers “by tomorrow”, results without an ad budget, or working with a product nobody has bought yet.",
+    },
+    fit: {
+      pre: "Who this fits",
+      sub: "I take on 3, at most 4 projects a month, depending on the niche. So before we start I check whether the business is ready for ads.",
+      yes: "A good fit if", no: "Too early if",
+    },
+    pricing: {
+      pre: "Plans", mark: (from) => `from ${from} a month`,
+      sub: "The price of a month of my work; the ad budget is separate. If you spend more than $7,000 a month on ads, I charge 12% of that spend.",
+      popularBadge: "Recommended", from: "from", perMonth: "per month", select: "Choose",
+      excl: "Not included:",
+      webNoteTitle: "A website is separate from ad plans",
+      webNoteText: "From a simple landing page to a full online store. Price and timeline after a short call.",
+      webNoteBtn: "Discuss a website",
+    },
+    after: { pre: "What happens after you get in touch" },
+    faq: { pre: "Common questions", more: "Didn't find your question? Message me, I reply myself.", moreBtn: "Ask on WhatsApp" },
     contact: {
-      secLabel: "CONTACT", heading: "Bring a problem a template can't solve.",
-      intro: "Tell me what's changing, what's stuck, and what the next version of your ads or website needs to deliver. I'll reply with specifics — not a sales blast.",
-      note: (left, total) => `I reply within a day. Right now ${left} of ${total} slots are open this month — if you missed it, I'll tell you honestly when I free up.`,
+      pre: "Message me, I'll reply myself", mark: "within a day",
+      intro: "Tell me what you do and where your ads stand now. I'll reply with specifics.",
+      fastLabel: "Fastest", fastText: "Message me on WhatsApp, Telegram or Instagram DM.",
+      offer: "Already running ads? Send a screenshot of your ad account and I'll tell you what I'd fix, free.",
+      note: (left) => left > 0
+        ? `Right now ${left} slot${left === 1 ? " is" : "s are"} open this month. If none are left, I'll tell you when one frees up.`
+        : "No slots left this month. Message me and I'll tell you when one frees up.",
+      formTitle: "Or send a request",
       form: {
         nameLabel: "Name", namePh: "What's your name",
         contactLabel: "Phone or Telegram", contactPh: "+1… or @username",
-        serviceLabel: "What are you interested in", serviceChoose: "Choose", serviceAds: "Advertising", serviceSite: "Website", serviceBoth: "Advertising & website",
+        serviceLabel: "What are you interested in", serviceChoose: "Choose", serviceAds: "Advertising", serviceSite: "Website", serviceBoth: "Advertising & website", other: "Other",
         nicheLabel: "What do you do", nicheChoose: "Choose a niche",
-        budgetLabel: "Monthly ad budget (if relevant)", budgetPh: "E.g.: $1,000",
+        budgetLabel: "Monthly ad budget (if any)", budgetPh: "E.g.: $1,000",
         submit: "Send request", sending: "Sending…",
-        errorText: "Couldn't send automatically. Message directly:", errorLink: "by email",
-        ok: "✓ Request received — I'll get back to you within a day.",
+        errorText: "Couldn't send automatically. Message me directly", errorLink: "on WhatsApp", errorOr: "or", errorLinkTg: "on Telegram",
+        ok: "Got your request. I'll get back to you within a day.",
+        planLabel: "Plan", planChoose: "Not sure yet, I need advice",
       },
     },
     footer: {
-      tagline: "Clarity", tagline2: "that sells.",
-      quickLinks: "/ QUICK LINKS", status: "/ STATUS",
-      online: "online now", offline: "will reply in the morning",
-      copyright: "© 2026 LeadBoost", services: "Advertising · Websites · Analytics", toTop: "Back to top →",
+      linksLabel: "Links", contactsLabel: "Contact", statusLabel: "Status",
+      online: "online, quick replies", offline: "night here, will reply in the morning",
+      copyright: "© 2026 TARGET PRO", brandCta: "Message me",
     },
-    mcta: { spots: (left, total) => `${left} of ${total} open`, cta: "Get started →" },
   },
 };
