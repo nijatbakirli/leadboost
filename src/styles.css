@@ -771,29 +771,25 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
 
 /* ---------- тарифы ---------- */
 .price-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
-.price { display: flex; flex-direction: column; position: relative; }
+.price { display: flex; flex-direction: column; }
 .price.pop { border-color: var(--accent); }
-.price-top { display: flex; align-items: center; min-height: 28px; }
-/* бейдж «Рекомендую» сидит на верхней рамке карточки: названия тарифов на одной высоте */
-.price .badge.main { position: absolute; top: 0; left: 30px; transform: translateY(-50%); background: var(--tile); font-size: 13px; }
-/* подача как в прайсе ClickForge (22.11.2026): название, ситуация клиента,
-   пункты, что не входит, внизу цена с «в месяц» и числом площадок */
-.price-name { margin: 0; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; font-size: 30px; line-height: 1.1; color: var(--ink); }
-.price-sub { margin: 14px 0 20px; color: var(--body); font-size: 17px; line-height: 1.5; }
-.price-list { list-style: none; margin: 0; padding: 0; }
-.price-list li { display: flex; gap: 10px; padding: 11px 0; border-top: 2px solid var(--line); font-size: 16.5px; line-height: 1.5; color: var(--body); }
-.price-list li:first-child { border-top: 0; padding-top: 0; }
-.li-ic { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 3px; }
-/* что не входит: отдельный короткий список под пунктами, крестик серым */
-.price-excl { list-style: none; margin: 16px 0 0; padding: 0; }
-.price-excl li { display: flex; gap: 10px; padding: 4px 0; font-size: 16px; line-height: 1.5; color: var(--muted); }
-.price-excl .li-ic { color: var(--muted); width: 16px; height: 16px; margin-top: 4px; }
-/* цена внизу карточки, как у ClickForge: сумма, «в месяц», площадки */
-.price-val { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 22px 0 20px; padding-top: 20px; border-top: 2px solid var(--line); }
-.price-num { font-family: var(--f-display); font-weight: 700; font-size: 60px; line-height: 1; color: var(--ink); }
+/* в узкой карточке плашка «Выбор большинства» уходит под название, а не рвёт его */
+.price-top { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px 10px; min-height: 28px; }
+.price-top .lbl { margin: 0; white-space: nowrap; font-size: 15px; color: var(--ink); }
+.price-val { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 10px; margin: 16px 0 8px; }
+/* «от» строкой над ценой: рядом с ценой и «в месяц» не влезало в узкую карточку */
+.price-from { flex-basis: 100%; margin-bottom: 4px; }
+.price-num { font-family: var(--f-display); font-weight: 700; font-size: 64px; line-height: 1; color: var(--ink); }
 .price.pop .price-num { color: var(--accent); }
 .price-per { font-family: var(--f-mono); font-weight: 700; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
-.price-term { flex-basis: 100%; margin-top: 6px; font-size: 16px; font-weight: 600; color: var(--ink); }
+.price-sub { margin: 0 0 18px; color: var(--ink); font-weight: 600; font-size: 17px; line-height: 1.45; }
+.price-list { list-style: none; margin: 0 0 18px; padding: 0; flex-grow: 1; }
+.price-list li { display: flex; gap: 10px; padding: 11px 0; border-top: 2px solid var(--line); font-size: 16.5px; line-height: 1.5; color: var(--body); }
+.price-list li:first-child { border-top: 0; }
+.li-ic { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+/* «не входит» под списком: честно сразу, без вопросов потом (22.11.2026) */
+.price-excl { margin: 0 0 22px; padding-top: 14px; border-top: 2px solid var(--line); color: var(--body); font-size: 16px; line-height: 1.5; }
+.price-excl b { font-weight: 600; color: var(--ink); }
 .web-note { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
 .web-note strong { display: block; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 22px; line-height: 1.2; }
 .web-note span { display: block; margin-top: 6px; color: var(--muted); font-size: 16px; }

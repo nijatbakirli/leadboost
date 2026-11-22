@@ -541,21 +541,19 @@ function Pricing({ t, D }) {
           {D.PLANS.map((p, i) => (
             <article className={`tile price ${p.popular ? "pop" : ""}`} key={p.name}>
               <div className="price-top">
-                <h3 className="price-name">{p.name}</h3>
+                <SecLabel className="lbl-sm">{p.name}</SecLabel>
                 {p.popular && <span className="badge main">{t.pricing.popularBadge}</span>}
+              </div>
+              <div className="price-val">
+                <span className="price-per price-from">{t.pricing.from}</span>
+                <span className="price-num">{p.price}</span>
+                <span className="price-per">{t.pricing.perMonth}</span>
               </div>
               <p className="price-sub">{p.sub}</p>
               <ul className="price-list">
                 {p.features.map((f) => <li key={f}><IconCheck className="li-ic" />{f}</li>)}
               </ul>
-              <ul className="price-excl">
-                {p.excl.map((x) => <li key={x}><IconCross className="li-ic" />{x}</li>)}
-              </ul>
-              <div className="price-val">
-                <span className="price-num">{p.price}+</span>
-                <span className="price-per">{t.pricing.perMonth}</span>
-                <span className="price-term">{p.term}</span>
-              </div>
+              <p className="price-excl"><b>{t.pricing.excl}</b> {p.excl}</p>
               <a href="#contact" onClick={choosePlan(i)} className={`btn btn-block ${p.popular ? "btn-y" : "btn-ghost"}`}>{t.pricing.select}</a>
             </article>
           ))}

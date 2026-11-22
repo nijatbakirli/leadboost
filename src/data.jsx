@@ -93,28 +93,28 @@ const ru = {
     "Некому отвечать людям, которые напишут",
     "Клиенты нужны уже завтра, без времени на проверку",
   ],
-  /* тарифы подачей как в прайсе clickforge.group/pricing (владелец, 22.11.2026):
-     название, ситуация клиента одной строкой, пункты, что не входит, внизу цена
-     «$350+», «в месяц» и число площадок (term). Только факты, которые уже есть
-     на сайте; «до 4 объявлений в месяц» не обещать, пока владелец не подтвердит */
+  /* тарифы: слова в духе прайса clickforge.group/pricing (владелец, 22.11.2026):
+     ситуация клиента одной строкой (sub), конкретные пункты, «Не входит» (excl).
+     Оформление карточки прежнее. Только факты, которые уже есть на сайте; «до 4
+     объявлений в месяц» не обещать, пока владелец не подтвердит */
   PLANS: [
     {
-      name: "Базовый", price: "$350", term: "Одна площадка", popular: false,
+      name: "Базовый", price: "$350", popular: false,
       sub: "Нужны заявки из Instagram и Facebook, а вести рекламу некому.",
       features: ["Разбор текущей рекламы или запуск с нуля за 7 дней", "До запуска считаю, сколько тебе можно платить за заявку", "Каждую неделю проверяю цену заявки и отключаю слабые объявления", "Отчёт с цифрами раз в 2 недели", "Рекламный кабинет остаётся на твоё имя"],
-      excl: ["Бюджет на рекламу не входит", "Картинки и видео не входят"],
+      excl: "бюджет на рекламу",
     },
     {
-      name: "Оптимальный", price: "$550", term: "Две площадки", popular: true,
+      name: "Оптимальный", price: "$550", popular: true,
       sub: "Реклама уже даёт заявки, и ты хочешь больше по той же цене.",
       features: ["Всё из тарифа «Базовый»", "Вторая площадка: Google или TikTok", "Реклама на тех, кто уже был на сайте или писал тебе", "Отчёт с цифрами каждую неделю", "Созвон раз в неделю: что сработало и что меняем"],
-      excl: ["Бюджет на рекламу не входит", "Картинки и видео не входят"],
+      excl: "бюджет на рекламу",
     },
     {
-      name: "Премиум", price: "$850", term: "До трёх площадок", popular: false,
+      name: "Премиум", price: "$850", popular: false,
       sub: "Хочешь видеть, какие заявки стали продажами.",
-      features: ["Всё из тарифа «Оптимальный»", "Картинки и видео для рекламы делаю я", "Продажи из CRM передаю в Meta (CAPI), чтобы реклама училась на покупателях", "Связь 7 дней в неделю, отвечаю в приоритете"],
-      excl: ["Бюджет на рекламу не входит"],
+      features: ["Всё из тарифа «Оптимальный», до трёх площадок", "Картинки и видео для рекламы делаю я", "Продажи из CRM передаю в Meta (CAPI), чтобы реклама училась на покупателях", "Связь 7 дней в неделю, отвечаю в приоритете"],
+      excl: "бюджет на рекламу",
     },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
@@ -285,22 +285,22 @@ const kk = {
   ],
   PLANS: [
     {
-      name: "Негізгі", price: "$350", term: "Бір алаң", popular: false,
+      name: "Негізгі", price: "$350", popular: false,
       sub: "Instagram мен Facebook-тан өтінімдер керек, бірақ жарнаманы жүргізетін адам жоқ.",
       features: ["Қазіргі жарнаманы талдау немесе 7 күнде нөлден іске қосу", "Іске қоспас бұрын өтінімге қанша төлеуге болатынын есептеймін", "Апта сайын өтінім бағасын тексеріп, әлсіз хабарландыруларды өшіремін", "2 аптада бір рет цифрлары бар есеп", "Жарнама кабинеті сіздің атыңызда қалады"],
-      excl: ["Жарнама бюджеті кірмейді", "Суреттер мен видео кірмейді"],
+      excl: "жарнама бюджеті",
     },
     {
-      name: "Оптималды", price: "$550", term: "Екі алаң", popular: true,
+      name: "Оптималды", price: "$550", popular: true,
       sub: "Жарнама өтінім әкеліп жатыр, сол бағамен көбірек керек.",
       features: ["«Негізгі» тарифінің бәрі", "Екінші алаң: Google немесе TikTok", "Сайтқа кірген немесе сізге жазғандарға жарнама", "Апта сайын цифрлары бар есеп", "Аптасына бір рет қоңырау: не жұмыс істеді, не өзгереді"],
-      excl: ["Жарнама бюджеті кірмейді", "Суреттер мен видео кірмейді"],
+      excl: "жарнама бюджеті",
     },
     {
-      name: "Премиум", price: "$850", term: "Үш алаңға дейін", popular: false,
+      name: "Премиум", price: "$850", popular: false,
       sub: "Қай өтінім сатылымға айналғанын көргіңіз келеді.",
-      features: ["«Оптималды» тарифінің бәрі", "Жарнамаға суреттер мен видеоны өзім жасаймын", "Жарнама сатып алушылардан үйренуі үшін CRM-дегі сатылымдарды Meta-ға беремін (CAPI)", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
-      excl: ["Жарнама бюджеті кірмейді"],
+      features: ["«Оптималды» тарифінің бәрі, үш алаңға дейін", "Жарнамаға суреттер мен видеоны өзім жасаймын", "Жарнама сатып алушылардан үйренуі үшін CRM-дегі сатылымдарды Meta-ға беремін (CAPI)", "Аптаның 7 күні байланыс, басымдықпен жауап беремін"],
+      excl: "жарнама бюджеті",
     },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
@@ -470,22 +470,22 @@ const en = {
   ],
   PLANS: [
     {
-      name: "Basic", price: "$350", term: "One platform", popular: false,
+      name: "Basic", price: "$350", popular: false,
       sub: "You need leads from Instagram and Facebook and no one to run the ads.",
       features: ["An audit of your current ads or a launch from scratch within 7 days", "Before launch I work out what you can afford to pay per lead", "Cost per lead checked every week, weak ads switched off", "A report with numbers every 2 weeks", "The ad account stays in your name"],
-      excl: ["Ad budget not included", "Images and videos not included"],
+      excl: "ad budget",
     },
     {
-      name: "Optimal", price: "$550", term: "Two platforms", popular: true,
+      name: "Optimal", price: "$550", popular: true,
       sub: "Your ads already bring leads and you want more at the same cost.",
       features: ["Everything in Basic", "A second platform: Google or TikTok", "Ads to people who already visited your site or messaged you", "A report with numbers every week", "A weekly call: what worked and what changes next"],
-      excl: ["Ad budget not included", "Images and videos not included"],
+      excl: "ad budget",
     },
     {
-      name: "Premium", price: "$850", term: "Up to three platforms", popular: false,
+      name: "Premium", price: "$850", popular: false,
       sub: "You want to see which leads turned into sales.",
-      features: ["Everything in Optimal", "I make the images and videos for your ads", "Sales from your CRM sent to Meta (CAPI), so the ads learn from buyers", "Contact 7 days a week, priority replies"],
-      excl: ["Ad budget not included"],
+      features: ["Everything in Optimal, up to three platforms", "I make the images and videos for your ads", "Sales from your CRM sent to Meta (CAPI), so the ads learn from buyers", "Contact 7 days a week, priority replies"],
+      excl: "ad budget",
     },
   ],
   /* первый экран: цифра из кабинета (подробный разбор этого кейса первым в CASES) */
