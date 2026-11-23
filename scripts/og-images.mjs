@@ -1,5 +1,5 @@
 /* ============================================================
-   Картинки превью ссылок img/og/og-{ru,kk,en}.jpg (1200×630).
+   Картинки превью ссылок img/og/og-{ru,en}.jpg (1200×630).
    Перерисовывать, когда меняется главный заголовок на сайте
    (hero.h1 / hero.h1Mark в src/i18n.jsx) или цифра 4 617.
 
@@ -11,8 +11,8 @@
    с мазком маркера на последней строке (те же картинки .hl-a/b/c из
    styles.css, тот же выбор варианта по тексту), белая карточка
    с цифрой из кабинета, подпись «TARGET PRO ├──┤ НАПИСАТЬ →».
-   Подписи без «//». В казахской подпись карточки Inter Bold: в
-   JetBrains Mono нет казахских букв.
+   Подписи без «//». Казахскую картинку убрали вместе с казахской
+   версией сайта (23.11.2026).
    ============================================================ */
 import fs from "node:fs";
 import path from "node:path";
@@ -26,9 +26,8 @@ const { chromium } = require("playwright");
 
 /* тексты: держать в соответствии с hero.h1 / hero.h1Mark в src/i18n.jsx */
 const L = {
-  ru: { h: ["Таргет в Instagram", "и Facebook", "для бизнеса"], mark: "в Казахстане и СНГ", cl: "Из моего кабинета Meta", num: "4 617", unit: "переписок", sub: "по $0,57 за каждую", cta: "Написать" },
-  kk: { h: ["Instagram мен", "Facebook-та", "Қазақстан мен ТМД"], mark: "бизнесіне таргет", cl: "Meta кабинетімнен", num: "4 617", unit: "хат алмасу", sub: "әрқайсысы $0,57", cta: "Жазу", interLabel: true },
-  en: { h: ["Instagram and", "Facebook ads for", "businesses in"], mark: "Kazakhstan & the CIS", cl: "From my Meta ad account", num: "4,617", unit: "conversations", sub: "$0.57 each", cta: "Message me" },
+  ru: { h: ["Таргет в Instagram", "и Facebook"], mark: "для бизнеса", cl: "Из моего кабинета Meta", num: "4 617", unit: "переписок", sub: "по $0,57 за каждую", cta: "Написать" },
+  en: { h: ["Instagram and", "Facebook ads"], mark: "for businesses", cl: "From my Meta ad account", num: "4,617", unit: "conversations", sub: "$0.57 each", cta: "Message me" },
 };
 
 /* тот же выбор варианта мазка, что в Mark (src/widgets.jsx) */

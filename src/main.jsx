@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 /* шрифты свои, с этого же сайта (без запросов к Google Fonts): браузер
-   скачивает только нужные наборы букв (латиница, кириллица, казахские) */
+   скачивает только нужные наборы букв (латиница, кириллица) */
 import "@fontsource/oswald/700.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -14,7 +14,7 @@ import { langFromPath } from "./seo.js";
 
 /* На сайте HTML уже собран заранее (scripts/build-site.mjs), и React
    только "оживляет" его (hydrate). В разработке и в превью root пустой,
-   тогда страница рисуется с нуля. Язык берётся из адреса: /, /kk/, /en/. */
+   тогда страница рисуется с нуля. Язык берётся из адреса: / или /en/. */
 const el = document.getElementById("root");
 const app = <App initialLang={langFromPath(window.location.pathname)} />;
 

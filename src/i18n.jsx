@@ -3,9 +3,9 @@
    UI: весь текст интерфейса (не контент, тот в data.jsx),
    сгруппирован по секциям сайта.
 
-   Язык определяется адресом страницы: / русский, /kk/ казахский,
-   /en/ английский (см. src/seo.js). У каждой версии свой готовый
-   HTML, поэтому поисковики индексируют все три. Переключатель
+   Язык определяется адресом страницы: / русский, /en/ английский
+   (см. src/seo.js). У каждой версии свой готовый HTML, поэтому
+   поисковики индексируют обе. Казахскую версию убрали 23.11.2026. Переключатель
    меняет язык без перезагрузки и адрес в строке браузера.
 
    Заголовок секции: строка(и) `pre` цветом текста и, только на первом
@@ -22,7 +22,6 @@ import { IS_PREVIEW } from "./assets.js";
    в App.jsx), name: полное название для экранных читалок */
 export const LANGS = [
   { code: "ru", label: "RU", name: "Русский" },
-  { code: "kk", label: "KZ", name: "Қазақша" },
   { code: "en", label: "EN", name: "English" },
 ];
 
@@ -48,7 +47,7 @@ export function useLang(initialLang = "ru") {
 
   const setLang = (code) => {
     switchTo(code);
-    /* в превью адресов /kk/ и /en/ нет: там язык меняется без смены адреса */
+    /* в превью адреса /en/ нет: там язык меняется без смены адреса */
     if (IS_PREVIEW) return;
     try {
       const path = LANG_PATHS[code];
@@ -67,7 +66,7 @@ export const UI = {
     common: { whatsapp: "Написать в WhatsApp", telegram: "Написать в Telegram", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
       statusOnline: "На связи", statusOffline: "Отвечу утром",
-      h1: ["Таргет в Instagram", "и Facebook", "для бизнеса"], h1Mark: "в Казахстане и СНГ",
+      h1: ["Таргет в Instagram", "и Facebook"], h1Mark: "для бизнеса",
       lead: "Ещё веду рекламу в TikTok, Threads и Google и делаю сайты, которые выдерживают её трафик. Работаю сам, без менеджеров и передачи по цепочке.",
       ctaPrimary: "Написать в WhatsApp", ctaSecondary: "Оставить заявку",
       proofLabel: "Из моего кабинета Meta", proofLink: "Как это сделано",
@@ -81,7 +80,7 @@ export const UI = {
     },
     results: {
       pre: "Кейсы из моего", mark: "кабинета Meta",
-      sub: "Шесть бизнесов в пяти городах. Цифры со скринов как есть, названия брендов скрыты по договорённости с клиентами.",
+      sub: "Шесть бизнесов из разных ниш. Цифры со скринов как есть, названия брендов скрыты по договорённости с клиентами.",
       before: "Что было", did: "Что сделал", more: "Ещё результаты", showShots: "Скрины",
       note: "Цена переписки зависит от ниши, оффера и бюджета, поэтому одинаковых цифр не обещаю.",
       zoom: "Открыть скрин крупно", close: "Закрыть", source: "Скрин из Meta Ads Manager",
@@ -135,85 +134,12 @@ export const UI = {
     },
   },
 
-  kk: {
-    nav: { services: "Қызметтер", niches: "Кіммен жұмыс істеймін", results: "Кейстер", pricing: "Тарифтер", faq: "Сұрақтар", contact: "Байланыс", menu: "Мәзір", theme: "Қараңғы тақырып" },
-    common: { whatsapp: "WhatsApp-қа жазу", telegram: "Telegram-ға жазу", instagram: "Instagram", toTop: "Жоғарыға", language: "Тіл" },
-    hero: {
-      statusOnline: "Байланыстамын", statusOffline: "Таңертең жауап беремін",
-      h1: ["Instagram мен", "Facebook-та", "Қазақстан мен ТМД"], h1Mark: "бизнесіне таргет",
-      lead: "TikTok, Threads және Google-да да жарнама жүргіземін, оның трафигін көтере алатын сайттар жасаймын. Бәрін өзім істеймін, менеджерлерсіз және тізбек арқылы берусіз.",
-      ctaPrimary: "WhatsApp-қа жазу", ctaSecondary: "Өтінім қалдыру",
-      proofLabel: "Meta кабинетімнен", proofLink: "Бұл қалай жасалды",
-      statA: "іске қосылған науқан", statB: "клиенттердің орташа ROAS",
-    },
-    services: { pre: "Не істеймін" },
-    niches: {
-      pre: "Кіммен жұмыс істеймін",
-      sub: "Әр саланың өз мақсаты бар: бірінде жазылу керек, бірінде тапсырыс не қоңырау. Жарнаманы осы мақсатқа баптаймын.",
-      ctaTitle: "Салаңыз жоқ па?", ctaText: "Жазыңыз, қолға аламын ба, айтамын.",
-    },
-    results: {
-      pre: "Meta кабинетімнен", mark: "кейстер",
-      sub: "Бес қаладағы алты бизнес. Скриндердегі цифрлар өзгертілмеген, брендтердің атаулары клиенттермен келісім бойынша жасырылған.",
-      before: "Не болды", did: "Не істедім", more: "Тағы нәтижелер", showShots: "Скриндер",
-      note: "Хат алмасудың бағасы салаға, офферге және бюджетке байланысты, сондықтан дәл осындай цифрларды уәде етпеймін.",
-      zoom: "Скринді үлкейту", close: "Жабу", source: "Meta Ads Manager скрині",
-    },
-    principles: {
-      pre: "Қалай жұмыс істеймін",
-      notPromiseLabel: "Нені уәде етпеймін",
-      notPromiseText: "Нақты сатылым санын (бұл сіздің клиенттерге қалай жауап беретініңізге де байланысты), «ертең-ақ» клиенттерді, жарнамаға бюджетсіз нәтижені және әлі ешкім сатып алмаған өніммен жұмысты.",
-    },
-    fit: {
-      pre: "Кімге жарайды",
-      sub: "Айына 3, ең көбі 4 жоба аламын, салаға байланысты. Сондықтан бастамас бұрын бизнестің жарнамаға дайын екенін тексеремін.",
-      yes: "Жарайды, егер", no: "Әзірге ерте, егер",
-    },
-    pricing: {
-      pre: "Тарифтер", mark: (from) => `айына ${from}-ден`,
-      sub: "Бір айлық жұмыстың бағасы, жарнама бюджеті бөлек. Жарнама бюджеті айына $7 000 мөлшерінен асса, жұмыс бағасы осы соманың 12 пайызы.",
-      popularBadge: "Ұсынамын", perMonth: "айына", select: "Таңдау",
-      excl: "Кірмейді:",
-      webNoteTitle: "Сайт жарнама тарифтерінен бөлек",
-      webNoteText: "Қарапайым лендингтен интернет-дүкенге дейін. Баға мен мерзімді қысқа қоңыраудан кейін айтамын.",
-      webNoteBtn: "Сайтты талқылау",
-    },
-    after: { pre: "Өтінімнен кейін не болады" },
-    faq: { pre: "Жиі қойылатын сұрақтар", more: "Сұрағыңызды таппадыңыз ба? Жазыңыз, өзім жауап беремін.", moreBtn: "WhatsApp-та сұрау" },
-    contact: {
-      pre: "Жазыңыз, бір күн ішінде", mark: "өзім жауап беремін",
-      intro: "Немен айналысатыныңызды және жарнамаңыз қазір қандай екенін айтыңыз. Нақты жауап беремін.",
-      fastLabel: "Ең жылдамы", fastText: "WhatsApp-қа, Telegram-ға немесе Instagram директке жазыңыз.",
-      offer: "Жарнамаңыз бар ма? Жарнама кабинетіңіздің скринін жіберіңіз, нені түзетер едім, тегін айтамын.",
-      note: (left) => left > 0
-        ? `Қазір осы айға ${left} орын бос. Орын қалмаса, қашан босайтынын айтамын.`
-        : "Осы айға орын жоқ. Жазыңыз, қашан босайтынын айтамын.",
-      formTitle: "Немесе өтінім қалдырыңыз",
-      form: {
-        nameLabel: "Аты", namePh: "Атыңыз кім",
-        contactLabel: "Телефон немесе Telegram", contactPh: "+7… немесе @username",
-        serviceLabel: "Немен қызығасыз", serviceChoose: "Таңдаңыз", serviceAds: "Жарнама", serviceSite: "Сайт", serviceBoth: "Жарнама және сайт", other: "Басқа",
-        nicheLabel: "Немен айналысасыз", nicheChoose: "Саланы таңдаңыз",
-        budgetLabel: "Айына жарнама бюджеті (бар болса)", budgetPh: "Мысалы: $1 000",
-        submit: "Өтінім жіберу", sending: "Жіберілуде…",
-        errorText: "Автоматты түрде жіберілмеді. Маған тікелей жазыңыз", errorLink: "WhatsApp-қа", errorOr: "немесе", errorLinkTg: "Telegram-ға",
-        ok: "Өтінім менде. Бір күн ішінде хабарласамын.",
-        planLabel: "Тариф", planChoose: "Әзірге білмеймін, кеңес керек",
-      },
-    },
-    footer: {
-      linksLabel: "Сілтемелер", contactsLabel: "Байланыс", statusLabel: "Мәртебе",
-      online: "байланыстамын, тез жауап беремін", offline: "қазір түн, таңертең жауап беремін",
-      copyright: "© 2026 TARGET PRO", brandCta: "Жазу",
-    },
-  },
-
   en: {
     nav: { services: "Services", niches: "Who I work with", results: "Cases", pricing: "Pricing", faq: "FAQ", contact: "Contact", menu: "Menu", theme: "Dark theme" },
     common: { whatsapp: "Message on WhatsApp", telegram: "Message on Telegram", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
       statusOnline: "Online", statusOffline: "Will reply in the morning",
-      h1: ["Instagram and", "Facebook ads for", "businesses in"], h1Mark: "Kazakhstan & the CIS",
+      h1: ["Instagram and", "Facebook ads"], h1Mark: "for businesses",
       lead: "I also run ads on TikTok, Threads and Google, and build websites that can handle the traffic. I do the work myself, with no managers and no hand-offs.",
       ctaPrimary: "Message on WhatsApp", ctaSecondary: "Send a request",
       proofLabel: "From my Meta ad account", proofLink: "How it was done",
@@ -227,7 +153,7 @@ export const UI = {
     },
     results: {
       pre: "Cases from my", mark: "Meta ad account",
-      sub: "Six businesses in five cities. Numbers from the screenshots as they are; brand names hidden by agreement with clients.",
+      sub: "Six businesses from different niches. Numbers from the screenshots as they are; brand names hidden by agreement with clients.",
       before: "Before", did: "What I did", more: "More results", showShots: "Screenshots",
       note: "Cost per conversation depends on the niche, the offer and the budget, so I don't promise the same numbers.",
       zoom: "Open the screenshot", close: "Close", source: "Meta Ads Manager screenshot",

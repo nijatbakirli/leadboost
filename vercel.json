@@ -4,7 +4,8 @@
   "buildCommand": "npm run build:site",
   "outputDirectory": "public",
   "redirects": [
-    { "source": "/kk", "destination": "/kk/", "permanent": true },
+    { "source": "/kk", "destination": "/", "permanent": true },
+    { "source": "/kk/:path*", "destination": "/", "permanent": true },
     { "source": "/en", "destination": "/en/", "permanent": true },
     { "source": "/index.html", "destination": "/", "permanent": true }
   ],

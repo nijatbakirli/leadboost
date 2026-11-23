@@ -14,7 +14,7 @@ import React, { useState, useEffect, useRef, Suspense, useSyncExternalStore } fr
 import { asset } from "./assets.js";
 import {
   IconArrowRight, IconArrowDown, IconArrowUp, IconCheck, IconCross, IconPlus,
-  IconChevronDown, IconExpand, IconSun, IconMoon, FlagRU, FlagKZ, FlagGB,
+  IconChevronDown, IconExpand, IconSun, IconMoon, FlagRU, FlagGB,
 } from "./icons.jsx";
 import { SecLabel, Heading, ShotViewer, SocialIcon } from "./widgets.jsx";
 import { CONTACTS, SPOTS_LEFT, SPOTS_TOTAL, WORK_HOURS, WORK_TZ } from "./config.js";
@@ -101,10 +101,10 @@ function NavProgress() {
 }
 
 /* круглые флаги языков; для английского британский флаг */
-const FLAGS = { ru: FlagRU, kk: FlagKZ, en: FlagGB };
+const FLAGS = { ru: FlagRU, en: FlagGB };
 
-/* Переключатель языка: кнопка с флагом и коротким названием (RU / KZ / EN),
-   по нажатию список. В списке настоящие ссылки на /, /kk/, /en/ (их видят
+/* Переключатель языка: кнопка с флагом и коротким названием (RU / EN),
+   по нажатию список. В списке настоящие ссылки на / и /en/ (их видят
    поисковики), но клик меняет язык без перезагрузки. Закрывается по клику
    мимо, Esc и уходу фокуса. onOpen: закрыть мобильное меню, если открыто. */
 /* Переключатель темы (рядом с языком и в меню на телефоне). Состояние общее
@@ -425,7 +425,7 @@ function Results({ t, D }) {
         <div className="cs-grid">
           {D.CASES.map((c, i) => (
             <article className="tile cs" key={c.niche}>
-              <SecLabel className="lbl-sm">{c.place} · {c.period}</SecLabel>
+              <SecLabel className="lbl-sm">{c.period}</SecLabel>
               <h3 className="cs-name">{c.niche}</h3>
               <div className="num-row">
                 <span className="big-y">{c.big}</span>

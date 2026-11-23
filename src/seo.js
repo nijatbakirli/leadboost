@@ -5,38 +5,31 @@
    (смена title при переключении языка).
    ============================================================ */
 
-/* у каждого языка свой адрес: так поисковики видят и индексируют все три версии */
-export const LANG_PATHS = { ru: "/", kk: "/kk/", en: "/en/" };
-export const LOCALES = { ru: "ru_RU", kk: "kk_KZ", en: "en_US" };
+/* у каждого языка свой адрес: так поисковики видят и индексируют обе версии.
+   Казахскую (/kk/) владелец убрал 23.11.2026, старый адрес ведёт на / (vercel.json) */
+export const LANG_PATHS = { ru: "/", en: "/en/" };
+export const LOCALES = { ru: "ru_RU", en: "en_US" };
 
 export function langFromPath(pathname = "/") {
   const seg = String(pathname).split("/").filter(Boolean)[0];
-  return seg === "kk" || seg === "en" ? seg : "ru";
+  return seg === "en" ? seg : "ru";
 }
 
 export const SEO = {
   ru: {
-    title: "Таргетированная реклама в Казахстане и СНГ | TARGET PRO",
-    description: "Таргетированная реклама в Instagram и Facebook для бизнеса в Казахстане и СНГ: заявки в WhatsApp, отчёты с цифрами, запуск за 7 дней. От $350 в месяц.",
-    ogTitle: "TARGET PRO: таргет в Instagram и Facebook для бизнеса в Казахстане и СНГ",
+    title: "Таргетированная реклама в Instagram и Facebook | TARGET PRO",
+    description: "Таргетированная реклама в Instagram и Facebook для бизнеса: заявки в WhatsApp, отчёты с цифрами, запуск за 7 дней. Тарифы от $350 в месяц.",
+    ogTitle: "TARGET PRO: таргетированная реклама для бизнеса в Instagram и Facebook",
     ogDescription: "Таргет в Instagram и Facebook и сайты под рекламу. Реальные скрины из рекламного кабинета, тарифы от $350 в месяц.",
-    ogImageAlt: "TARGET PRO: таргет в Instagram и Facebook для бизнеса в Казахстане и СНГ. 4 617 переписок по $0,57 из кабинета Meta",
+    ogImageAlt: "TARGET PRO: таргетированная реклама для бизнеса в Instagram и Facebook. 4 617 переписок по $0,57 из кабинета Meta",
     serviceType: "Таргетированная реклама в Instagram и Facebook",
   },
-  kk: {
-    title: "Қазақстан мен ТМД-дағы таргеттелген жарнама | TARGET PRO",
-    description: "Қазақстан мен ТМД бизнесіне Instagram мен Facebook-тағы таргеттелген жарнама: WhatsApp-қа өтінімдер, цифрлары бар есептер, 7 күнде іске қосу. Айына $350-ден.",
-    ogTitle: "TARGET PRO: Instagram мен Facebook-та Қазақстан мен ТМД бизнесіне таргет",
-    ogDescription: "Instagram мен Facebook-тағы таргет және жарнамаға арналған сайттар. Жарнама кабинетінен нақты скриндер, тарифтер айына $350-ден.",
-    ogImageAlt: "TARGET PRO: Instagram мен Facebook-та Қазақстан мен ТМД бизнесіне таргет. Meta кабинетінен 4 617 хат алмасу, әрқайсысы $0,57",
-    serviceType: "Instagram мен Facebook-тағы таргеттелген жарнама",
-  },
   en: {
-    title: "Targeted ads for businesses in Kazakhstan and CIS | TARGET PRO",
-    description: "Targeted Instagram and Facebook ads for businesses in Kazakhstan and the CIS: leads in WhatsApp, reports with numbers, launch in 7 days. From $350 a month.",
-    ogTitle: "TARGET PRO: Instagram and Facebook ads for businesses in Kazakhstan and the CIS",
+    title: "Targeted Instagram and Facebook ads | TARGET PRO",
+    description: "Targeted Instagram and Facebook ads for businesses: leads in WhatsApp, reports with numbers, launch in 7 days. Plans from $350 a month.",
+    ogTitle: "TARGET PRO: targeted ads for businesses on Instagram and Facebook",
     ogDescription: "Instagram and Facebook ads plus websites built for ads. Real ad-account screenshots, plans from $350 a month.",
-    ogImageAlt: "TARGET PRO: Instagram and Facebook ads for businesses in Kazakhstan and the CIS. 4,617 conversations at $0.57 each from a Meta ad account",
+    ogImageAlt: "TARGET PRO: targeted ads for businesses on Instagram and Facebook. 4,617 conversations at $0.57 each from a Meta ad account",
     serviceType: "Targeted advertising on Instagram and Facebook",
   },
 };
@@ -62,8 +55,7 @@ export function structuredData({ site, lang, content, contacts }) {
           "@type": "ContactPoint",
           contactType: "sales",
           url: contacts.whatsapp,
-          availableLanguage: ["ru", "kk", "en"],
-          areaServed: ["KZ", "AZ"],
+          availableLanguage: ["ru", "en"],
         }],
       },
       {
@@ -71,7 +63,7 @@ export function structuredData({ site, lang, content, contacts }) {
         "@id": `${site}/#website`,
         url: `${site}/`,
         name: "TARGET PRO",
-        inLanguage: ["ru", "kk", "en"],
+        inLanguage: ["ru", "en"],
         publisher: { "@id": org },
       },
       {
@@ -91,10 +83,6 @@ export function structuredData({ site, lang, content, contacts }) {
         name: s.serviceType,
         serviceType: s.serviceType,
         provider: { "@id": org },
-        areaServed: [
-          { "@type": "Country", name: "Kazakhstan" },
-          { "@type": "Country", name: "Azerbaijan" },
-        ],
         offers: content.PLANS.map((p) => {
           const price = String(p.price).replace(/[^\d]/g, "");
           return {
@@ -103,7 +91,7 @@ export function structuredData({ site, lang, content, contacts }) {
             description: p.sub,
             price,
             priceCurrency: "USD",
-            priceSpecification: { "@type": "UnitPriceSpecification", price, minPrice: price, priceCurrency: "USD", unitText: "MONTH" },
+            priceSpecification: { "@type": "UnitPriceSpecification", price, priceCurrency: "USD", unitText: "MONTH" },
           };
         }),
       },
