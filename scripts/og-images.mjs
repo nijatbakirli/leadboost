@@ -26,8 +26,8 @@ const { chromium } = require("playwright");
 
 /* тексты: держать в соответствии с hero.h1 / hero.h1Mark в src/i18n.jsx */
 const L = {
-  ru: { h: ["Таргет в Instagram", "и Facebook"], mark: "для бизнеса", cl: "Из моего кабинета Meta", num: "4 617", unit: "переписок", sub: "по $0,57 за каждую", cta: "Написать" },
-  en: { h: ["Instagram and", "Facebook ads"], mark: "for businesses", cl: "From my Meta ad account", num: "4,617", unit: "conversations", sub: "$0.57 each", cta: "Message me" },
+  ru: { h: ["Таргет в Instagram", "и Facebook:"], mark: "запуск за 7 дней", cl: "Скриншот из Meta Ads Manager", num: "4 617", unit: "переписок", sub: "по $0,57 за каждую", cta: "Написать" },
+  en: { h: ["Instagram and", "Facebook ads:"], mark: "live in 7 days", cl: "Meta Ads Manager screenshot", num: "4,617", unit: "conversations", sub: "$0.57 each", cta: "Message me" },
 };
 
 /* тот же выбор варианта мазка, что в Mark (src/widgets.jsx) */

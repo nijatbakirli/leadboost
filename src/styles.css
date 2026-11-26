@@ -488,10 +488,10 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
   display: flex; flex-direction: column; justify-content: space-between; gap: 34px;
 }
 /* Заголовок из фактов длиннее прежнего, поэтому размер считается от ширины
-   плитки (cqi): самая длинная строка (на всех трёх языках не длиннее 9,4em)
+   плитки .hero-head (cqi): самая длинная строка (на обоих языках не длиннее 9,4em)
    всегда помещается, и мазок на последней строке не переносится. Без
    container queries работает запасной размер от ширины окна */
-.hero-main { container-type: inline-size; }
+.hero-head { container-type: inline-size; }
 .hd-hero { font-size: clamp(24px, 4.6vw, 62px); font-size: clamp(20px, 10cqi, 66px); }
 .hero-lead { margin: 0 0 26px; font-size: 18px; line-height: 1.6; color: var(--body); max-width: 560px; }
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -528,15 +528,32 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
   .stat-a { grid-column: 1; grid-row: auto; }
   .stat-b { grid-column: 2; grid-row: auto; }
 }
+/* телефон: плитка с цифрой сразу под заголовком, до текста и кнопок
+   (аудит 26.11.2026, из Instagram почти все приходят с телефона).
+   .hero-main растворяется, заголовок и текст с кнопками становятся
+   отдельными плитками сетки, порядок задаёт order */
 @media (max-width: 720px) {
-  .hero-main { padding: 26px 22px 24px; gap: 26px; }
-  .hero-lead { font-size: 17px; }
+  .hero-main { display: contents; }
+  .hero-head, .hero-body {
+    grid-column: 1 / -1; background: var(--tile); border: 2px solid var(--line);
+    border-radius: 22px; padding: 24px 22px;
+  }
+  .hero-head { order: 1; }
+  .hero-proof { order: 2; }
+  .hero-body { order: 3; }
+  .hero-stat { order: 4; }
+  .hero-lead { font-size: 17px; margin-bottom: 22px; }
   .hero-actions .btn { width: 100%; padding-left: 16px; padding-right: 16px; }
   .hero-stat { padding: 18px; }
 }
-/* самые узкие экраны: «Написать в WhatsApp» помещается в кнопку */
-@media (max-width: 340px) {
-  .hero-actions .btn { font-size: 16px; letter-spacing: .04em; gap: 8px; padding-left: 10px; padding-right: 10px; }
+/* телефон: «Бесплатный разбор рекламы» длиннее прежней надписи, поэтому
+   шрифт чуть меньше, а на самых узких экранах надпись переносится на 2 строки */
+@media (max-width: 420px) {
+  .hero-actions .btn { font-size: 16.5px; letter-spacing: .04em; gap: 8px; padding-left: 12px; padding-right: 12px; }
+}
+@media (max-width: 380px) {
+  .hero-actions .btn { white-space: normal; text-align: center; line-height: 1.2; padding-top: 14px; padding-bottom: 14px; }
+  .hero-actions .btn .soc-ic, .hero-actions .btn .btn-ic { flex-shrink: 0; }
 }
 
 /* ---------- перекрещённые ленты, как на каруселях ----------
@@ -788,6 +805,8 @@ html[data-theme="dark"] .theme-sw i { background: #0F1216; transform: translateX
 /* «не входит» под списком: честно сразу, без вопросов потом (22.11.2026) */
 .price-excl { margin: 0 0 22px; padding-top: 14px; border-top: 2px solid var(--line); color: var(--body); font-size: 16px; line-height: 1.5; }
 .price-excl b { font-weight: 600; color: var(--ink); }
+/* строка свободных мест под карточками тарифов (та же цифра, что в «Контактах») */
+.price-spots { margin: 18px 0 0; font-size: 15.5px; line-height: 1.5; color: var(--muted); }
 .web-note { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; }
 .web-note strong { display: block; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 22px; line-height: 1.2; }
 .web-note span { display: block; margin-top: 6px; color: var(--muted); font-size: 16px; }
@@ -954,7 +973,10 @@ select.input option { color: var(--ink-2); background: var(--tile); }
 }
 .to-top.show { transform: translateY(0); }
 @media (max-width: 760px) { .to-top { display: none; } }
-.m-up { position: absolute; right: -2px; bottom: calc(100% + 12px); width: 46px; height: 46px; }
+/* на телефоне меньше и полупрозрачная: целая кнопка закрывала конец строки текста (аудит 26.11.2026) */
+.m-up { position: absolute; right: -2px; bottom: calc(100% + 10px); width: 38px; height: 38px; opacity: .82; }
+.m-up:hover, .m-up:focus-visible { opacity: 1; }
+.m-up .up-ic { width: 17px; height: 17px; }
 
 .m-cta {
   position: fixed; z-index: 90;

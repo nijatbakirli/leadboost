@@ -60,35 +60,38 @@ export function useLang(initialLang = "ru") {
   return { lang, setLang };
 }
 
+/* «место / места / мест» для счётчика свободных мест (тарифы и «Контакты») */
+const spotsWord = (n) => (n % 10 === 1 && n % 100 !== 11 ? "место" : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? "места" : "мест");
+
 export const UI = {
   ru: {
-    nav: { services: "Услуги", niches: "С кем работаю", results: "Кейсы", pricing: "Тарифы", faq: "Вопросы", contact: "Контакт", menu: "Меню", theme: "Тёмная тема" },
+    nav: { services: "Услуги", niches: "С кем работаю", results: "Кейсы", pricing: "Тарифы", faq: "Вопросы", contact: "Контакты", menu: "Меню", theme: "Тёмная тема" },
     common: { whatsapp: "Написать в WhatsApp", telegram: "Написать в Telegram", instagram: "Instagram", toTop: "Наверх", language: "Язык" },
     hero: {
       statusOnline: "На связи", statusOffline: "Отвечу утром",
-      h1: ["Таргет в Instagram", "и Facebook"], h1Mark: "для бизнеса",
-      lead: "Ещё веду рекламу в TikTok, Threads и Google и делаю сайты, которые выдерживают её трафик. Работаю сам, без менеджеров и передачи по цепочке.",
-      ctaPrimary: "Написать в WhatsApp", ctaSecondary: "Оставить заявку",
-      proofLabel: "Из моего кабинета Meta", proofLink: "Как это сделано",
+      h1: ["Таргет в Instagram", "и Facebook:"], h1Mark: "запуск за 7 дней",
+      lead: "До запуска считаю, сколько можно платить за заявку, чтобы реклама окупалась. Веду рекламу сам, без менеджеров. Ещё TikTok, Google и сайты под рекламу.",
+      ctaPrimary: "Бесплатный разбор рекламы", ctaSecondary: "Тарифы и цены",
+      proofLabel: "Скриншот из Meta Ads Manager", proofLink: "Как это сделано",
       statA: "кампаний запущено", statB: "средний ROAS клиентов",
     },
     services: { pre: "Что я делаю" },
     niches: {
       pre: "С кем работаю",
-      sub: "У каждой ниши своя цель: где-то нужна запись, где-то заказ или звонок. Под эту цель и настраиваю рекламу.",
+      sub: "У салона цель запись, у магазина заказ, у B2B звонок. Под эту цель и настраиваю рекламу.",
       ctaTitle: "Твоей ниши нет?", ctaText: "Напиши, скажу, возьмусь или нет.",
     },
     results: {
-      pre: "Кейсы из моего", mark: "кабинета Meta",
+      pre: "Кейсы со скриншотами", mark: "из Meta Ads",
       sub: "Шесть бизнесов из разных ниш. Цифры со скринов как есть, названия брендов скрыты по договорённости с клиентами.",
-      before: "Что было", did: "Что сделал", more: "Ещё результаты", showShots: "Скрины",
+      before: "Что было", did: "Что сделал", more: "Ещё результаты", showShots: "Скриншот",
       note: "Цена переписки зависит от ниши, оффера и бюджета, поэтому одинаковых цифр не обещаю.",
-      zoom: "Открыть скрин крупно", close: "Закрыть", source: "Скрин из Meta Ads Manager",
+      zoom: "Открыть скриншот крупно", close: "Закрыть", source: "Скриншот из Meta Ads Manager",
     },
     principles: {
       pre: "Как я работаю",
       notPromiseLabel: "Чего не обещаю",
-      notPromiseText: "Точного числа продаж (оно зависит и от того, как ты отвечаешь клиентам), клиентов «уже завтра», результата без бюджета на саму рекламу и работы с продуктом, который ещё никто не покупал.",
+      notPromiseText: "Точного числа продаж (оно зависит и от того, как ты отвечаешь клиентам) и клиентов «уже завтра».",
     },
     fit: {
       pre: "Кому подходит",
@@ -98,7 +101,8 @@ export const UI = {
     pricing: {
       pre: "Тарифы", mark: (from) => `от ${from} в месяц`,
       sub: "Цена за месяц работы, бюджет на рекламу отдельно. Если на рекламу уходит больше $7 000 в месяц, беру 12% от этой суммы.",
-      popularBadge: "Рекомендую", perMonth: "в месяц", select: "Выбрать",
+      popularBadge: "Рекомендую", perMonth: "в месяц", select: "Обсудить тариф",
+      spots: (left) => left > 0 ? `В этом месяце свободно ${left} ${spotsWord(left)}.` : "В этом месяце мест нет.",
       excl: "Не входит:",
       webNoteTitle: "Сайт идёт отдельно от тарифов на рекламу",
       webNoteText: "От простого лендинга до интернет-магазина. Цену и сроки скажу после короткого созвона.",
@@ -110,27 +114,27 @@ export const UI = {
       pre: "Напиши, отвечу сам", mark: "в течение дня",
       intro: "Расскажи, чем занимаешься и что сейчас с рекламой. Отвечу по делу.",
       fastLabel: "Быстрее всего", fastText: "Пиши в WhatsApp, Telegram или в директ Instagram.",
-      offer: "Уже есть реклама? Пришли скрин своего рекламного кабинета, бесплатно скажу, что бы поправил.",
+      offer: "Уже есть реклама? Пришли скрин своего рекламного кабинета, бесплатно скажу, что бы я поправил.",
       note: (left) => left > 0
-        ? `Сейчас на этот месяц свободно ${left} ${left % 10 === 1 && left % 100 !== 11 ? "место" : left % 10 >= 2 && left % 10 <= 4 && (left % 100 < 12 || left % 100 > 14) ? "места" : "мест"}. Если мест не останется, скажу, когда освободится.`
-        : "На этот месяц мест нет. Напиши, скажу, когда освободится.",
+        ? `В этом месяце свободно ${left} ${spotsWord(left)}. Если мест не будет, скажу, когда освободится следующее.`
+        : "В этом месяце мест нет. Напиши, скажу, когда освободится следующее.",
       formTitle: "Или оставь заявку",
       form: {
         nameLabel: "Имя", namePh: "Как тебя зовут",
-        contactLabel: "Телефон или Telegram", contactPh: "+7… или @username",
+        contactLabel: "Телефон или Telegram", contactPh: "Номер с кодом страны или @username",
         serviceLabel: "Что интересует", serviceChoose: "Выбери", serviceAds: "Реклама", serviceSite: "Сайт", serviceBoth: "И реклама, и сайт", other: "Другое",
         nicheLabel: "Чем занимаешься", nicheChoose: "Выбери нишу",
         budgetLabel: "Бюджет на рекламу в месяц (если есть)", budgetPh: "Например: $1 000",
         submit: "Отправить заявку", sending: "Отправляю…",
-        errorText: "Не получилось отправить автоматически. Напиши мне напрямую", errorLink: "в WhatsApp", errorOr: "или", errorLinkTg: "в Telegram",
-        ok: "Заявка у меня. Свяжусь в течение дня.",
+        errorText: "Заявка не отправилась. Напиши мне напрямую", errorLink: "в WhatsApp", errorOr: "или", errorLinkTg: "в Telegram",
+        ok: "Заявка получена. Отвечу в течение дня.",
         planLabel: "Тариф", planChoose: "Пока не знаю, нужен совет",
         consent: "Отправляя заявку, ты соглашаешься с", consentLink: "политикой конфиденциальности",
       },
     },
     footer: {
       linksLabel: "Ссылки", contactsLabel: "Связь", statusLabel: "Статус",
-      online: "на связи, отвечаю быстро", offline: "сейчас ночь, отвечу утром",
+      online: "на связи, отвечаю быстро", offline: "сейчас не на связи, отвечу утром",
       copyright: "© 2026 TARGET PRO", brandCta: "Написать", privacy: "Политика конфиденциальности",
     },
   },
@@ -140,29 +144,29 @@ export const UI = {
     common: { whatsapp: "Message on WhatsApp", telegram: "Message on Telegram", instagram: "Instagram", toTop: "Back to top", language: "Language" },
     hero: {
       statusOnline: "Online", statusOffline: "Will reply in the morning",
-      h1: ["Instagram and", "Facebook ads"], h1Mark: "for businesses",
-      lead: "I also run ads on TikTok, Threads and Google, and build websites that can handle the traffic. I do the work myself, with no managers and no hand-offs.",
-      ctaPrimary: "Message on WhatsApp", ctaSecondary: "Send a request",
-      proofLabel: "From my Meta ad account", proofLink: "How it was done",
+      h1: ["Instagram and", "Facebook ads:"], h1Mark: "live in 7 days",
+      lead: "Before launch I work out how much you can pay per lead for the ads to pay off. I run the ads myself, with no managers. Also TikTok, Google and websites made for ads.",
+      ctaPrimary: "Free review of your ads", ctaSecondary: "Plans and pricing",
+      proofLabel: "Meta Ads Manager screenshot", proofLink: "How it was done",
       statA: "campaigns launched", statB: "avg. client ROAS",
     },
     services: { pre: "What I do" },
     niches: {
       pre: "Who I work with",
-      sub: "Every niche has its own goal: bookings for some, orders or calls for others. That's the goal I set the ads up for.",
+      sub: "For a salon the goal is a booking, for a store an order, for B2B a call. That's the goal I set the ads up for.",
       ctaTitle: "Not on the list?", ctaText: "Message me and I'll tell you if I can take it on.",
     },
     results: {
-      pre: "Cases from my", mark: "Meta ad account",
+      pre: "Cases with screenshots", mark: "from Meta Ads",
       sub: "Six businesses from different niches. Numbers from the screenshots as they are; brand names hidden by agreement with clients.",
-      before: "Before", did: "What I did", more: "More results", showShots: "Screenshots",
+      before: "Before", did: "What I did", more: "More results", showShots: "Screenshot",
       note: "Cost per conversation depends on the niche, the offer and the budget, so I don't promise the same numbers.",
       zoom: "Open the screenshot", close: "Close", source: "Meta Ads Manager screenshot",
     },
     principles: {
       pre: "How I work",
       notPromiseLabel: "What I don't promise",
-      notPromiseText: "An exact number of sales (that also depends on how you respond to leads), customers “by tomorrow”, results without an ad budget, or working with a product nobody has bought yet.",
+      notPromiseText: "An exact number of sales (that also depends on how you respond to leads) or customers “by tomorrow”.",
     },
     fit: {
       pre: "Who this fits",
@@ -171,8 +175,9 @@ export const UI = {
     },
     pricing: {
       pre: "Plans", mark: (from) => `from ${from} a month`,
-      sub: "The price of a month of my work; the ad budget is separate. If you spend more than $7,000 a month on ads, I charge 12% of that spend.",
-      popularBadge: "Recommended", perMonth: "per month", select: "Choose",
+      sub: "Monthly fee for my work. Ad spend is separate. If you spend more than $7,000 a month on ads, I charge 12% of that spend.",
+      popularBadge: "Recommended", perMonth: "per month", select: "Discuss this plan",
+      spots: (left) => left > 0 ? `${left} slot${left === 1 ? "" : "s"} open this month.` : "No slots left this month.",
       excl: "Not included:",
       webNoteTitle: "A website is separate from ad plans",
       webNoteText: "From a simple landing page to a full online store. Price and timeline after a short call.",
@@ -186,25 +191,25 @@ export const UI = {
       fastLabel: "Fastest", fastText: "Message me on WhatsApp, Telegram or Instagram DM.",
       offer: "Already running ads? Send a screenshot of your ad account and I'll tell you what I'd fix, free.",
       note: (left) => left > 0
-        ? `Right now ${left} slot${left === 1 ? " is" : "s are"} open this month. If none are left, I'll tell you when one frees up.`
-        : "No slots left this month. Message me and I'll tell you when one frees up.",
+        ? `${left} slot${left === 1 ? "" : "s"} open this month. If none are left, I'll tell you when the next one opens up.`
+        : "No slots left this month. Message me and I'll tell you when the next one opens up.",
       formTitle: "Or send a request",
       form: {
         nameLabel: "Name", namePh: "What's your name",
-        contactLabel: "Phone or Telegram", contactPh: "+1… or @username",
+        contactLabel: "Phone or Telegram", contactPh: "Number with country code or @username",
         serviceLabel: "What are you interested in", serviceChoose: "Choose", serviceAds: "Advertising", serviceSite: "Website", serviceBoth: "Advertising & website", other: "Other",
         nicheLabel: "What do you do", nicheChoose: "Choose a niche",
-        budgetLabel: "Monthly ad budget (if any)", budgetPh: "E.g.: $1,000",
+        budgetLabel: "Monthly ad budget (if any)", budgetPh: "e.g. $1,000",
         submit: "Send request", sending: "Sending…",
-        errorText: "Couldn't send automatically. Message me directly", errorLink: "on WhatsApp", errorOr: "or", errorLinkTg: "on Telegram",
-        ok: "Got your request. I'll get back to you within a day.",
+        errorText: "The request didn't go through. Message me directly", errorLink: "on WhatsApp", errorOr: "or", errorLinkTg: "on Telegram",
+        ok: "Request received. I'll reply within a day.",
         planLabel: "Plan", planChoose: "Not sure yet, I need advice",
         consent: "By sending this request you agree to the", consentLink: "privacy policy",
       },
     },
     footer: {
       linksLabel: "Links", contactsLabel: "Contact", statusLabel: "Status",
-      online: "online, quick replies", offline: "night here, will reply in the morning",
+      online: "online, quick replies", offline: "offline now, will reply in the morning",
       copyright: "© 2026 TARGET PRO", brandCta: "Message me", privacy: "Privacy policy",
     },
   },

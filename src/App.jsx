@@ -36,7 +36,7 @@ const Part = ({ children }) => <Suspense fallback={null}>{children}</Suspense>;
 const LOGO_LIGHT = asset("img/logo.svg");
 const LOGO_DARK = asset("img/logo-dark.svg");
 
-/* Выбранный тариф: кнопка «Выбрать» в тарифах ставит, форма заявки показывает.
+/* Выбранный тариф: кнопка «Обсудить тариф» в тарифах ставит, форма заявки показывает.
    Маленькое общее хранилище вместо состояния в App: выбор тарифа
    перерисовывает только форму, а не всю страницу. */
 const planStore = (() => {
@@ -298,7 +298,11 @@ function Header({ t, lang, setLang }) {
 
 /* ПЕРВЫЙ ЭКРАН: бенто как на обложках Reels. Приветствия с бегущими
    буквами, ряда галочек под плитками и счёта цифр больше нет (ноябрь
-   2026, разбор «чтобы сайт не выглядел сделанным ИИ»): цифры сразу на месте */
+   2026, разбор «чтобы сайт не выглядел сделанным ИИ»): цифры сразу на месте.
+   Главная кнопка ведёт на бесплатный разбор рекламы в WhatsApp, вторая к
+   тарифам (аудит 26.11.2026: самое сильное предложение сайта стояло внизу).
+   На телефоне плитка с цифрой встаёт между заголовком и текстом: .hero-main
+   там display: contents, а .hero-head и .hero-body становятся плитками */
 function Hero({ t, D }) {
   const status = useStatus();
   const featured = D.PROOF;
@@ -310,12 +314,14 @@ function Hero({ t, D }) {
         </div>
         <div className="hero-grid">
           <div className="tile hero-main">
-            <Heading as="h1" pre={t.hero.h1} mark={t.hero.h1Mark} className="hd-hero" instant />
-            <div>
+            <div className="hero-head">
+              <Heading as="h1" pre={t.hero.h1} mark={t.hero.h1Mark} className="hd-hero" instant />
+            </div>
+            <div className="hero-body">
               <p className="hero-lead">{t.hero.lead}</p>
               <div className="hero-actions">
                 <a className="btn btn-y" href={CONTACTS.whatsapp} {...ext}><SocialIcon name="whatsapp" />{t.hero.ctaPrimary}</a>
-                <a className="btn btn-ghost" href="#contact" onClick={scrollToId("contact")}>{t.hero.ctaSecondary}<IconArrowRight className="btn-ic" /></a>
+                <a className="btn btn-ghost" href="#pricing" onClick={scrollToId("pricing")}>{t.hero.ctaSecondary}<IconArrowRight className="btn-ic" /></a>
               </div>
             </div>
           </div>
@@ -530,7 +536,8 @@ function Fit({ t, D }) {
   );
 }
 
-/* ТАРИФЫ: «Выбрать» запоминает тариф для формы и ведёт к ней */
+/* ТАРИФЫ: «Обсудить тариф» запоминает тариф для формы и ведёт к ней.
+   Под карточками строка свободных мест: та же цифра SPOTS_LEFT, что в «Контактах» */
 function Pricing({ t, D }) {
   const choosePlan = (i) => (e) => { planStore.set(i); scrollToId("contact")(e); };
   return (
@@ -557,6 +564,7 @@ function Pricing({ t, D }) {
             </article>
           ))}
         </div>
+        <p className="price-spots">{t.pricing.spots(SPOTS_LEFT)}</p>
         <div className="tile web-note">
           <div>
             <strong>{t.pricing.webNoteTitle}</strong>
@@ -632,7 +640,7 @@ function Faq({ t, D }) {
 /* КОНТАКТ: быстрые кнопки и форма заявки → Telegram (если не ушло: WhatsApp) */
 function Contact({ t, D, privacyHref }) {
   const RU = CONTENT.ru; /* заявка в Telegram всегда на русском: её читает владелец, не посетитель */
-  const plan = usePlan(); /* индекс тарифа, выбранного кнопкой «Выбрать» */
+  const plan = usePlan(); /* индекс тарифа, выбранного кнопкой «Обсудить тариф» */
   const [form, setForm] = useState({ name: "", contact: "", service: "", niche: "", budget: "" });
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
@@ -685,7 +693,7 @@ function Contact({ t, D, privacyHref }) {
             <h3 className="form-title">{t.contact.formTitle}</h3>
             {!sent ? (
               <form onSubmit={onFormSubmit}>
-                {/* тариф: тот же выбор, что ставит кнопка «Выбрать» в тарифах (planStore) */}
+                {/* тариф: тот же выбор, что ставит кнопка «Обсудить тариф» в тарифах (planStore) */}
                 <label className="field">
                   <span className="field-lbl">{t.contact.form.planLabel}</span>
                   <select className="input" name="plan" value={plan === null ? "" : String(plan)} onChange={(e) => planStore.set(e.target.value === "" ? null : Number(e.target.value))}>

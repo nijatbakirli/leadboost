@@ -19,17 +19,17 @@ export const SEO = {
   ru: {
     title: "Таргетированная реклама в Instagram и Facebook | TARGET PRO",
     description: "Таргетированная реклама в Instagram и Facebook для бизнеса: заявки в WhatsApp, отчёты с цифрами, запуск за 7 дней. Тарифы от $350 в месяц.",
-    ogTitle: "TARGET PRO: таргетированная реклама для бизнеса в Instagram и Facebook",
+    ogTitle: "TARGET PRO: таргет в Instagram и Facebook, запуск за 7 дней",
     ogDescription: "Таргет в Instagram и Facebook и сайты под рекламу. Реальные скрины из рекламного кабинета, тарифы от $350 в месяц.",
-    ogImageAlt: "TARGET PRO: таргетированная реклама для бизнеса в Instagram и Facebook. 4 617 переписок по $0,57 из кабинета Meta",
+    ogImageAlt: "TARGET PRO: таргет в Instagram и Facebook, запуск за 7 дней. Скриншот из Meta Ads Manager: 4 617 переписок по $0,57",
     serviceType: "Таргетированная реклама в Instagram и Facebook",
   },
   en: {
     title: "Targeted Instagram and Facebook ads | TARGET PRO",
     description: "Targeted Instagram and Facebook ads for businesses: leads in WhatsApp, reports with numbers, launch in 7 days. Plans from $350 a month.",
-    ogTitle: "TARGET PRO: targeted ads for businesses on Instagram and Facebook",
+    ogTitle: "TARGET PRO: Instagram and Facebook ads, live in 7 days",
     ogDescription: "Instagram and Facebook ads plus websites built for ads. Real ad-account screenshots, plans from $350 a month.",
-    ogImageAlt: "TARGET PRO: targeted ads for businesses on Instagram and Facebook. 4,617 conversations at $0.57 each from a Meta ad account",
+    ogImageAlt: "TARGET PRO: Instagram and Facebook ads, live in 7 days. Meta Ads Manager screenshot: 4,617 conversations at $0.57 each",
     serviceType: "Targeted advertising on Instagram and Facebook",
   },
 };
