@@ -630,7 +630,7 @@ function Faq({ t, D }) {
 }
 
 /* КОНТАКТ: быстрые кнопки и форма заявки → Telegram (если не ушло: WhatsApp) */
-function Contact({ t, D }) {
+function Contact({ t, D, privacyHref }) {
   const RU = CONTENT.ru; /* заявка в Telegram всегда на русском: её читает владелец, не посетитель */
   const plan = usePlan(); /* индекс тарифа, выбранного кнопкой «Выбрать» */
   const [form, setForm] = useState({ name: "", contact: "", service: "", niche: "", budget: "" });
@@ -733,6 +733,7 @@ function Contact({ t, D }) {
                     {!sending && <IconArrowRight className="btn-ic" />}
                   </button>
                 </span>
+                <p className="form-consent">{t.contact.form.consent} <a href={privacyHref}>{t.contact.form.consentLink}</a>.</p>
                 {sendError && (
                   <div className="form-err" role="alert">
                     {t.contact.form.errorText} <a href={CONTACTS.whatsapp} {...ext}>{t.contact.form.errorLink}</a> {t.contact.form.errorOr} <a href={CONTACTS.telegram} {...ext}>{t.contact.form.errorLinkTg}</a>.
@@ -750,7 +751,7 @@ function Contact({ t, D }) {
 }
 
 /* ФУТЕР */
-function Footer({ t }) {
+function Footer({ t, privacyHref }) {
   const status = useStatus();
   return (
     <footer className="footer">
@@ -787,6 +788,7 @@ function Footer({ t }) {
         </a>
         <div className="footer-base">
           <span>{t.footer.copyright}</span>
+          <a className="f-privacy" href={privacyHref}>{t.footer.privacy}</a>
         </div>
       </div>
     </footer>
@@ -847,10 +849,10 @@ export default function App({ initialLang = "ru" }) {
         <Part><Pricing t={t} D={D} /></Part>
         <Part><AfterSteps t={t} D={D} /></Part>
         <Part><Faq t={t} D={D} /></Part>
-        <Part><Contact t={t} D={D} /></Part>
+        <Part><Contact t={t} D={D} privacyHref={LANG_PATHS[lang] + "privacy/"} /></Part>
       </main>
 
-      <Part><Footer t={t} /></Part>
+      <Part><Footer t={t} privacyHref={LANG_PATHS[lang] + "privacy/"} /></Part>
       <FloatingCta t={t} />
     </div>
   );

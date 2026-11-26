@@ -207,5 +207,66 @@ writeFileSync(`${OUT}/404.html`, `<!doctype html>
 </html>
 `);
 
+/* политика конфиденциальности: /privacy/ и /en/privacy/ (с 26.11.2026).
+   Тексты в CONTENT[lang].PRIVACY (data.jsx), ссылки на страницу в подвале и
+   под кнопкой формы. Статичная страница без React: только текст */
+const PRIVACY_PATH = (l) => `${LANG_PATHS[l]}privacy/`;
+function privacyPage(lang) {
+  const P = CONTENT[lang].PRIVACY;
+  const url = SITE + PRIVACY_PATH(lang);
+  return `<!doctype html>
+<html lang="${lang}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>${esc(P.title)} | TARGET PRO</title>
+  <meta name="description" content="${esc(P.intro)}" />
+  <link rel="canonical" href="${url}" />
+  ${LANGS.map((l) => `<link rel="alternate" hreflang="${l}" href="${SITE + PRIVACY_PATH(l)}" />`).join("\n  ")}
+  <meta name="theme-color" content="#FAFAF7" />
+  <link rel="icon" href="/favicon.ico" sizes="48x48" />
+  <link rel="stylesheet" href="${CSS}" />
+  <style>
+    html,body{margin:0;background:#FAFAF7;color:#2E353D;font:500 17px/1.6 Inter,-apple-system,'Segoe UI',sans-serif}
+    body{background-image:linear-gradient(rgba(15,18,22,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(15,18,22,.05) 1px,transparent 1px);background-size:60px 60px}
+    .wrap{max-width:720px;margin:0 auto;padding:28px 16px 64px}
+    header{padding:4px 0 40px}
+    header a{display:inline-block}
+    header img{display:block;width:121px;height:17px}
+    .upd{font:700 14px/1.3 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#5C6570;margin:0 0 16px}
+    h1{font:700 clamp(36px,8vw,60px)/1.15 Oswald,'Arial Narrow',sans-serif;text-transform:uppercase;color:#0F1216;margin:0 0 20px}
+    .lead{font-size:18px;color:#0F1216;margin:0 0 28px}
+    section{padding:20px 0;border-top:2px solid #E3E4DF}
+    h2{font:700 22px/1.25 Oswald,'Arial Narrow',sans-serif;text-transform:uppercase;color:#0F1216;margin:0 0 8px}
+    section p{margin:0}
+    .back{display:inline-block;margin-top:28px;background:#0F1216;color:#fff;text-decoration:none;font:700 18px/1 Oswald,sans-serif;text-transform:uppercase;letter-spacing:.06em;padding:16px 22px;border-radius:14px}
+    .back:hover{background:#F0E60D;color:#0F1216}
+    a:focus-visible{outline:3px solid #0F1216;outline-offset:3px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header><a href="${LANG_PATHS[lang]}" aria-label="TARGET PRO"><img src="/img/logo.svg" alt="TARGET PRO" width="121" height="17" /></a></header>
+    <main>
+      <p class="upd">${esc(P.updated)}</p>
+      <h1>${esc(P.title)}</h1>
+      <p class="lead">${esc(P.intro)}</p>
+${P.sections.map((x) => `      <section>
+        <h2>${esc(x.h)}</h2>
+        <p>${esc(x.p)}</p>
+      </section>`).join("\n")}
+      <a class="back" href="${LANG_PATHS[lang]}">${esc(P.back)}</a>
+    </main>
+  </div>
+</body>
+</html>
+`;
+}
+for (const lang of LANGS) {
+  const dir = OUT + PRIVACY_PATH(lang);
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(`${dir}index.html`, privacyPage(lang));
+}
+
 rmSync(TMP, { recursive: true, force: true });
 console.log(`public/ готова для ${SITE}: ${LANGS.map((l) => LANG_PATHS[l]).join(", ")}, ${JS}, ${CSS}`);

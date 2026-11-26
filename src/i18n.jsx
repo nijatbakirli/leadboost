@@ -125,12 +125,13 @@ export const UI = {
         errorText: "Не получилось отправить автоматически. Напиши мне напрямую", errorLink: "в WhatsApp", errorOr: "или", errorLinkTg: "в Telegram",
         ok: "Заявка у меня. Свяжусь в течение дня.",
         planLabel: "Тариф", planChoose: "Пока не знаю, нужен совет",
+        consent: "Отправляя заявку, ты соглашаешься с", consentLink: "политикой конфиденциальности",
       },
     },
     footer: {
       linksLabel: "Ссылки", contactsLabel: "Связь", statusLabel: "Статус",
       online: "на связи, отвечаю быстро", offline: "сейчас ночь, отвечу утром",
-      copyright: "© 2026 TARGET PRO", brandCta: "Написать",
+      copyright: "© 2026 TARGET PRO", brandCta: "Написать", privacy: "Политика конфиденциальности",
     },
   },
 
@@ -198,12 +199,13 @@ export const UI = {
         errorText: "Couldn't send automatically. Message me directly", errorLink: "on WhatsApp", errorOr: "or", errorLinkTg: "on Telegram",
         ok: "Got your request. I'll get back to you within a day.",
         planLabel: "Plan", planChoose: "Not sure yet, I need advice",
+        consent: "By sending this request you agree to the", consentLink: "privacy policy",
       },
     },
     footer: {
       linksLabel: "Links", contactsLabel: "Contact", statusLabel: "Status",
       online: "online, quick replies", offline: "night here, will reply in the morning",
-      copyright: "© 2026 TARGET PRO", brandCta: "Message me",
+      copyright: "© 2026 TARGET PRO", brandCta: "Message me", privacy: "Privacy policy",
     },
   },
 };

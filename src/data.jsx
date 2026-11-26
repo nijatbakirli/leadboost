@@ -203,7 +203,7 @@ const ru = {
      таргетолога и фактам сайта: ответ в течение дня, запуск за 7 дней, отчёт по тарифу) */
   AFTER_STEPS: [
     { title: "Отвечаю в течение дня", text: "Пишешь в WhatsApp, Telegram или оставляешь заявку. Отвечаю сам и договариваемся о созвоне в удобное время." },
-    { title: "Созвон 20-30 минут", text: "Разбираем, что ты продаёшь, кто покупает и кто отвечает людям после заявки. Считаем, сколько можно платить за заявку, чтобы реклама окупалась. Если сейчас не окупится, скажу сразу." },
+    { title: "Созвон 20-30 минут", text: "Разбираем, что ты продаёшь, кто покупает и кто отвечает людям после заявки. Считаем, сколько можно платить за заявку, чтобы реклама окупалась. Если сейчас не окупится, скажу сразу. Чтобы созвон прошёл быстрее, подготовь скрин рекламного кабинета (если реклама уже идёт), средний чек и сколько заявок обычно становятся покупками." },
     { title: "План и доступ", text: "Присылаю план первого месяца. Ты выбираешь тариф и добавляешь меня в свой рекламный кабинет: он остаётся твоим, бюджет на рекламу списывается с твоей карты." },
     { title: "Запуск и отчёты", text: "Первые объявления выходят в течение 7 дней. Первые 3 дня ничего не трогаю, реклама учится. Дальше убираю слабое, усиливаю сильное и присылаю отчёт каждую неделю или раз в 2 недели, по тарифу." },
   ],
@@ -213,9 +213,28 @@ const ru = {
     { q: "На каких площадках ведёшь рекламу?", a: "Instagram, Facebook и Threads (это один рекламный кабинет Meta), TikTok и Google. С какой площадки начать, решаем по нише и бюджету." },
     { q: "Можно заказать только сайт, без рекламы?", a: "Да. Но если делаем и то и другое, сайт сразу проектируется под рекламу, и вместе выходит дешевле, чем по отдельности." },
     { q: "Сколько стоит сайт?", a: "Зависит от сложности: от простого лендинга до интернет-магазина с оплатой. Цену и сроки скажу после короткого созвона." },
+    { q: "Гарантируешь количество заявок?", a: "Нет. Сколько будет заявок, заранее не знает никто: это зависит от ниши, цены и того, как быстро отвечают людям. Что обещаю: запуск за 7 дней, расчёт допустимой цены заявки до старта, отчёт с цифрами по тарифу и прямой ответ, если реклама не окупается. Беру 3, максимум 4 проекта в месяц, поэтому на каждый хватает времени." },
+    { q: "За что не берёшься?", a: "За товары и услуги, которые запрещают правила рекламы Meta, за рекламу без человека, который отвечает на заявки, и за обещания вроде «100 заявок за неделю»." },
     { q: "Что если заявки есть, а продаж нет?", a: "Посмотрим вместе, что происходит после того, как человек написал. Иногда дело не в рекламе, и тогда я так и скажу." },
     { q: "А если через неделю не понравится?", a: "Просто разойдёмся, без штрафов и лишних вопросов." },
   ],
+  /* политика конфиденциальности: отдельная страница /privacy/ (собирает
+     scripts/build-site.mjs). Что собирает форма и куда уходит заявка, см.
+     api/telegram.js; меняя форму или добавляя пиксель/счётчик, обновить */
+  PRIVACY: {
+    title: "Политика конфиденциальности",
+    updated: "Обновлено 26 ноября 2026",
+    intro: "Коротко о том, какие данные собирает этот сайт TARGET PRO, зачем и что с ними происходит.",
+    sections: [
+      { h: "Что собираю", p: "Только то, что ты сам пишешь в форме заявки: имя, телефон или Telegram, тариф, что интересует, нишу и бюджет на рекламу, если указал. Если пишешь в WhatsApp, Telegram или Instagram, переписка остаётся в этом мессенджере." },
+      { h: "Зачем", p: "Чтобы ответить на заявку и договориться о работе. Рассылок не делаю, данные не продаю и не передаю для рекламы." },
+      { h: "Куда уходит заявка", p: "Сайт работает на хостинге Vercel. Заявка проходит через его сервер и приходит мне в Telegram. Отдельной базы заявок у сайта нет." },
+      { h: "Cookie и счётчики", p: "Сайт не ставит рекламных cookie и не подключает счётчики посещений. В браузере сохраняется только выбранная тема оформления, светлая или тёмная." },
+      { h: "Сколько храню", p: "Переписку по заявке храню, пока мы общаемся или работаем вместе. Попросишь удалить, удалю." },
+      { h: "Как связаться", p: "По любому вопросу о данных напиши в WhatsApp или Telegram, ссылки внизу страницы." },
+    ],
+    back: "На главную",
+  },
   /* ленты под первым экраном: что делаю × где */
   TAPE_WHAT: ["Таргет", "Сайты", "Креативы", "Аналитика"],
   TAPE_WHERE: ["Instagram", "Facebook", "TikTok", "Threads", "Google"],
@@ -388,7 +407,7 @@ const en = {
      таргетолога и фактам сайта: ответ в течение дня, запуск за 7 дней, отчёт по тарифу) */
   AFTER_STEPS: [
     { title: "I reply within a day", text: "Message me on WhatsApp or Telegram, or send a request. I reply myself and we set up a call at a time that suits you." },
-    { title: "A 20-30 minute call", text: "We go over what you sell, who buys it and who answers people after they get in touch. We work out how much you can pay per lead for the ads to pay off. If they won't pay off right now, I'll tell you straight away." },
+    { title: "A 20-30 minute call", text: "We go over what you sell, who buys it and who answers people after they get in touch. We work out how much you can pay per lead for the ads to pay off. If they won't pay off right now, I'll tell you straight away. To make the call quicker, have a screenshot of your ad account ready (if you already run ads), your average order value and how many leads usually turn into sales." },
     { title: "Plan and access", text: "I send a plan for the first month. You choose a tier and add me to your ad account: it stays yours, and the ad budget is charged to your card." },
     { title: "Launch and reports", text: "The first ads go live within 7 days. For the first 3 days I change nothing while the ads learn. Then I cut what's weak, scale what works, and send a report every week or every 2 weeks, depending on the tier." },
   ],
@@ -398,9 +417,25 @@ const en = {
     { q: "Which platforms do you run ads on?", a: "Instagram, Facebook and Threads (all in one Meta ad account), TikTok and Google. We pick where to start based on the niche and the budget." },
     { q: "Can I order just a website, without advertising?", a: "Yes. But if we do both, the site is designed for advertising from the start, and together it works out cheaper than separately." },
     { q: "How much does a website cost?", a: "Depends on complexity: from a simple landing page to an online store with payments. I'll give you a price and timeline after a short call." },
+    { q: "Do you guarantee a number of leads?", a: "No. Nobody knows the number of leads in advance: it depends on the niche, the price and how quickly people get a reply. What I do promise: launch within 7 days, a target cost per lead worked out before the start, reports with numbers according to your plan, and a straight answer if the ads don't pay off. I take 3, at most 4 projects a month, so each one gets enough time." },
+    { q: "What won't you take on?", a: "Products and services that Meta's advertising policies prohibit, ads with no one to answer the leads, and promises like \"100 leads in a week\"." },
     { q: "What if I get leads but no sales?", a: "We'll look together at what happens after someone messages you. Sometimes the issue isn't the ads, and if so, I'll say so." },
     { q: "What if I don't like it after a week?", a: "We simply part ways, no penalties and no awkward questions." },
   ],
+  PRIVACY: {
+    title: "Privacy policy",
+    updated: "Updated 26 November 2026",
+    intro: "A short note on what data this TARGET PRO website collects, why, and what happens to it.",
+    sections: [
+      { h: "What I collect", p: "Only what you enter in the request form: your name, phone or Telegram, plan, what you're interested in, your niche and ad budget if you gave it. If you message me on WhatsApp, Telegram or Instagram, the conversation stays in that app." },
+      { h: "Why", p: "To reply to your request and agree on the work. I don't send newsletters, sell your data or share it for advertising." },
+      { h: "Where your request goes", p: "The site is hosted on Vercel. Your request passes through its server and arrives in my Telegram. The site keeps no separate database of requests." },
+      { h: "Cookies and analytics", p: "The site sets no advertising cookies and runs no visitor analytics. Your browser only remembers the colour theme you picked, light or dark." },
+      { h: "How long I keep it", p: "I keep the conversation about your request while we're in touch or working together. Ask me to delete it and I will." },
+      { h: "How to reach me", p: "For any question about your data, message me on WhatsApp or Telegram, the links are at the bottom of the page." },
+    ],
+    back: "Back to the home page",
+  },
   TAPE_WHAT: ["Targeting", "Websites", "Creatives", "Analytics"],
   TAPE_WHERE: ["Instagram", "Facebook", "TikTok", "Threads", "Google"],
 };

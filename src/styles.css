@@ -858,6 +858,10 @@ select.input option { color: var(--ink-2); background: var(--tile); }
 .form-title { margin: 0 0 22px; font-family: var(--f-display); font-weight: 700; text-transform: uppercase; color: var(--ink); font-size: 28px; line-height: 1.15; }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .magnetic { display: block; margin-top: 6px; transition: transform .25s cubic-bezier(.22,1,.36,1); }
+/* согласие под кнопкой формы: ссылка на /privacy/ (26.11.2026) */
+.form-consent { margin: 12px 0 0; font-size: 14.5px; line-height: 1.5; color: var(--muted); }
+.form-consent a, .f-privacy { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.form-consent a:hover, .f-privacy:hover { color: var(--ink); }
 .form-err { margin-top: 14px; padding: 12px 14px; border-radius: 12px; border: 2px solid rgba(232,129,95,0.45); background: rgba(232,129,95,0.08); color: var(--body); font-size: 15.5px; }
 .form-err a { color: var(--accent); font-weight: 600; }
 .form-ok { display: flex; align-items: center; gap: 12px; padding: 18px; border: 2px solid var(--accent); border-radius: 14px; background: var(--tile-2); color: var(--ink); font-size: 16.5px; }
